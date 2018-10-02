@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:deepblue/screens/alternateMapScreen.dart';
+import 'package:deepblue/screens/locatingScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:deepblue/models/CardItemModel.dart';
 import 'package:location/location.dart';
@@ -12,11 +13,16 @@ import 'package:deepblue/screens/registerLocationScreen.dart';
 
 
 class HomeScreen extends StatefulWidget {
+
+  Map<String, double> _currentLocation;
+  HomeScreen(this._currentLocation);  
+
   @override
   _HomeScreenState createState() => new _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
+
 
   var cardIndex = 0;
   ScrollController scrollController;
@@ -32,12 +38,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
   AnimationController animationController;
   ColorTween colorTween;
   CurvedAnimation curvedAnimation;
-
-  Map<String, double> _startLocation;
-  Map<String, double> _currentLocation;
-  StreamSubscription<Map<String, double>> _locationSubscription;
-  Location _location = new Location();
-  String error;
   Future httpReturn;
 
 
@@ -50,58 +50,19 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
   void initState() {
     super.initState();
 
-    scrollController = new ScrollController();  
-
-    initPlatformState();
-
-        _locationSubscription =
-        _location.onLocationChanged().listen((Map<String,double> result) {
-          setState(() {
-            _currentLocation = result;
-          });
-        });
+    scrollController = new ScrollController();
+    httpRequest(widget._currentLocation);
+    
   }
 
 
-initPlatformState() async {
-    Map<String, double> location;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-
-    try {
-      location = await _location.getLocation();
-      if(location != null){
-        _currentLocation = location;
-        httpRequest(location);
-      }
-      error = null;
-    } on PlatformException catch (e) {
-      if (e.code == 'PERMISSION_DENIED') {
-        error = 'Permission denied';
-        initPlatformState();
-      } else if (e.code == 'PERMISSION_DENIED_NEVER_ASK') {
-        error = 'Permission denied - please ask the user to enable it from the app settings';
-      }
-
-      location = null;
-    }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    //if (!mounted) return;
-
-    setState(() {
-        _startLocation = location;
-    });
-
-  }
 
   void httpRequest(var location)async {
-    print("httploc $location");
+    print("httploc ${widget._currentLocation}");
 
     var url = "http://www.nell.science/deepblue/index.php";
 
-    http.post(url, body: {"getWashingLocations":"true","key": "0", "latitude": location["latitude"].toString(), "longitude": location["longitude"].toString()})
+    http.post(url, body: {"getWashingLocations":"true","key": "0", "latitude": widget._currentLocation['latitude'].toString(), "longitude": widget._currentLocation['longitude'].toString()})
         .then((response) {
       print("Response status: ${response.statusCode}");   
       print("Response body: ${response.body}");
@@ -136,7 +97,8 @@ initPlatformState() async {
 
   @override
   Widget build(BuildContext context) {
-    print("location$_currentLocation");
+    print("location${widget._currentLocation}");
+    
     setCardColors();
     return new Scaffold(
       backgroundColor: currentColor,
@@ -149,7 +111,7 @@ initPlatformState() async {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => AlternateMapScreen(_currentLocation)),
+              MaterialPageRoute(builder: (context) => AlternateMapScreen(widget._currentLocation)),
             );
           },
         ),
