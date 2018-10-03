@@ -14,32 +14,22 @@ class LocatingScreen extends StatefulWidget{
  
   @override
   void initState() {
-
-
+    
       
   }
 
   getPosition() async {
 
-    
     GeolocationStatus geolocationStatus  = await Geolocator().checkGeolocationPermissionStatus();
-    if(geolocationStatus != null){
-       Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.bestForNavigation);
+    Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
 
     
-        var positionMap = new Map<String,double>();
-        positionMap["latitude"] = position.latitude;
-        positionMap["longitude"] = position.longitude;
+    var positionMap = new Map<String,double>();
+    positionMap["latitude"] = position.latitude;
+    positionMap["longitude"] = position.longitude;
 
-        
-
-        Navigator.pop(context);
-        Navigator.push(context,MaterialPageRoute(builder: (context) => HomeScreen(positionMap)));
-    }else{
-      print("failed");
-      getPosition();
-    }
-   
+    Navigator.pop(context);
+    Navigator.push(context,MaterialPageRoute(builder: (context) => HomeScreen(positionMap)));
   }
 
 
