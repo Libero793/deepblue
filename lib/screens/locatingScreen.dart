@@ -108,7 +108,7 @@ class LocatingScreen extends StatefulWidget{
   // const oneSec = const Duration(seconds:3);
   //gpsTimer = new Timer.periodic(oneSec, (Timer t) => getLocation());
   //getLocation();
-  getLocation();
+  getPosition();
 
 
   
