@@ -109,6 +109,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.4"
+  geolocation:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: f855bac8404fc7f6729e4da03de42ea95967621b
+      url: "https://github.com/driveddy/geolocation.git"
+    source: git
+    version: "0.2.1"
   geolocator:
     dependency: "direct main"
     description:

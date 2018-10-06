@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'package:deepblue/screens/homeScreen.dart';
 import 'package:flutter/material.dart';
-
-import 'package:geolocator/geolocator.dart';
+import 'package:geolocator/geolocator.dart' as gps;
+import 'package:geolocation/geolocation.dart' ;
+import 'package:location/location.dart' as location;
+import 'package:flutter/services.dart';
 
 
 class LocatingScreen extends StatefulWidget{
@@ -11,34 +13,106 @@ class LocatingScreen extends StatefulWidget{
 
  class _locationState extends State<LocatingScreen>{
 
- 
-  @override
-  void initState() {
-    
-      
-  }
+  Map<String, double> _startLocation;
+  Map<String, double> _currentLocation;
+
+  StreamSubscription<Map<String, double>> _locationSubscription;
+
+  location.Location _location = new location.Location();
+  bool _permission = false;
+  String error;
+
+  bool currentWidget = true;
+  Timer gpsTimer;
+
+
 
   getPosition() async {
 
-    GeolocationStatus geolocationStatus  = await Geolocator().checkGeolocationPermissionStatus();
-    Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+          print("getposition");
+          
+          gps.Position position = await gps.Geolocator().getCurrentPosition(desiredAccuracy: gps.LocationAccuracy.high);
+ 
 
+          var positionMap = new Map<String,double>();
+          positionMap["latitude"] = position.latitude;
+          positionMap["longitude"] = position.longitude;
+
+          Navigator.pop(context);
+          Navigator.push(context,MaterialPageRoute(builder: (context) => HomeScreen(positionMap)));
     
-    var positionMap = new Map<String,double>();
-    positionMap["latitude"] = position.latitude;
-    positionMap["longitude"] = position.longitude;
+  }
 
-    Navigator.pop(context);
-    Navigator.push(context,MaterialPageRoute(builder: (context) => HomeScreen(positionMap)));
+  getLocation() async{
+
+    final GeolocationResult result = await Geolocation.isLocationOperational();
+    if(result.isSuccessful) {
+      // location service is enabled, and location permission is granted
+      print("gps enabled");
+      getPosition();
+    } else {
+      // location service is not enabled, restricted, or location permission is denied
+      print("gps disabled");
+      //Navigator.pop(context);
+      //Navigator.push(context,MaterialPageRoute(builder: (context) => LocatingScreen()));
+    }
+  }
+
+   initPlatformState() async {
+    Map<String, double> location;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+
+    try {
+      _permission = await _location.hasPermission();
+      location = await _location.getLocation();
+
+
+      error = null;
+    } on PlatformException catch (e) {
+      if (e.code == 'PERMISSION_DENIED') {
+        error = 'Permission denied';
+      } else if (e.code == 'PERMISSION_DENIED_NEVER_ASK') {
+        error = 'Permission denied - please ask the user to enable it from the app settings';
+      }
+
+      location = null;
+    }
+
+    setState(() {
+        _startLocation = location;
+    });
+
+  }
+
+
+
+  @override
+  void initState() {
+    super.initState();
+
+    initPlatformState();
+
+    _locationSubscription =
+        _location.onLocationChanged().listen((Map<String,double> result) {
+          setState(() {
+            _currentLocation = result;
+          });
+          print("currentloc$_currentLocation");
+        });
   }
 
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-      
-    getPosition();
+
+  // const oneSec = const Duration(seconds:3);
+  //gpsTimer = new Timer.periodic(oneSec, (Timer t) => getLocation());
+  //getLocation();
+  getLocation();
+
+
   
+
     return Scaffold(
       backgroundColor: Colors.blue,
       appBar: AppBar(
@@ -46,7 +120,10 @@ class LocatingScreen extends StatefulWidget{
         centerTitle: true,
         backgroundColor: Colors.blue,
         elevation: 0.0,
-      ),
+    ),
+
+
+
 
     body: new Center( heightFactor: 100.00,
         child: Column(        
