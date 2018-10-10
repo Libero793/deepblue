@@ -26,6 +26,15 @@ class _AlternateMapScreenState extends State<AlternateMapScreen>{
   bool addMode = false;
   bool addModeTapped = false;
   IconData actionButton = Icons.add;
+  Color actionButtonColor = Colors.blue[900];
+  Color actionButtonIconColor = Colors.white;
+  String headlineText = "Kartenübersicht";
+  double containerFloatingActionButtonHeight = 80.0;
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = new 
+        GlobalKey<ScaffoldState>();
+
+    PersistentBottomSheetController controller;
 
   
 
@@ -45,8 +54,10 @@ class _AlternateMapScreenState extends State<AlternateMapScreen>{
   }
 
   toggleEditMode(){
+    
     if(addMode){
       addMode=false;
+      showHint("hide");
       if(addModeTapped){
         print("remove");
               setState(() {
@@ -54,9 +65,29 @@ class _AlternateMapScreenState extends State<AlternateMapScreen>{
                   addModeTapped=false;
               });
       }
+
+      setState(() {
+              actionButtonIconColor=Colors.white;
+              headlineText="Kartenübersicht";
+              containerFloatingActionButtonHeight = 80.0;
+      });
+
       print("addmode: off");
     }else{
       addMode=true;
+      showHint("show");
+      setState(() {
+              actionButtonIconColor=Colors.transparent;
+              headlineText="Station hinzufügen";
+              containerFloatingActionButtonHeight = 0.0;
+            });
+
+
+
+      
+      LatLng handler = new LatLng(location['latitude'], location['longitude']);
+
+      addLocation(handler);
       print("addmode: on");
     }
   }
@@ -64,7 +95,7 @@ class _AlternateMapScreenState extends State<AlternateMapScreen>{
   void addLocation(latlng){
     
         print("mode: $addMode");
-        print("tapped: $addModeTapped");
+        print("tapped: $latlng");
 
         if(addMode){
           if(addModeTapped){
@@ -101,12 +132,100 @@ class _AlternateMapScreenState extends State<AlternateMapScreen>{
           },
         );
   }
+
+
+   void showHint(action){
+
+
+      
+       
+        ScaffoldState state = _scaffoldKey.currentState;
+        
+        if(action == "show"){
+          controller = state.showBottomSheet<Null>((BuildContext context) {
+                           
+                          return  Container ( 
+                                      height: 150.0,
+                                      decoration: new BoxDecoration(
+                                        color: Colors.transparent,
+                                      ),
+                                      child:new Container (
+                                        decoration: new BoxDecoration(
+                                          color: Colors.blue[900],
+                                          borderRadius: new BorderRadius.only(
+                                              topLeft: const Radius.circular(10.0),
+                                              topRight: const Radius.circular(10.0)
+                                          )
+                                        ),
+                                        child: new Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: <Widget>[
+                                            new Padding(
+                                                padding: const EdgeInsets.all(16.0),
+                                                child: new Text(
+                                                          'Klick auf die Map '
+                                                          'um eine neue Waschbox hinzuzufügen',
+                                                          textAlign: TextAlign.center,style: TextStyle(fontSize: 18.0, color: Colors.white, fontWeight: FontWeight.w400)
+                                                        )
+                                            ),
+                                            new Row(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: <Widget>[
+                                                new OutlineButton(
+                                                  child: const Text('Abbrechen'),
+                                                  color: Colors.blue[900],
+                                                  highlightColor: Colors.green,
+                                                  textColor: Colors.white,
+                                                  splashColor: Colors.blue[900],
+                                                  onPressed: () {
+                                                    // Perform some action
+                                                    toggleEditMode();
+                                                  },
+                                                ),
+
+                                                new Padding(
+                                                  padding: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0)
+                                                ),
+
+                                                new RaisedButton(
+                                              
+                                                  child: const Text('Weiter'),
+                                                  color: Colors.white,
+                                                  textColor: Colors.blue[900],
+                                                  splashColor: Colors.blue[900],
+                                                  padding: EdgeInsets.symmetric(vertical: 10.0,horizontal: 30.0),
+                                                  onPressed: () {
+                                                    // Perform some action
+                                                  },
+                                                ),
+                                              ]
+                                            )
+                                            
+          
+                                        ],
+                                      )
+                                      ) 
+                          );                         
+          },);
+          
+
+        }else if(action == "hide"){
+          controller.close();
+        }
+
+        
+        
+
+     
+   } 
+
   
   @override
   Widget build(BuildContext context) {
     print("map register location$location");
-    
-    
+   
+
     markers = tappedPoints.map((latlng) {
             return new Marker(
               width: 60.0,
@@ -122,7 +241,12 @@ class _AlternateMapScreenState extends State<AlternateMapScreen>{
                         borderRadius: new BorderRadius.circular(0.0),
                         color: Colors.transparent,
                       ),
-                      child: new Icon(Icons.my_location,color: Colors.blue,size: 60.0,),
+                      child: Column(
+                        children: <Widget>[
+                          Icon(Icons.my_location,color: Colors.blue[900],size: 60.0,),
+                        ]
+                      )
+                      
                     ),
                   ),
             );
@@ -138,10 +262,10 @@ class _AlternateMapScreenState extends State<AlternateMapScreen>{
     }
 
     return new Scaffold(
-
+        key: _scaffoldKey,
         backgroundColor: Colors.blue[900],
         appBar: new AppBar(
-          title: new Text("DeepBlue", style: TextStyle(fontSize: 16.0),),
+          title: new Text(headlineText, style: TextStyle(fontSize: 16.0),),
           backgroundColor: Colors.blue[900],
           centerTitle: true,
           leading: new IconButton(
@@ -208,21 +332,20 @@ class _AlternateMapScreenState extends State<AlternateMapScreen>{
           ],
         ),
 
-        floatingActionButton: new Stack(
-          children: <Widget>[
-            Align(
-              alignment: Alignment.bottomRight,
-              child:new FloatingActionButton(
-              tooltip: 'Increment',
-              child: new Icon(actionButton),
-              backgroundColor: Colors.blue, 
-              onPressed: toggleEditMode,
-              ), // 
-            )
-          ],
-        ),
-        
-
+        floatingActionButton:
+              new Container(
+                height: containerFloatingActionButtonHeight,
+                child: new FloatingActionButton(
+                        tooltip: 'Increment',
+                        child: new IconTheme(
+                                  data: new IconThemeData(
+                                      color: actionButtonIconColor),
+                                  child:  new Icon(actionButton),
+                        ),
+                        backgroundColor: actionButtonColor, 
+                        onPressed: toggleEditMode,
+                        ), // 
+              ),
         );     
   }
 
