@@ -1,3 +1,4 @@
+import 'package:deepblue/screens/registerLocationScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -20,6 +21,8 @@ class _AlternateMapScreenState extends State<AlternateMapScreen>{
 
   Map<String, double> location;
   _AlternateMapScreenState(this.location);
+  Map<String, double> registerLocation;
+  
 
   List<LatLng> tappedPoints = [];
   var markers;
@@ -65,22 +68,23 @@ class _AlternateMapScreenState extends State<AlternateMapScreen>{
                   addModeTapped=false;
               });
       }
-
+      if (this.mounted){
       setState(() {
               actionButtonIconColor=Colors.white;
               headlineText="Kartenübersicht";
               containerFloatingActionButtonHeight = 80.0;
-      });
+      });}
 
       print("addmode: off");
     }else{
       addMode=true;
       showHint("show");
+      if (this.mounted){
       setState(() {
               actionButtonIconColor=Colors.transparent;
               headlineText="Station hinzufügen";
               containerFloatingActionButtonHeight = 0.0;
-            });
+            });}
 
 
 
@@ -105,6 +109,12 @@ class _AlternateMapScreenState extends State<AlternateMapScreen>{
           }
 
           tappedPoints.add(latlng);
+
+           //     if (this.mounted){
+         // setState(() {
+            registerLocation["longitude"] = latlng.longitude;
+            registerLocation["latitude"] = latlng.latitude;
+         // });}
           addModeTapped = true;
         }
 
@@ -197,6 +207,7 @@ class _AlternateMapScreenState extends State<AlternateMapScreen>{
                                                   padding: EdgeInsets.symmetric(vertical: 10.0,horizontal: 30.0),
                                                   onPressed: () {
                                                     // Perform some action
+                                                    Navigator.push(context,MaterialPageRoute(builder: (context) => RegisterLocationScreen(registerLocation)));
                                                   },
                                                 ),
                                               ]
@@ -223,6 +234,7 @@ class _AlternateMapScreenState extends State<AlternateMapScreen>{
   
   @override
   Widget build(BuildContext context) {
+    registerLocation=location;
     print("map register location$location");
    
 

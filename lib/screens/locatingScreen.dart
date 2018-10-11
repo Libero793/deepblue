@@ -8,6 +8,8 @@ import 'package:flutter/services.dart';
 
 
 class LocatingScreen extends StatefulWidget{
+
+     
    _locationState createState() => new _locationState();
 }
 

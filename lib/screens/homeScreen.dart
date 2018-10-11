@@ -121,10 +121,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
             child: new IconButton(
               icon: new Icon(Icons.add_box),
               onPressed: () {
+                /*
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => RegisterLocationScreen(currentColor)),
-                );
+                  MaterialPageRoute(builder: (context) => RegisterLocationScreen()),
+                );*/
               },
             )
           ),

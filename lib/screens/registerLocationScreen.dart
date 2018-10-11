@@ -1,26 +1,28 @@
 import 'package:deepblue/screens/registerLocationSubScreens/setNewLocationScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:latlong/latlong.dart';
 
 
 class RegisterLocationScreen extends StatefulWidget{
 
-  Color menuBackgroundColor;
-  RegisterLocationScreen(this.menuBackgroundColor);
+  Map<String, double> _pushedLocation;
+  RegisterLocationScreen(this._pushedLocation);
 
   @override
-  _RegisterLocationScreen createState() => _RegisterLocationScreen(menuBackgroundColor);
+  _RegisterLocationScreen createState() => _RegisterLocationScreen(_pushedLocation);
 
 }
 
 class _RegisterLocationScreen extends State<RegisterLocationScreen>{
 
-  Color menuBackgroundColor;
+  Color menuBackgroundColor = Colors.blue[900];
 
-  _RegisterLocationScreen(this.menuBackgroundColor);
+  Map<String, double> pushedLocation;
+  _RegisterLocationScreen(this.pushedLocation);
 
-  void setBackgroundColorMenu(Color backgroundColor){
+  /*void setBackgroundColorMenu(Color backgroundColor){
     this.menuBackgroundColor = backgroundColor;
-  }
+  }*/
   
   @override
   Widget build(BuildContext context) {
@@ -81,7 +83,7 @@ class _RegisterLocationScreen extends State<RegisterLocationScreen>{
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: new Text("Waschboxen", style: TextStyle(fontSize: 16.0, color: Colors.white),)    
+                    child: new Text("$pushedLocation", style: TextStyle(fontSize: 16.0, color: Colors.white),)    
                   ),
                 ],
               )    
