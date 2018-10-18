@@ -1,4 +1,3 @@
-import 'package:deepblue/screens/registerLocationSubScreens/setNewLocationScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:latlong/latlong.dart';
 
@@ -19,6 +18,30 @@ class _RegisterLocationScreen extends State<RegisterLocationScreen>{
 
   Map<String, double> pushedLocation;
   _RegisterLocationScreen(this.pushedLocation);
+  bool hochdruckReiniger = false;
+  bool schaumBuerste = false;
+  bool schaumPistole = false;
+  bool fliessendWasser = false;
+  bool motorWaesche = false;
+
+  void toggleSwitch(bool e, String val){
+    setState((){
+          if(val=="hochdruckReiniger"){
+            if(e){
+              hochdruckReiniger=true;
+            }else{
+              hochdruckReiniger=false;
+            }
+          }else if(val == "schaumBuerste"){
+            if(e){
+              schaumBuerste=true;
+            }else{
+              schaumBuerste=false;
+            }
+          }
+      
+    });
+  }
 
   /*void setBackgroundColorMenu(Color backgroundColor){
     this.menuBackgroundColor = backgroundColor;
@@ -55,97 +78,157 @@ class _RegisterLocationScreen extends State<RegisterLocationScreen>{
 
             Padding(
               padding: const EdgeInsets.fromLTRB(36.0, 10.0, 36.0, 80.0),
-              child: Text("Bitte Wähle aus um welche Art von Location es sich handelt, bei der Waschbox die du hinzufügen willst", 
+              child: Text("Bitte gib ein paar Details an, über die Waschbox die du hinzufügen möchtest", 
                         style: TextStyle(fontSize: 14.0, color: Colors.white),
                      ),
             
             ),
 
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 20.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.max,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical:0.0),
-                    child: new FloatingActionButton(
-                      backgroundColor: Colors.white,
-                      heroTag: null,
-                      onPressed: () {},
-                        child: Icon(
-                          Icons.local_car_wash,
-                          color: menuBackgroundColor,
-                          size: 34.0,
-                        )               
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: new Text("$pushedLocation", style: TextStyle(fontSize: 16.0, color: Colors.white),)    
-                  ),
-                ],
-              )    
-            ),  
+            Container(
+                       decoration:  new BoxDecoration(
+                                      border: new Border(bottom: BorderSide(color: Colors.blueGrey)),
+                                    ),
+                      child:  Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 10.0),
+                                child:    Row(
+                                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                    mainAxisSize: MainAxisSize.max,
+                                                    children: <Widget>[
+                                                                        Padding(
+                                                        padding: const EdgeInsets.all(8.0),
+                                                        child: new Text("Hochdruckreinige vorhanden", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16.0, color: Colors.white),)    
+                                                      ),
+                                                      Padding(
+                                                        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical:0.0),
+                                                        child: Switch(
+                                                              value: hochdruckReiniger,
+                                                              onChanged: (bool e) => toggleSwitch(e, 'hochdruckReiniger'),
+                                                              activeColor: Colors.white,
+                                                            ), 
+                                                      ),
 
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 20.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.max,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical:0.0),
-                    child: new FloatingActionButton(
-                      backgroundColor: Colors.white,
-                      heroTag: null,
-                      onPressed: () {},
-                        child: Icon(
-                          Icons.local_gas_station,
-                          color: menuBackgroundColor,
-                          size: 34.0,
-                        )               
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: new Text("Tankstelle mit Waschboxen", style: TextStyle(fontSize: 16.0, color: Colors.white),)    
-                  ),
-                ],
-              )    
+                                                    ],
+                                                  )    
+                              ),
             ),  
 
 
 
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 20.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.max,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical:0.0),
-                    child: new FloatingActionButton(
-                      backgroundColor: Colors.white,
-                      heroTag: null,
-                      onPressed: () {},
-                        child: Icon(
-                          Icons.ev_station,
-                          color: menuBackgroundColor,
-                          size: 34.0,
-                        )               
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: new Text("Ladestation mit Waschboxen", style: TextStyle(fontSize: 16.0, color: Colors.white),)    
-                  ),
-                ],
-              )    
-            ),  
+            Container(
+                       decoration:  new BoxDecoration(
+                                      border: new Border(bottom: BorderSide(color: Colors.blue[700])),
+                                    ),
+                      child:  Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 10.0),
+                                child:    Row(
+                                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                    mainAxisSize: MainAxisSize.max,
+                                                    children: <Widget>[
+                                                                        Padding(
+                                                        padding: const EdgeInsets.all(8.0),
+                                                        child: new Text("Schaumbürste vorhanden", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16.0, color: Colors.white),)    
+                                                      ),
+                                                      Padding(
+                                                        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical:0.0),
+                                                        child: Switch(
+                                                              value: schaumBuerste,
+                                                              onChanged: (bool e) => toggleSwitch(e, 'schaumBuerste'),
+                                                              activeColor: Colors.white,
+                                                            ), 
+                                                      ),
+
+                                                    ],
+                                                  )    
+                              ),
+            ), 
+
+            Container(
+                       decoration:  new BoxDecoration(
+                                      border: new Border(bottom: BorderSide(color: Colors.blue[700])),
+                                    ),
+                      child:  Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 10.0),
+                                child:    Row(
+                                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                    mainAxisSize: MainAxisSize.max,
+                                                    children: <Widget>[
+                                                                        Padding(
+                                                        padding: const EdgeInsets.all(8.0),
+                                                        child: new Text("Schaumpistole vorhanden", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16.0, color: Colors.white),)    
+                                                      ),
+                                                      Padding(
+                                                        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical:0.0),
+                                                        child: Switch(
+                                                              value: schaumPistole,
+                                                              onChanged: (bool e) => toggleSwitch(e, 'schaumPistole'),
+                                                              activeColor: Colors.white,
+                                                            ), 
+                                                      ),
+
+                                                    ],
+                                                  )    
+                              ),
+            ), 
+
+            Container(
+                       decoration:  new BoxDecoration(
+                                      border: new Border(bottom: BorderSide(color: Colors.blue[700])),
+                                    ),
+                      child:  Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 10.0),
+                                child:    Row(
+                                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                    mainAxisSize: MainAxisSize.max,
+                                                    children: <Widget>[
+                                                                        Padding(
+                                                        padding: const EdgeInsets.all(8.0),
+                                                        child: new Text("Fließend Wasser Vorhanden", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16.0, color: Colors.white),)    
+                                                      ),
+                                                      Padding(
+                                                        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical:0.0),
+                                                        child: Switch(
+                                                              value: fliessendWasser,
+                                                              onChanged: (bool e) => toggleSwitch(e, 'fliessendWasser'),
+                                                              activeColor: Colors.white,
+                                                            ), 
+                                                      ),
+
+                                                    ],
+                                                  )    
+                              ),
+            ), 
+
+            Container(
+                      child:  Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 10.0),
+                                child:    Row(
+                                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                    mainAxisSize: MainAxisSize.max,
+                                                    children: <Widget>[
+                                                                        Padding(
+                                                        padding: const EdgeInsets.all(8.0),
+                                                        child: new Text("Motorwäsche erlaubt", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16.0, color: Colors.white),)    
+                                                      ),
+                                                      Padding(
+                                                        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical:0.0),
+                                                        child: Switch(
+                                                              value: motorWaesche,
+                                                              onChanged: (bool e) => toggleSwitch(e, 'motorWaesche'),
+                                                              activeColor: Colors.white,
+                                                            ), 
+                                                      ),
+
+                                                    ],
+                                                  )    
+                              ),
+            ), 
+            
+
 
             new Expanded(
               child: new Row(
@@ -157,7 +240,7 @@ class _RegisterLocationScreen extends State<RegisterLocationScreen>{
                       onTap:(){
                         Navigator.push(
                           context, 
-                          MaterialPageRoute(builder: (context) => SetNewLocationScreen()),
+                          MaterialPageRoute(),
                         );
                       },
                       child: new Container(
