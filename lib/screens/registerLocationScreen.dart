@@ -1,5 +1,7 @@
+import 'package:deepblue/screens/submitNewLocation.dart';
 import 'package:flutter/material.dart';
 import 'package:latlong/latlong.dart';
+import 'package:deepblue/models/RegisterLocationModel.dart';
 
 
 class RegisterLocationScreen extends StatefulWidget{
@@ -18,29 +20,68 @@ class _RegisterLocationScreen extends State<RegisterLocationScreen>{
 
   Map<String, double> pushedLocation;
   _RegisterLocationScreen(this.pushedLocation);
+
+  
+
   bool hochdruckReiniger = false;
   bool schaumBuerste = false;
   bool schaumPistole = false;
   bool fliessendWasser = false;
   bool motorWaesche = false;
+  RegisterLocationModel registerModel = RegisterLocationModel(false, false, false, false, false);
 
   void toggleSwitch(bool e, String val){
-    setState((){
-          if(val=="hochdruckReiniger"){
-            if(e){
-              hochdruckReiniger=true;
-            }else{
-              hochdruckReiniger=false;
+    if (this.mounted){
+      setState((){
+            if(val=="hochdruckReiniger"){
+              if(e){
+                hochdruckReiniger=true;
+              }else{
+                hochdruckReiniger=false;
+              }
+
+              registerModel.setHochdruckReiniger(hochdruckReiniger);
+
+            }else if(val == "schaumBuerste"){
+              if(e){
+                schaumBuerste=true;
+              }else{
+                schaumBuerste=false;
+              }
+
+              registerModel.setSchaumBuerste(schaumBuerste);
+
+            }else if(val == "schaumPistole"){
+              if(e){
+                schaumPistole=true;
+              }else{
+                schaumPistole=false;
+              }
+
+              registerModel.setSchaumPistole(schaumPistole);
+
+            }else if(val == "fliessendWasser"){
+              if(e){
+                fliessendWasser=true;
+              }else{
+                fliessendWasser=false;
+              }
+
+              registerModel.setFliessendWasser(fliessendWasser);
+
+            }else if(val == "motorWaesche"){
+              if(e){
+                motorWaesche=true;
+              }else{
+                motorWaesche=false;
+              }
+
+              registerModel.setMotorWaesche(motorWaesche);
+
             }
-          }else if(val == "schaumBuerste"){
-            if(e){
-              schaumBuerste=true;
-            }else{
-              schaumBuerste=false;
-            }
-          }
-      
-    });
+        
+      });
+    }
   }
 
   /*void setBackgroundColorMenu(Color backgroundColor){
@@ -50,6 +91,7 @@ class _RegisterLocationScreen extends State<RegisterLocationScreen>{
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
+    //print(pushedLocation['latitude']);
     return Scaffold(
       backgroundColor: menuBackgroundColor,
       appBar: AppBar(
@@ -84,43 +126,52 @@ class _RegisterLocationScreen extends State<RegisterLocationScreen>{
             
             ),
 
+
             Container(
-                       decoration:  new BoxDecoration(
-                                      border: new Border(bottom: BorderSide(color: Colors.blueGrey)),
-                                    ),
-                      child:  Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 10.0),
+              decoration:  new BoxDecoration(
+                                border: new Border(bottom: BorderSide(color: Colors.indigo[800])),
+                           ),
+                           child:  Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 32.0,vertical: 10.0),
                                 child:    Row(
-                                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                    mainAxisSize: MainAxisSize.max,
-                                                    children: <Widget>[
-                                                                        Padding(
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            mainAxisSize: MainAxisSize.max,
+                                            children: <Widget>[
+                                                      Padding(
                                                         padding: const EdgeInsets.all(8.0),
-                                                        child: new Text("Hochdruckreinige vorhanden", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16.0, color: Colors.white),)    
+                                                        child: new Text("Hochdruckreiniger", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16.0, color: Colors.white),)    
                                                       ),
                                                       Padding(
-                                                        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical:0.0),
-                                                        child: Switch(
+                                                        padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical:0.0),
+                                                        child: Theme(
+                                                          data: ThemeData(
+                                                              disabledColor: Colors.white,
+                                                              unselectedWidgetColor: Colors.white,
+                                                          ),
+                                                          child: Checkbox(
+                                                              
                                                               value: hochdruckReiniger,
                                                               onChanged: (bool e) => toggleSwitch(e, 'hochdruckReiniger'),
-                                                              activeColor: Colors.white,
-                                                            ), 
+                                                              activeColor: Colors.blue[900],
+                                                            ),
+                                                        ),
+                                                        
                                                       ),
 
                                                     ],
-                                                  )    
-                              ),
+                                            )    
+                            ),
             ),  
 
 
 
             Container(
                        decoration:  new BoxDecoration(
-                                      border: new Border(bottom: BorderSide(color: Colors.blue[700])),
+                                      border: new Border(bottom: BorderSide(color: Colors.indigo[800])),
                                     ),
                       child:  Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 10.0),
+                                padding: const EdgeInsets.symmetric(horizontal: 32.0,vertical: 10.0),
                                 child:    Row(
                                                     crossAxisAlignment: CrossAxisAlignment.center,
                                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -128,15 +179,22 @@ class _RegisterLocationScreen extends State<RegisterLocationScreen>{
                                                     children: <Widget>[
                                                                         Padding(
                                                         padding: const EdgeInsets.all(8.0),
-                                                        child: new Text("Schaumbürste vorhanden", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16.0, color: Colors.white),)    
+                                                        child: new Text("Schaumbürste", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16.0, color: Colors.white),)    
                                                       ),
                                                       Padding(
-                                                        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical:0.0),
-                                                        child: Switch(
+                                                        padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical:0.0),
+                                                        child: Theme(
+                                                          data: ThemeData(
+                                                              disabledColor: Colors.white,
+                                                              unselectedWidgetColor: Colors.white,
+                                                          ),
+                                                          child: Checkbox(
+                                                              
                                                               value: schaumBuerste,
                                                               onChanged: (bool e) => toggleSwitch(e, 'schaumBuerste'),
-                                                              activeColor: Colors.white,
-                                                            ), 
+                                                              activeColor: Colors.blue[900],
+                                                            ),
+                                                        ),
                                                       ),
 
                                                     ],
@@ -146,10 +204,10 @@ class _RegisterLocationScreen extends State<RegisterLocationScreen>{
 
             Container(
                        decoration:  new BoxDecoration(
-                                      border: new Border(bottom: BorderSide(color: Colors.blue[700])),
+                                      border: new Border(bottom: BorderSide(color: Colors.indigo[800])),
                                     ),
                       child:  Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 10.0),
+                                padding: const EdgeInsets.symmetric(horizontal: 32.0,vertical: 10.0),
                                 child:    Row(
                                                     crossAxisAlignment: CrossAxisAlignment.center,
                                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -157,15 +215,22 @@ class _RegisterLocationScreen extends State<RegisterLocationScreen>{
                                                     children: <Widget>[
                                                                         Padding(
                                                         padding: const EdgeInsets.all(8.0),
-                                                        child: new Text("Schaumpistole vorhanden", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16.0, color: Colors.white),)    
+                                                        child: new Text("Schaumpistole", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16.0, color: Colors.white),)    
                                                       ),
                                                       Padding(
-                                                        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical:0.0),
-                                                        child: Switch(
+                                                        padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical:0.0),
+                                                        child: Theme(
+                                                          data: ThemeData(
+                                                              disabledColor: Colors.white,
+                                                              unselectedWidgetColor: Colors.white,
+                                                          ),
+                                                          child: Checkbox(
+                                                              
                                                               value: schaumPistole,
                                                               onChanged: (bool e) => toggleSwitch(e, 'schaumPistole'),
-                                                              activeColor: Colors.white,
-                                                            ), 
+                                                              activeColor: Colors.blue[900],
+                                                            ),
+                                                        ), 
                                                       ),
 
                                                     ],
@@ -175,10 +240,10 @@ class _RegisterLocationScreen extends State<RegisterLocationScreen>{
 
             Container(
                        decoration:  new BoxDecoration(
-                                      border: new Border(bottom: BorderSide(color: Colors.blue[700])),
+                                      border: new Border(bottom: BorderSide(color: Colors.indigo[800])),
                                     ),
                       child:  Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 10.0),
+                                padding: const EdgeInsets.symmetric(horizontal: 32.0,vertical: 10.0),
                                 child:    Row(
                                                     crossAxisAlignment: CrossAxisAlignment.center,
                                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -186,15 +251,22 @@ class _RegisterLocationScreen extends State<RegisterLocationScreen>{
                                                     children: <Widget>[
                                                                         Padding(
                                                         padding: const EdgeInsets.all(8.0),
-                                                        child: new Text("Fließend Wasser Vorhanden", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16.0, color: Colors.white),)    
+                                                        child: new Text("Fließend Wasser", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16.0, color: Colors.white),)    
                                                       ),
                                                       Padding(
-                                                        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical:0.0),
-                                                        child: Switch(
+                                                        padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical:0.0),
+                                                        child: Theme(
+                                                          data: ThemeData(
+                                                              disabledColor: Colors.white,
+                                                              unselectedWidgetColor: Colors.white,
+                                                          ),
+                                                          child: Checkbox(
+                                                              
                                                               value: fliessendWasser,
                                                               onChanged: (bool e) => toggleSwitch(e, 'fliessendWasser'),
-                                                              activeColor: Colors.white,
-                                                            ), 
+                                                              activeColor: Colors.blue[900],
+                                                            ),
+                                                        ),
                                                       ),
 
                                                     ],
@@ -203,8 +275,9 @@ class _RegisterLocationScreen extends State<RegisterLocationScreen>{
             ), 
 
             Container(
+          
                       child:  Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 10.0),
+                                padding: const EdgeInsets.symmetric(horizontal: 32.0,vertical: 10.0),
                                 child:    Row(
                                                     crossAxisAlignment: CrossAxisAlignment.center,
                                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -215,12 +288,21 @@ class _RegisterLocationScreen extends State<RegisterLocationScreen>{
                                                         child: new Text("Motorwäsche erlaubt", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16.0, color: Colors.white),)    
                                                       ),
                                                       Padding(
-                                                        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical:0.0),
-                                                        child: Switch(
+                                                        padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical:0.0),
+                                                        child: Theme(
+                                                          data: ThemeData(
+                                                              disabledColor: Colors.indigo,
+                                                              unselectedWidgetColor: Colors.white,
+                                                              
+                                                          ),
+                                                          child: Checkbox(
+                                                              
                                                               value: motorWaesche,
                                                               onChanged: (bool e) => toggleSwitch(e, 'motorWaesche'),
-                                                              activeColor: Colors.white,
-                                                            ), 
+                                                              activeColor: Colors.blue[900],
+                                                            
+                                                            ),
+                                                        ),
                                                       ),
 
                                                     ],
@@ -240,7 +322,7 @@ class _RegisterLocationScreen extends State<RegisterLocationScreen>{
                       onTap:(){
                         Navigator.push(
                           context, 
-                          MaterialPageRoute(),
+                          MaterialPageRoute(builder: (context) => SubmitNewLocationScreen(registerModel,pushedLocation)),
                         );
                       },
                       child: new Container(
