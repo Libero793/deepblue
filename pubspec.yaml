@@ -12,6 +12,7 @@ dependencies:
   cupertino_icons: ^0.1.2
   geolocator: '^2.0.1'
   url_launcher: ^4.0.0
+  flutter_rating: ^0.0.2
   geolocation:
     git: "https://github.com/driveddy/geolocation.git"
 
