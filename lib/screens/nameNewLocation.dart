@@ -1,33 +1,31 @@
 import 'dart:async';
+import 'package:deepblue/screens/registerLocationScreen.dart';
 import 'package:http/http.dart' as http;
-import 'package:deepblue/models/RegisterLocationModel.dart';
 import 'package:flutter/material.dart';
 import 'package:latlong/latlong.dart';
 import 'package:flutter_rating/flutter_rating.dart';
 
-class SubmitNewLocationScreen extends StatefulWidget{
+class NameNewLocationScreen extends StatefulWidget{
 
-  RegisterLocationModel registerModel;
    Map<String, double> pushedLocation;
-  SubmitNewLocationScreen(this.registerModel,this.pushedLocation);
+  NameNewLocationScreen(this.pushedLocation);
   @override
-  _SubmitNewLocationScreen createState() => _SubmitNewLocationScreen(registerModel,pushedLocation);
+  _NameNewLocationScreen createState() => _NameNewLocationScreen(pushedLocation);
 
 }
 
-class _SubmitNewLocationScreen extends State<SubmitNewLocationScreen>{
+class _NameNewLocationScreen extends State<NameNewLocationScreen>{
 
-  RegisterLocationModel registerModel;
   Map<String, double> pushedLocation;
-  _SubmitNewLocationScreen (this.registerModel, this.pushedLocation);
+  _NameNewLocationScreen (this.pushedLocation);
 
   Color menuBackgroundColor = Colors.blue[900];
   
   
   //_RegisterLocationScreen(this.pushedLocation);
-  Future httpReturn;
-  String test;
+  
   FocusNode _focus = new FocusNode();
+  final textFieldController = TextEditingController();
   
 
   @override
@@ -40,42 +38,17 @@ class _SubmitNewLocationScreen extends State<SubmitNewLocationScreen>{
     debugPrint("Focus: "+_focus.hasFocus.toString());
   }
 
-  void httpRequest()async {
-
-    var url = "http://www.nell.science/deepblue/index.php";
-
-    http.post(url, body: {"getWashingLocations":"true",
-                          "key": "0", 
-                          "latitude": pushedLocation['latitude'].toString(), 
-                          "longitude": pushedLocation['longitude'].toString(),
-                          "hochdruckReiniger": registerModel.getHochdruckReiniger().toString(), 
-                          "schaumBuerste": registerModel.getSchaumBuerste().toString(),
-                          "schaumPistole": registerModel.getSchaumPistole().toString(),
-                          "fliessendWasser": registerModel.getFliessendWasser().toString(),
-                          "motorWaesche": registerModel.getMotorWaesche().toString(),
-                          
-                          })
-        .then((response) {
-      print("Response status: ${response.statusCode}");   
-      print("Response body: ${response.body}");
-      print("httpreq");
-
-      setState((){
-              test = response.body.toString();
-          });
-
-    });
-    
+  @override
+  void dispose(){
+    textFieldController.dispose();
+    super.dispose();
   }
+
+ 
   
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    print("HochdruckReiniger ${registerModel.getHochdruckReiniger()}");
-    print("schaum Buerste ${registerModel.getSchaumBuerste()}");
-    print("schaum Pistole ${registerModel.getSchaumPistole()}");
-    print("fliessend Wasser ${registerModel.getFliessendWasser()}");
-    print("motor Waesche ${registerModel.getMotorWaesche()}");
     print("location: $pushedLocation");
     final theme = Theme.of(context);
 
@@ -128,6 +101,7 @@ class _SubmitNewLocationScreen extends State<SubmitNewLocationScreen>{
                         data: theme.copyWith(primaryColor: Colors.white,accentColor: Colors.white, hintColor: Colors.white),
                         child: new TextField(
                           focusNode: _focus,
+                          controller: textFieldController,
                           keyboardType: TextInputType.text,
                           style: TextStyle(fontWeight: FontWeight.normal, color: Colors.white, fontSize: 22.0, ),
                           decoration: new InputDecoration(
@@ -171,7 +145,10 @@ class _SubmitNewLocationScreen extends State<SubmitNewLocationScreen>{
                   new Expanded(
                     child: new GestureDetector(
                       onTap:(){
-                        httpRequest();
+                         Navigator.push(
+                          context, 
+                          MaterialPageRoute(builder: (context) => RegisterNewLocationScreen(pushedLocation,textFieldController.text)),
+                        );
                       },
                       child: new Container(
                         color: Colors.white,

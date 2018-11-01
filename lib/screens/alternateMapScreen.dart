@@ -1,3 +1,4 @@
+import 'package:deepblue/screens/nameNewLocation.dart';
 import 'package:deepblue/screens/registerLocationScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -207,7 +208,7 @@ class _AlternateMapScreenState extends State<AlternateMapScreen>{
                                                   padding: EdgeInsets.symmetric(vertical: 10.0,horizontal: 30.0),
                                                   onPressed: () {
                                                     // Perform some action
-                                                    Navigator.push(context,MaterialPageRoute(builder: (context) => RegisterLocationScreen(registerLocation)));
+                                                    Navigator.push(context,MaterialPageRoute(builder: (context) => NameNewLocationScreen(registerLocation)));
                                                   },
                                                 ),
                                               ]

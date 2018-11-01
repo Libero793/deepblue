@@ -1,27 +1,34 @@
-import 'package:deepblue/screens/submitNewLocation.dart';
+import 'dart:async';
+
+import 'package:deepblue/screens/confirmRegistrationScreen.dart';
+import 'package:deepblue/screens/nameNewLocation.dart';
 import 'package:flutter/material.dart';
 import 'package:latlong/latlong.dart';
 import 'package:deepblue/models/RegisterLocationModel.dart';
+import 'package:http/http.dart' as http;
 
 
-class RegisterLocationScreen extends StatefulWidget{
+class RegisterNewLocationScreen extends StatefulWidget{
 
   Map<String, double> _pushedLocation;
-  RegisterLocationScreen(this._pushedLocation);
+  String _locationName;
+  RegisterNewLocationScreen(this._pushedLocation,this._locationName);
 
   @override
-  _RegisterLocationScreen createState() => _RegisterLocationScreen(_pushedLocation);
+  _RegisterNewLocationScreen createState() => _RegisterNewLocationScreen(_pushedLocation,_locationName);
 
 }
 
-class _RegisterLocationScreen extends State<RegisterLocationScreen>{
+class _RegisterNewLocationScreen extends State<RegisterNewLocationScreen>{
 
   Color menuBackgroundColor = Colors.blue[900];
 
   Map<String, double> pushedLocation;
-  _RegisterLocationScreen(this.pushedLocation);
+  String locationName;
+  _RegisterNewLocationScreen(this.pushedLocation, this.locationName);
 
-  
+  Future httpReturn;
+  String test;
 
   bool hochdruckReiniger = false;
   bool schaumBuerste = false;
@@ -88,10 +95,45 @@ class _RegisterLocationScreen extends State<RegisterLocationScreen>{
     this.menuBackgroundColor = backgroundColor;
   }*/
   
+   void httpRequest()async {
+
+    var url = "http://www.nell.science/deepblue/index.php";
+
+    http.post(url, body: {"getWashingLocations":"true",
+                          "key": "0", 
+                          "latitude": pushedLocation['latitude'].toString(), 
+                          "longitude": pushedLocation['longitude'].toString(),
+                          "hochdruckReiniger": registerModel.getHochdruckReiniger().toString(), 
+                          "schaumBuerste": registerModel.getSchaumBuerste().toString(),
+                          "schaumPistole": registerModel.getSchaumPistole().toString(),
+                          "fliessendWasser": registerModel.getFliessendWasser().toString(),
+                          "motorWaesche": registerModel.getMotorWaesche().toString(),
+                          "nameWaschbox": locationName.toString(),
+                          
+                          })
+        .then((response) {
+      print("Response status: ${response.statusCode}");   
+      print("Response body: ${response.body}");
+      print("httpreq");
+
+      if(response.statusCode == 200){
+        Navigator.push(
+                          context, 
+                          MaterialPageRoute(builder: (context) => confirmRegistrationScreen()),
+                        );
+      }else{
+        print("location registration failed");
+      }
+
+    });
+    
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    //print(pushedLocation['latitude']);
+    print(pushedLocation);
+    print(locationName);
     return Scaffold(
       backgroundColor: menuBackgroundColor,
       appBar: AppBar(
@@ -320,10 +362,7 @@ class _RegisterLocationScreen extends State<RegisterLocationScreen>{
                   new Expanded(
                     child: new GestureDetector(
                       onTap:(){
-                        Navigator.push(
-                          context, 
-                          MaterialPageRoute(builder: (context) => SubmitNewLocationScreen(registerModel,pushedLocation)),
-                        );
+                       httpRequest();
                       },
                       child: new Container(
                         color: Colors.white,
