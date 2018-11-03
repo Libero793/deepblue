@@ -16,7 +16,7 @@ class confirmRegistrationScreen extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-
+  
     return Scaffold(
       backgroundColor: menuBackgroundColor,
       appBar: AppBar(
@@ -63,6 +63,7 @@ class confirmRegistrationScreen extends StatelessWidget{
                   new Expanded(
                     child: new GestureDetector(
                       onTap:(){
+                        Navigator.pop(context);
                          Navigator.push(
                           context, 
                           MaterialPageRoute(builder: (context) => LocatingScreen()),

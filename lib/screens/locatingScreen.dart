@@ -39,6 +39,7 @@ class LocatingScreen extends StatefulWidget{
           var positionMap = new Map<String,double>();
           positionMap["latitude"] = position.latitude;
           positionMap["longitude"] = position.longitude;
+      
 
           Navigator.pop(context);
           Navigator.push(context,MaterialPageRoute(builder: (context) => HomeScreen(positionMap)));
@@ -80,9 +81,11 @@ class LocatingScreen extends StatefulWidget{
       location = null;
     }
 
-    setState(() {
-        _startLocation = location;
-    });
+    if (this.mounted){
+      setState(() {
+          _startLocation = location;
+      });
+    }
 
   }
 
@@ -96,10 +99,12 @@ class LocatingScreen extends StatefulWidget{
 
     _locationSubscription =
         _location.onLocationChanged().listen((Map<String,double> result) {
-          setState(() {
-            _currentLocation = result;
-          });
-          print("currentloc$_currentLocation");
+            if (this.mounted){
+              setState(() {
+                _currentLocation = result;
+              });
+            }
+          //print("currentloc$_currentLocation");
         });
   }
 

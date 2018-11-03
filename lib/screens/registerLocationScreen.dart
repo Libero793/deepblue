@@ -1,9 +1,8 @@
 import 'dart:async';
-
+import 'package:flutter/services.dart';
+import 'package:flutter_udid/flutter_udid.dart';
 import 'package:deepblue/screens/confirmRegistrationScreen.dart';
-import 'package:deepblue/screens/nameNewLocation.dart';
 import 'package:flutter/material.dart';
-import 'package:latlong/latlong.dart';
 import 'package:deepblue/models/RegisterLocationModel.dart';
 import 'package:http/http.dart' as http;
 
@@ -36,6 +35,30 @@ class _RegisterNewLocationScreen extends State<RegisterNewLocationScreen>{
   bool fliessendWasser = false;
   bool motorWaesche = false;
   RegisterLocationModel registerModel = RegisterLocationModel(false, false, false, false, false);
+  String _udid;
+  
+
+
+   void initState() {
+    super.initState();
+    initPlatformState();
+  }
+
+  Future<void> initPlatformState() async {
+    String udid;
+    try {
+      udid = await FlutterUdid.consistentUdid;
+    } on PlatformException {
+      udid = 'Failed to get UDID.';
+    }
+
+    if (!mounted) return;
+
+    setState(() {
+      _udid = udid;
+    });
+  }
+
 
   void toggleSwitch(bool e, String val){
     if (this.mounted){
@@ -99,7 +122,7 @@ class _RegisterNewLocationScreen extends State<RegisterNewLocationScreen>{
 
     var url = "http://www.nell.science/deepblue/index.php";
 
-    http.post(url, body: {"getWashingLocations":"true",
+    http.post(url, body: {"registerNewWashingLocation":"true",
                           "key": "0", 
                           "latitude": pushedLocation['latitude'].toString(), 
                           "longitude": pushedLocation['longitude'].toString(),
@@ -109,6 +132,7 @@ class _RegisterNewLocationScreen extends State<RegisterNewLocationScreen>{
                           "fliessendWasser": registerModel.getFliessendWasser().toString(),
                           "motorWaesche": registerModel.getMotorWaesche().toString(),
                           "nameWaschbox": locationName.toString(),
+                          "udid": _udid.toString(),
                           
                           })
         .then((response) {
@@ -117,6 +141,7 @@ class _RegisterNewLocationScreen extends State<RegisterNewLocationScreen>{
       print("httpreq");
 
       if(response.statusCode == 200){
+        
         Navigator.push(
                           context, 
                           MaterialPageRoute(builder: (context) => confirmRegistrationScreen()),
@@ -134,6 +159,7 @@ class _RegisterNewLocationScreen extends State<RegisterNewLocationScreen>{
     // TODO: implement build
     print(pushedLocation);
     print(locationName);
+    print("uid: $_udid");
     return Scaffold(
       backgroundColor: menuBackgroundColor,
       appBar: AppBar(

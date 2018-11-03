@@ -7,18 +7,18 @@ import 'package:location/location.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:deepblue/screens/registerLocationScreen.dart';
+import 'package:geolocator/geolocator.dart' as gps;
 
 
 
 
 
 class HomeScreen extends StatefulWidget {
-
-  Map<String, double> _currentLocation;
-  HomeScreen(this._currentLocation);  
+  var positionMap = new Map<String,double>();
+  HomeScreen(this.positionMap);
 
   @override
-  _HomeScreenState createState() => new _HomeScreenState();
+  _HomeScreenState createState() => new _HomeScreenState(positionMap);
 }
 
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
@@ -45,31 +45,37 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
   Image image1;
   String test;
 
+  var positionMap = new Map<String,double>();
+  _HomeScreenState(this.positionMap);
+
 
   @override
   void initState() {
     super.initState();
 
     scrollController = new ScrollController();
-    httpRequest(widget._currentLocation);
+
+    httpRequest(positionMap);
     
   }
 
-
+ 
 
   void httpRequest(var location)async {
-    print("httploc ${widget._currentLocation}");
+    print("httploc ${location}");
 
     var url = "http://www.nell.science/deepblue/index.php";
 
-    http.post(url, body: {"getWashingLocations":"true","key": "0", "latitude": widget._currentLocation['latitude'].toString(), "longitude": widget._currentLocation['longitude'].toString()})
+    http.post(url, body: {"getWashingLocations":"true","key": "0", "latitude": location['latitude'].toString(), "longitude": location['longitude'].toString()})
         .then((response) {
       print("Response status: ${response.statusCode}");   
       print("Response body: ${response.body}");
 
-      setState((){
-              test = response.body.toString();
-          });
+      if (this.mounted){
+        setState((){
+                test = response.body.toString();
+            });
+      }
 
     });
     
@@ -97,7 +103,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
 
   @override
   Widget build(BuildContext context) {
-    print("location${widget._currentLocation}");
+    //print("location${widget._currentLocation}");
     
     setCardColors();
     return new Scaffold(
@@ -111,7 +117,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => AlternateMapScreen(widget._currentLocation)),
+              MaterialPageRoute(builder: (context) => AlternateMapScreen(positionMap)),
             );
           },
         ),
