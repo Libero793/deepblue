@@ -52,7 +52,7 @@ class LocatingScreen extends StatefulWidget{
     if(result.isSuccessful) {
       // location service is enabled, and location permission is granted
       print("gps enabled");
-      getPosition();
+      //getPosition();
     } else {
       // location service is not enabled, restricted, or location permission is denied
       print("gps disabled");
@@ -177,7 +177,7 @@ class LocatingScreen extends StatefulWidget{
                           ),
                           new Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 48.0),
-                            child: Text("Bitte überprüfe ob dein GPS eingeschaltet ist, damit wir dir Waschboxen in deiner Nähe anzeigen können.", 
+                            child: Text("Bitte überprüfe ob dein GPS auf den Modus eingeschaltet ist, damit wir dir Waschboxen in deiner Nähe anzeigen können.", 
                               style: TextStyle(fontSize: 14.0, color: Colors.white),
                             ),
                           ),

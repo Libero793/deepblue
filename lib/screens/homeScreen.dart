@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:deepblue/screens/alternateMapScreen.dart';
 import 'package:deepblue/screens/locatingScreen.dart';
 import 'package:flutter/material.dart';
@@ -39,11 +40,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
   ColorTween colorTween;
   CurvedAnimation curvedAnimation;
   Future httpReturn;
+  int nearLocationsCount = 0;
 
 
   bool currentWidget = true;
   Image image1;
-  String test;
+  String nearestLocationsJson;
+  bool httpRequestExecuted = false;
 
   var positionMap = new Map<String,double>();
   _HomeScreenState(this.positionMap);
@@ -53,9 +56,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
   void initState() {
     super.initState();
 
-    scrollController = new ScrollController();
-
-    httpRequest(positionMap);
+    scrollController = new ScrollController();    
     
   }
 
@@ -73,7 +74,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
 
       if (this.mounted){
         setState((){
-                test = response.body.toString();
+                nearestLocationsJson = "";
+                nearestLocationsJson = response.body.toString();
+                nearLocationsCount=json.decode(nearestLocationsJson).length;
             });
       }
 
@@ -104,6 +107,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
   @override
   Widget build(BuildContext context) {
     //print("location${widget._currentLocation}");
+    if(!httpRequestExecuted){
+      httpRequest(positionMap);
+      httpRequestExecuted=true;
+    }
     
     setCardColors();
     return new Scaffold(
@@ -182,8 +189,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
                       padding: const EdgeInsets.fromLTRB(0.0,16.0,0.0,12.0),
                       child: Text("Good News", style: TextStyle(fontSize: 30.0, color: Colors.white, fontWeight: FontWeight.w400),),
                     ),
-                    Text("We found "+"${cardsList.length}"+" Washing Stations next to your Location", style: TextStyle(color: Colors.white),),
-                    Text("http:$test", style: TextStyle(color: Colors.white)),
+                    Text("We found "+"${nearLocationsCount}"+" Washing Stations next to your Location", style: TextStyle(color: Colors.white),),
+                    Text("", style: TextStyle(color: Colors.white)),
                   ],
                 ),
               ),
