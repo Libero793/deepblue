@@ -208,7 +208,7 @@ class _AlternateMapScreenState extends State<AlternateMapScreen>{
                                                   padding: EdgeInsets.symmetric(vertical: 10.0,horizontal: 30.0),
                                                   onPressed: () {
                                                     // Perform some action
-                                                    Navigator.push(context,MaterialPageRoute(builder: (context) => NameNewLocationScreen(registerLocation)));
+                                                    Navigator.push(context,MaterialPageRoute(builder: (context) => NameNewLocationScreen(registerLocation,location)));
                                                   },
                                                 ),
                                               ]

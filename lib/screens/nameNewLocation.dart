@@ -8,16 +8,18 @@ import 'package:flutter_rating/flutter_rating.dart';
 class NameNewLocationScreen extends StatefulWidget{
 
    Map<String, double> pushedLocation;
-  NameNewLocationScreen(this.pushedLocation);
+   Map<String, double> currentLocation;
+  NameNewLocationScreen(this.pushedLocation, this.currentLocation);
   @override
-  _NameNewLocationScreen createState() => _NameNewLocationScreen(pushedLocation);
+  _NameNewLocationScreen createState() => _NameNewLocationScreen(pushedLocation, currentLocation);
 
 }
 
 class _NameNewLocationScreen extends State<NameNewLocationScreen>{
 
   Map<String, double> pushedLocation;
-  _NameNewLocationScreen (this.pushedLocation);
+  Map<String, double> currentLocation;
+  _NameNewLocationScreen (this.pushedLocation, this.currentLocation);
 
   Color menuBackgroundColor = Colors.blue[900];
   
@@ -147,7 +149,7 @@ class _NameNewLocationScreen extends State<NameNewLocationScreen>{
                       onTap:(){
                          Navigator.push(
                           context, 
-                          MaterialPageRoute(builder: (context) => RegisterNewLocationScreen(pushedLocation,textFieldController.text)),
+                          MaterialPageRoute(builder: (context) => RegisterNewLocationScreen(pushedLocation,currentLocation,textFieldController.text)),
                         );
                       },
                       child: new Container(

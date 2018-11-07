@@ -9,12 +9,13 @@ import 'package:http/http.dart' as http;
 
 class RegisterNewLocationScreen extends StatefulWidget{
 
-  Map<String, double> _pushedLocation;
-  String _locationName;
-  RegisterNewLocationScreen(this._pushedLocation,this._locationName);
+  Map<String, double> pushedLocation;
+  Map<String, double> currentLocation;
+  String locationName;
+  RegisterNewLocationScreen(this.pushedLocation,this.currentLocation,this.locationName);
 
   @override
-  _RegisterNewLocationScreen createState() => _RegisterNewLocationScreen(_pushedLocation,_locationName);
+  _RegisterNewLocationScreen createState() => _RegisterNewLocationScreen(pushedLocation,currentLocation,locationName);
 
 }
 
@@ -23,8 +24,9 @@ class _RegisterNewLocationScreen extends State<RegisterNewLocationScreen>{
   Color menuBackgroundColor = Colors.blue[900];
 
   Map<String, double> pushedLocation;
+  Map<String, double> currentLocation;
   String locationName;
-  _RegisterNewLocationScreen(this.pushedLocation, this.locationName);
+  _RegisterNewLocationScreen(this.pushedLocation,this.currentLocation,this.locationName);
 
   Future httpReturn;
   String test;
@@ -141,10 +143,10 @@ class _RegisterNewLocationScreen extends State<RegisterNewLocationScreen>{
       print("httpreq");
 
       if(response.statusCode == 200){
-        
+        Navigator.pop(context);
         Navigator.push(
                           context, 
-                          MaterialPageRoute(builder: (context) => confirmRegistrationScreen()),
+                          MaterialPageRoute(builder: (context) => confirmRegistrationScreen(currentLocation)),
                         );
       }else{
         print("location registration failed");

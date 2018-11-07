@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:deepblue/screens/alternateMapScreen.dart';
 import 'package:deepblue/screens/homeScreen.dart';
 import 'package:deepblue/screens/locatingScreen.dart';
 import 'package:deepblue/screens/nameNewLocation.dart';
@@ -12,6 +13,9 @@ import 'package:http/http.dart' as http;
 class confirmRegistrationScreen extends StatelessWidget{
 
   Color menuBackgroundColor = Colors.blue[900];  
+  Map <String, double> currentLocation;
+
+  confirmRegistrationScreen(this.currentLocation);
    
   @override
   Widget build(BuildContext context) {
@@ -66,7 +70,7 @@ class confirmRegistrationScreen extends StatelessWidget{
                         Navigator.pop(context);
                          Navigator.push(
                           context, 
-                          MaterialPageRoute(builder: (context) => LocatingScreen()),
+                          MaterialPageRoute(builder: (context) => HomeScreen(currentLocation)),
                         );
                       },
                       child: new Container(
