@@ -85,7 +85,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
                 for(int i=0;i<nearestLocation.length;i++){
                   print("test${nearestLocation[i]["id"]}");
                   var distanceIndicator=(nearestLocation[i]["distanceValue"]/biggestDistance);
-                  cardsList.add(CardItemModel(nearestLocation[i]["name"], Icons.local_car_wash, nearestLocation[i]["distanceValue"], distanceIndicator));
+                  cardsList.add(CardItemModel(nearestLocation[i]["name"], Icons.local_car_wash, nearestLocation[i]["distanceText"], distanceIndicator));
                 }
             });
       }
@@ -227,7 +227,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
                                       children: <Widget>[
                                         Padding(
                                           padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-                                          child: Text("${cardsList[position].distance}"+"m", style: TextStyle(color: Colors.grey),),
+                                          child: Text("${cardsList[position].distance}", style: TextStyle(color: Colors.grey),),
                                         ),
                                         Padding(
                                           padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
@@ -250,12 +250,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
                         ),
                         onHorizontalDragEnd: (details) {
                           
-
+                          
                           animationController = AnimationController(vsync: this, duration: Duration(milliseconds: 200));
                           curvedAnimation = CurvedAnimation(parent: animationController, curve: Curves.fastOutSlowIn);
                           animationController.addListener(() {
                             setState(() {
-                              currentColor = colorTween.evaluate(curvedAnimation);
+                              //currentColor = colorTween.evaluate(curvedAnimation);
                             });
                           });
 
@@ -273,7 +273,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
                             scrollController.animateTo((cardIndex)*256.0, duration: Duration(milliseconds: 200), curve: Curves.fastOutSlowIn);
                           });
 
-                          colorTween.animate(curvedAnimation);
+                          //colorTween.animate(curvedAnimation);
                           
                           animationController.forward( );
 
