@@ -1,3 +1,4 @@
+import 'package:deepblue/screens/homeScreen.dart';
 import 'package:deepblue/screens/nameNewLocation.dart';
 import 'package:deepblue/screens/registerLocationScreen.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,18 +11,18 @@ import 'package:url_launcher/url_launcher.dart';
 
 class AlternateMapScreen extends StatefulWidget {
   @override
-  Map<String, double> location;
-  AlternateMapScreen(this.location);
+  Map<String, double> currentLocation;
+  AlternateMapScreen(this.currentLocation);
 
-  _AlternateMapScreenState createState() => new _AlternateMapScreenState(location);
+  _AlternateMapScreenState createState() => new _AlternateMapScreenState(currentLocation);
   
   
 }
 
 class _AlternateMapScreenState extends State<AlternateMapScreen>{
 
-  Map<String, double> location;
-  _AlternateMapScreenState(this.location);
+  Map<String, double> currentLocation;
+  _AlternateMapScreenState(this.currentLocation);
   Map<String, double> registerLocation;
   
 
@@ -90,7 +91,7 @@ class _AlternateMapScreenState extends State<AlternateMapScreen>{
 
 
       
-      LatLng handler = new LatLng(location['latitude'], location['longitude']);
+      LatLng handler = new LatLng(currentLocation['latitude'], currentLocation['longitude']);
 
       addLocation(handler);
       print("addmode: on");
@@ -135,7 +136,11 @@ class _AlternateMapScreenState extends State<AlternateMapScreen>{
                 new FlatButton(
                   child: new Text("Close"),
                   onPressed: () {
-                    Navigator.of(context).pop();
+                    Navigator.pop(context);
+                         Navigator.push(
+                          context, 
+                          MaterialPageRoute(builder: (context) => HomeScreen(currentLocation)),
+                        );
                   },
                 ),
               ],
@@ -208,7 +213,7 @@ class _AlternateMapScreenState extends State<AlternateMapScreen>{
                                                   padding: EdgeInsets.symmetric(vertical: 10.0,horizontal: 30.0),
                                                   onPressed: () {
                                                     // Perform some action
-                                                    Navigator.push(context,MaterialPageRoute(builder: (context) => NameNewLocationScreen(registerLocation,location)));
+                                                    Navigator.push(context,MaterialPageRoute(builder: (context) => NameNewLocationScreen(registerLocation,currentLocation)));
                                                   },
                                                 ),
                                               ]
@@ -235,8 +240,8 @@ class _AlternateMapScreenState extends State<AlternateMapScreen>{
   
   @override
   Widget build(BuildContext context) {
-    registerLocation=location;
-    print("map register location$location");
+    registerLocation=currentLocation;
+    print("map register location$currentLocation");
    
 
     markers = tappedPoints.map((latlng) {
@@ -291,7 +296,7 @@ class _AlternateMapScreenState extends State<AlternateMapScreen>{
 
         body: new FlutterMap(
           options: new MapOptions(
-            center: new LatLng(location["latitude"], location["longitude"]),
+            center: new LatLng(currentLocation["latitude"], currentLocation["longitude"]),
             zoom: 13.0,
             onTap: _handleTap,
           ),

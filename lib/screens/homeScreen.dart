@@ -28,11 +28,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
   var cardIndex = 0;
   ScrollController scrollController;
   var currentColor = Colors.blue[900];
-  var cardsList = [CardItemModel("Waschbär", Icons.local_car_wash,300, 0.83),
+  var cardsList = [/*CardItemModel("Waschbär", Icons.local_car_wash,300, 0.83),
                    CardItemModel("Aral", Icons.local_gas_station,500, 0.24),
                    CardItemModel("Waschbox", Icons.local_car_wash,600, 0.24),
                    CardItemModel("Waschbox", Icons.local_car_wash,700, 0.24),
-                   CardItemModel("Total", Icons.local_gas_station,3000, 0.32)];
+                   CardItemModel("Waschbox", Icons.local_car_wash,700, 0.24),
+                   CardItemModel("Total", Icons.local_gas_station,3000, 0.32)*/];
                   
   var cardColors = [];
 
@@ -76,7 +77,16 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
         setState((){
                 nearestLocationsJson = "";
                 nearestLocationsJson = response.body.toString();
+                var nearestLocation=json.decode(nearestLocationsJson);
                 nearLocationsCount=json.decode(nearestLocationsJson).length;
+                
+                var biggestDistance=nearestLocation[nearLocationsCount-1]["distanceValue"];
+                print("biggestDistance$biggestDistance");
+                for(int i=0;i<nearestLocation.length;i++){
+                  print("test${nearestLocation[i]["id"]}");
+                  var distanceIndicator=(nearestLocation[i]["distanceValue"]/biggestDistance);
+                  cardsList.add(CardItemModel(nearestLocation[i]["name"], Icons.local_car_wash, nearestLocation[i]["distanceValue"], distanceIndicator));
+                }
             });
       }
 
@@ -84,23 +94,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
     
   }
 
-  void setCardColors() {
-    print("list${cardsList.length}");
-    for( var i=0; i < cardsList.length; i++){
-      if(cardsList[i].distance <= 500){
-        cardColors.add(Colors.blue[900]);
-      }
-      if(cardsList[i].distance <= 1000 && cardsList[i].distance >500){
-        cardColors.add(Colors.green[700]);
-      }
-      if(cardsList[i].distance > 1001){
-        cardColors.add(Colors.red[500]);
-      }
-
-      print("i$i");
-    }
-    
-  }
+ 
 
 
 
@@ -112,7 +106,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
       httpRequestExecuted=true;
     }
     
-    setCardColors();
     return new Scaffold(
       backgroundColor: currentColor,
       appBar: new AppBar(
@@ -222,7 +215,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: <Widget>[
-                                        Icon(cardsList[position].icon, color: cardColors[position],),
+                                        Icon(cardsList[position].icon, color: Colors.blue[900],),
                                         Icon(Icons.more_vert, color: Colors.grey,),
                                       ],
                                     ),
@@ -258,7 +251,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
                         onHorizontalDragEnd: (details) {
                           
 
-                          animationController = AnimationController(vsync: this, duration: Duration(milliseconds: 500));
+                          animationController = AnimationController(vsync: this, duration: Duration(milliseconds: 200));
                           curvedAnimation = CurvedAnimation(parent: animationController, curve: Curves.fastOutSlowIn);
                           animationController.addListener(() {
                             setState(() {
@@ -266,24 +259,22 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
                             });
                           });
 
+                          
                           if(details.velocity.pixelsPerSecond.dx > 0) {
                             if(cardIndex>0) {
                               cardIndex--;
-                              colorTween = ColorTween(begin:currentColor,end:cardColors[cardIndex]);
                             }
                           }else {
                             if(cardIndex<(cardsList.length-1)) {
                               cardIndex++;
-                              colorTween = ColorTween(begin: currentColor,
-                                  end: cardColors[cardIndex]);
                             }
                           }
                           setState(() {
-                            scrollController.animateTo((cardIndex)*256.0, duration: Duration(milliseconds: 500), curve: Curves.fastOutSlowIn);
+                            scrollController.animateTo((cardIndex)*256.0, duration: Duration(milliseconds: 200), curve: Curves.fastOutSlowIn);
                           });
 
                           colorTween.animate(curvedAnimation);
-
+                          
                           animationController.forward( );
 
                         },
