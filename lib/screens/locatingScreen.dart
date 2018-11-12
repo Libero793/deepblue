@@ -27,6 +27,8 @@ class LocatingScreen extends StatefulWidget{
   bool currentWidget = true;
   Timer gpsTimer;
 
+  bool pushedToHomeScreen=false;
+
 
 
   getPosition() async {
@@ -40,9 +42,12 @@ class LocatingScreen extends StatefulWidget{
           positionMap["latitude"] = position.latitude;
           positionMap["longitude"] = position.longitude;
       
-
-          Navigator.pop(context);
-          Navigator.push(context,MaterialPageRoute(builder: (context) => HomeScreen(positionMap)));
+          if(!pushedToHomeScreen){
+            Navigator.pop(context);
+            Navigator.push(context,MaterialPageRoute(builder: (context) => HomeScreen(positionMap)));
+            pushedToHomeScreen=true;
+          }
+          
     
   }
 

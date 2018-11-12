@@ -16,6 +16,7 @@ import 'package:geolocator/geolocator.dart' as gps;
 
 class HomeScreen extends StatefulWidget {
   var positionMap = new Map<String,double>();
+  
   HomeScreen(this.positionMap);
 
   @override
@@ -43,6 +44,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
   Future httpReturn;
   int nearLocationsCount = 0;
 
+  bool washboxesLoaded=false;
 
   bool currentWidget = true;
   Image image1;
@@ -51,6 +53,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
 
   var positionMap = new Map<String,double>();
   _HomeScreenState(this.positionMap);
+
+  Timer _reloadTimer;
 
 
   @override
@@ -61,6 +65,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
     
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    _reloadTimer.cancel();
+  }
+
  
 
   void httpRequest(var location)async {
@@ -68,26 +78,40 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
 
     var url = "http://www.nell.science/deepblue/index.php";
 
-    http.post(url, body: {"getWashingLocations":"true","key": "0", "latitude": location['latitude'].toString(), "longitude": location['longitude'].toString()})
+    http.post(url, body: {"getWashboxesHomescreen":"true","key": "0", "latitude": location['latitude'].toString(), "longitude": location['longitude'].toString(), "limit":"2"})
         .then((response) {
       print("Response status: ${response.statusCode}");   
       print("Response body: ${response.body}");
 
       if (this.mounted){
-        setState((){
-                nearestLocationsJson = "";
-                nearestLocationsJson = response.body.toString();
-                var nearestLocation=json.decode(nearestLocationsJson);
-                nearLocationsCount=json.decode(nearestLocationsJson).length;
-                
-                var biggestDistance=nearestLocation[nearLocationsCount-1]["distanceValue"];
-                print("biggestDistance$biggestDistance");
-                for(int i=0;i<nearestLocation.length;i++){
-                  print("test${nearestLocation[i]["id"]}");
-                  var distanceIndicator=(nearestLocation[i]["distanceValue"]/biggestDistance);
-                  cardsList.add(CardItemModel(nearestLocation[i]["name"], Icons.local_car_wash, nearestLocation[i]["distanceText"], distanceIndicator));
-                }
-            });
+        if(response.body != "null"){
+
+          var nearestLocation;
+          var nearestLocationsJson = "";
+          var distanceIndicator;
+          var biggestDistance;
+
+          nearestLocationsJson = response.body.toString();
+          nearestLocation=json.decode(nearestLocationsJson);
+          nearLocationsCount=json.decode(nearestLocationsJson).length;
+          biggestDistance=nearestLocation[nearLocationsCount-1]["distanceValue"];
+
+          print("biggestDistance$biggestDistance");
+
+          setState((){
+                  for(int i=0;i<nearestLocation.length;i++){
+                    distanceIndicator=(nearestLocation[i]["distanceValue"]/biggestDistance);
+                    cardsList.add(CardItemModel(nearestLocation[i]["name"], Icons.local_car_wash, nearestLocation[i]["distanceText"], distanceIndicator));
+                  }
+                  washboxesLoaded=true;
+              });
+        }else{
+          print("reload 3000ms");
+          _reloadTimer = new Timer(const Duration(milliseconds: 3000), () {
+            httpRequest(location);
+          });  
+        }
+       
       }
 
     });
@@ -190,96 +214,112 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
+              children: <Widget>[ 
+                Offstage(
+                  offstage: washboxesLoaded,
+                  child: new Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        child: new CircularProgressIndicator(backgroundColor: Colors.white,valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),),
+                        height: 68.0,
+                        width: 68.0)                    
+                    ],
+                  ),
+                ),
                 
-                Container(
-                  height: 350.0,
-                  child: ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: cardsList.length,
-                    controller: scrollController,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, position) {
-                      return GestureDetector(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Card(
-                            child: Container(
-                              width: 250.0,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Icon(cardsList[position].icon, color: Colors.blue[900],),
-                                        Icon(Icons.more_vert, color: Colors.grey,),
-                                      ],
+                Offstage(
+                  offstage: (!washboxesLoaded),
+                  child: Container(
+                    height: 350.0,
+                    child: ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: cardsList.length,
+                      controller: scrollController,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, position) {
+                        return GestureDetector(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Card(
+                              child: Container(
+                                width: 250.0,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: <Widget>[
+                                          Icon(cardsList[position].icon, color: Colors.blue[900],),
+                                          Icon(Icons.more_vert, color: Colors.grey,),
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-                                          child: Text("${cardsList[position].distance}", style: TextStyle(color: Colors.grey),),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-                                          child: Text("${cardsList[position].cardTitle}", style: TextStyle(fontSize: 28.0),),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: LinearProgressIndicator(value: cardsList[position].taskCompletion,),
-                                        ),
-                                      ],
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                                            child: Text("${cardsList[position].distance}", style: TextStyle(color: Colors.grey),),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                                            child: Text("${cardsList[position].cardTitle}", style: TextStyle(fontSize: 28.0),),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: LinearProgressIndicator(value: cardsList[position].taskCompletion,),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0)
                               ),
                             ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0)
-                            ),
                           ),
-                        ),
-                        onHorizontalDragEnd: (details) {
-                          
-                          
-                          animationController = AnimationController(vsync: this, duration: Duration(milliseconds: 200));
-                          curvedAnimation = CurvedAnimation(parent: animationController, curve: Curves.fastOutSlowIn);
-                          animationController.addListener(() {
-                            setState(() {
-                              //currentColor = colorTween.evaluate(curvedAnimation);
+                          onHorizontalDragEnd: (details) {
+                            
+                            
+                            animationController = AnimationController(vsync: this, duration: Duration(milliseconds: 200));
+                            curvedAnimation = CurvedAnimation(parent: animationController, curve: Curves.fastOutSlowIn);
+                            animationController.addListener(() {
+                              setState(() {
+                                //currentColor = colorTween.evaluate(curvedAnimation);
+                              });
                             });
-                          });
 
-                          
-                          if(details.velocity.pixelsPerSecond.dx > 0) {
-                            if(cardIndex>0) {
-                              cardIndex--;
+                            
+                            if(details.velocity.pixelsPerSecond.dx > 0) {
+                              if(cardIndex>0) {
+                                cardIndex--;
+                              }
+                            }else {
+                              if(cardIndex<(cardsList.length-1)) {
+                                cardIndex++;
+                              }
                             }
-                          }else {
-                            if(cardIndex<(cardsList.length-1)) {
-                              cardIndex++;
-                            }
-                          }
-                          setState(() {
-                            scrollController.animateTo((cardIndex)*256.0, duration: Duration(milliseconds: 200), curve: Curves.fastOutSlowIn);
-                          });
+                            setState(() {
+                              scrollController.animateTo((cardIndex)*256.0, duration: Duration(milliseconds: 200), curve: Curves.fastOutSlowIn);
+                            });
 
-                          //colorTween.animate(curvedAnimation);
-                          
-                          animationController.forward( );
+                            //colorTween.animate(curvedAnimation);
+                            
+                            animationController.forward( );
 
-                        },
-                      );
-                    },
+                          },
+                        );
+                      },
+                    ),
                   ),
                 ),
               ],

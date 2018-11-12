@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:deepblue/screens/homeScreen.dart';
 import 'package:deepblue/screens/nameNewLocation.dart';
 import 'package:deepblue/screens/registerLocationScreen.dart';
@@ -7,6 +9,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
 import 'package:location/location.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:http/http.dart' as http;
 
 
 class AlternateMapScreen extends StatefulWidget {
@@ -23,18 +26,22 @@ class _AlternateMapScreenState extends State<AlternateMapScreen>{
 
   Map<String, double> currentLocation;
   _AlternateMapScreenState(this.currentLocation);
-  Map<String, double> registerLocation;
-  
 
-  List<LatLng> tappedPoints = [];
-  var markers;
   bool addMode = false;
   bool addModeTapped = false;
+  String headlineText = "Kartenübersicht";
+  double containerFloatingActionButtonHeight = 80.0;
+  var markers;
+
+  Timer _reloadTimer;
   IconData actionButton = Icons.add;
   Color actionButtonColor = Colors.blue[900];
   Color actionButtonIconColor = Colors.white;
-  String headlineText = "Kartenübersicht";
-  double containerFloatingActionButtonHeight = 80.0;
+
+  Map<String, double> registerLocation;
+  List<LatLng> tappedPoints = [];
+  
+
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new 
         GlobalKey<ScaffoldState>();
@@ -42,9 +49,58 @@ class _AlternateMapScreenState extends State<AlternateMapScreen>{
     PersistentBottomSheetController controller;
 
   
+  void initState(){
+    requestWashboxMap(currentLocation);
+  }
+
+  void requestWashboxMap(var location)async {
+    print("httploc ${location}");
+
+    var url = "http://www.nell.science/deepblue/index.php";
+
+    http.post(url, body: {"getWashboxMap":"true","key": "0", "latitude": location['latitude'].toString(), "longitude": location['longitude'].toString()})
+        .then((response) {
+      print("Response status: ${response.statusCode}");   
+      print("Response body: ${response.body}");
+
+      if (this.mounted){
+        if(response.body != "null"){
+
+          var nearestLocation;
+          var nearestLocationsJson = "";
+          var distanceIndicator;
+          var biggestDistance;
+
+          /*
+          nearestLocationsJson = response.body.toString();
+          nearestLocation=json.decode(nearestLocationsJson);
+          nearLocationsCount=json.decode(nearestLocationsJson).length;
+          biggestDistance=nearestLocation[nearLocationsCount-1]["distanceValue"];
+
+          print("biggestDistance$biggestDistance");
+
+          setState((){
+                  for(int i=0;i<nearestLocation.length;i++){
+                    distanceIndicator=(nearestLocation[i]["distanceValue"]/biggestDistance);
+                    cardsList.add(CardItemModel(nearestLocation[i]["name"], Icons.local_car_wash, nearestLocation[i]["distanceText"], distanceIndicator));
+                  }
+                  washboxesLoaded=true;
+              });
+            */
+        }else{
+          _reloadTimer = new Timer(const Duration(milliseconds: 3000), () {
+            requestWashboxMap(location);
+          });  
+        }
+       
+      }
+
+    });
+    
+  }
+
 
   _launchMaps(lat,lng) async {
-
 
     print("launchMaps");
     var map_api="AIzaSyCaFbeUE3tEoZyMf1KiF5RWnVSuvX2FId8";
@@ -87,9 +143,6 @@ class _AlternateMapScreenState extends State<AlternateMapScreen>{
               headlineText="Station hinzufügen";
               containerFloatingActionButtonHeight = 0.0;
             });}
-
-
-
       
       LatLng handler = new LatLng(currentLocation['latitude'], currentLocation['longitude']);
 
@@ -150,11 +203,7 @@ class _AlternateMapScreenState extends State<AlternateMapScreen>{
   }
 
 
-   void showHint(action){
-
-
-      
-       
+  void showHint(action){
         ScaffoldState state = _scaffoldKey.currentState;
         
         if(action == "show"){
@@ -225,16 +274,9 @@ class _AlternateMapScreenState extends State<AlternateMapScreen>{
                                       ) 
                           );                         
           },);
-          
-
         }else if(action == "hide"){
           controller.close();
         }
-
-        
-        
-
-     
    } 
 
   
