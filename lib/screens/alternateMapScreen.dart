@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:deepblue/screens/homeScreen.dart';
 import 'package:deepblue/screens/nameNewLocation.dart';
@@ -31,7 +32,7 @@ class _AlternateMapScreenState extends State<AlternateMapScreen>{
   bool addModeTapped = false;
   String headlineText = "Kartenübersicht";
   double containerFloatingActionButtonHeight = 80.0;
-  var markers;
+  var markers = <Marker>[];
 
   Timer _reloadTimer;
   IconData actionButton = Icons.add;
@@ -40,6 +41,8 @@ class _AlternateMapScreenState extends State<AlternateMapScreen>{
 
   Map<String, double> registerLocation;
   List<LatLng> tappedPoints = [];
+
+  var washboxMap = null;
   
 
 
@@ -65,21 +68,9 @@ class _AlternateMapScreenState extends State<AlternateMapScreen>{
 
       if (this.mounted){
         if(response.body != "null"){
-
-          var nearestLocation;
-          var nearestLocationsJson = "";
-          var distanceIndicator;
-          var biggestDistance;
-
+          washboxMap=json.decode(response.body.toString());
+          printWashboxesOnMap(washboxMap);
           /*
-          nearestLocationsJson = response.body.toString();
-          nearestLocation=json.decode(nearestLocationsJson);
-          nearLocationsCount=json.decode(nearestLocationsJson).length;
-          biggestDistance=nearestLocation[nearLocationsCount-1]["distanceValue"];
-
-          print("biggestDistance$biggestDistance");
-
-          setState((){
                   for(int i=0;i<nearestLocation.length;i++){
                     distanceIndicator=(nearestLocation[i]["distanceValue"]/biggestDistance);
                     cardsList.add(CardItemModel(nearestLocation[i]["name"], Icons.local_car_wash, nearestLocation[i]["distanceText"], distanceIndicator));
@@ -96,6 +87,53 @@ class _AlternateMapScreenState extends State<AlternateMapScreen>{
       }
 
     });
+    
+  }
+
+  void printWashboxesOnMap(var washboxMap){
+    //print("${washboxMap[1]["latitude"]}");
+    
+    if(this.mounted){
+      setState(() {
+        for(int i=0;i<washboxMap.length;i++){
+          print("$i");
+          LatLng washbox = new LatLng(double.parse(washboxMap[i]["latitude"]),double.parse(washboxMap[i]["longitude"]));
+          markers.add(
+                new Marker(
+                      width: 60.0,
+                      height: 90.0,
+                      point: washbox,
+                      builder: (ctx) =>
+                      new Container(
+                          child: new GestureDetector(
+                            onTap: (){
+                                //_launchMaps("51.3703207","12.3652444");
+                                _showDialog(context);
+                            },
+                            child: new Stack(
+                            alignment: Alignment.topCenter,
+                            overflow: Overflow.visible,
+                            children: [
+                                      new Positioned(
+                                        top: 0.0,
+                                        width: 60.0,
+                                        height: 60.0,
+                                            
+                                            child: new Image.asset(
+                                                'assets/images/locationWashbox.png',
+                                                fit: BoxFit.cover,    
+                                                ),
+                                          ),                                                          
+                                      ]
+                            ),
+                          )
+                        ),
+                      
+                    )
+          );
+        }
+      });
+    }
     
   }
 
@@ -122,31 +160,32 @@ class _AlternateMapScreenState extends State<AlternateMapScreen>{
       if(addModeTapped){
         print("remove");
               setState(() {
-                  tappedPoints.removeAt(tappedPoints.length-1);
+                  markers.removeAt(markers.length-1);
                   addModeTapped=false;
               });
       }
       if (this.mounted){
-      setState(() {
-              actionButtonIconColor=Colors.white;
-              headlineText="Kartenübersicht";
-              containerFloatingActionButtonHeight = 80.0;
-      });}
+        setState(() {
+                actionButtonIconColor=Colors.white;
+                headlineText="Kartenübersicht";
+                containerFloatingActionButtonHeight = 80.0;
+        });
+      }
 
       print("addmode: off");
     }else{
       addMode=true;
       showHint("show");
       if (this.mounted){
-      setState(() {
-              actionButtonIconColor=Colors.transparent;
-              headlineText="Station hinzufügen";
-              containerFloatingActionButtonHeight = 0.0;
-            });}
+        setState(() {
+                actionButtonIconColor=Colors.transparent;
+                headlineText="Waschbox hinzufügen";
+                containerFloatingActionButtonHeight = 0.0;
+              });
+      }
       
       LatLng handler = new LatLng(currentLocation['latitude'], currentLocation['longitude']);
-
-      addLocation(handler);
+      addLocation(handler); //initial cal for drawing thecurrent position cross
       print("addmode: on");
     }
   }
@@ -159,11 +198,36 @@ class _AlternateMapScreenState extends State<AlternateMapScreen>{
         if(addMode){
           if(addModeTapped){
             print("remove");
-            tappedPoints.removeAt(tappedPoints.length-1);
+            markers.removeAt(markers.length-1);
 
           }
 
-          tappedPoints.add(latlng);
+          markers.add(
+            new Marker(
+              width: 60.0,
+              height: 60.0,
+              point: latlng,
+              builder: (ctx) =>
+                  new GestureDetector(
+                    onTap: (){
+                           
+                    },
+                    child: new Container(
+                      decoration: new BoxDecoration(
+                        borderRadius: new BorderRadius.circular(0.0),
+                        color: Colors.transparent,
+                      ),
+                      child: Column(
+                        children: <Widget>[
+                          Icon(Icons.my_location,color: Colors.blue[900],size: 60.0,),
+                        ]
+                      )
+                      
+                    ),
+                  ),
+            ),
+          );
+          
 
            //     if (this.mounted){
          // setState(() {
@@ -284,36 +348,7 @@ class _AlternateMapScreenState extends State<AlternateMapScreen>{
   Widget build(BuildContext context) {
     registerLocation=currentLocation;
     print("map register location$currentLocation");
-   
-
-    markers = tappedPoints.map((latlng) {
-            return new Marker(
-              width: 60.0,
-              height: 60.0,
-              point: latlng,
-              builder: (ctx) =>
-                  new GestureDetector(
-                    onTap: (){
-                           
-                    },
-                    child: new Container(
-                      decoration: new BoxDecoration(
-                        borderRadius: new BorderRadius.circular(0.0),
-                        color: Colors.transparent,
-                      ),
-                      child: Column(
-                        children: <Widget>[
-                          Icon(Icons.my_location,color: Colors.blue[900],size: 60.0,),
-                        ]
-                      )
-                      
-                    ),
-                  ),
-            );
-          }).toList();
-
-
-
+  
     _handleTap(LatLng latlng){
       setState(() {
         addLocation(latlng);
@@ -353,6 +388,7 @@ class _AlternateMapScreenState extends State<AlternateMapScreen>{
             ),
             new MarkerLayerOptions(markers: markers),
             
+            /*
             MarkerLayerOptions(
               markers: [
                 new Marker(
@@ -384,10 +420,9 @@ class _AlternateMapScreenState extends State<AlternateMapScreen>{
                         ),
                       )
                     ),
-                  
                 ),
               ],
-            ),
+            ),*/
             
           ],
         ),

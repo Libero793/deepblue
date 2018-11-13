@@ -78,7 +78,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
 
     var url = "http://www.nell.science/deepblue/index.php";
 
-    http.post(url, body: {"getWashboxesHomescreen":"true","key": "0", "latitude": location['latitude'].toString(), "longitude": location['longitude'].toString(), "limit":"2"})
+    http.post(url, body: {"getWashboxesHomescreen":"true","key": "0", "latitude": location['latitude'].toString(), "longitude": location['longitude'].toString(), "limit":"3"})
         .then((response) {
       print("Response status: ${response.statusCode}");   
       print("Response body: ${response.body}");
@@ -149,13 +149,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
           Padding(
             padding: const EdgeInsets.only(right: 16.0),
             child: new IconButton(
-              icon: new Icon(Icons.add_box),
+              icon: new Icon(Icons.refresh),
               onPressed: () {
-                /*
+                
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => RegisterLocationScreen()),
-                );*/
+                  MaterialPageRoute(builder: (context) => LocatingScreen()),
+                );
               },
             )
           ),

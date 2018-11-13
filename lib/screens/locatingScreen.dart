@@ -36,16 +36,19 @@ class LocatingScreen extends StatefulWidget{
           print("getposition");
           
           gps.Position position = await gps.Geolocator().getCurrentPosition(desiredAccuracy: gps.LocationAccuracy.high);
- 
-
-          var positionMap = new Map<String,double>();
-          positionMap["latitude"] = position.latitude;
-          positionMap["longitude"] = position.longitude;
-      
-          if(!pushedToHomeScreen){
-            Navigator.pop(context);
-            Navigator.push(context,MaterialPageRoute(builder: (context) => HomeScreen(positionMap)));
-            pushedToHomeScreen=true;
+          
+          print("gpsPosition:$position");
+          if(!pushedToHomeScreen && position != null){
+            print("got${position.toString()}");
+            var positionMap = new Map<String,double>();
+            positionMap["latitude"] = position.latitude;
+            positionMap["longitude"] = position.longitude;
+        
+            if(!pushedToHomeScreen){
+              Navigator.pop(context);
+              Navigator.push(context,MaterialPageRoute(builder: (context) => HomeScreen(positionMap)));
+              pushedToHomeScreen=true;
+            }
           }
           
     
@@ -119,11 +122,9 @@ class LocatingScreen extends StatefulWidget{
 
   // const oneSec = const Duration(seconds:3);
   //gpsTimer = new Timer.periodic(oneSec, (Timer t) => getLocation());
-  //getLocation();
+  getLocation();
   getPosition();
 
-
-  
 
     return Scaffold(
       backgroundColor: Colors.blue,
@@ -195,87 +196,6 @@ class LocatingScreen extends StatefulWidget{
               ],
             )
           ),
-                  
-                /*
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(34.0, 40.0, 36.0, 0.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Text("Standort suche läuft ...", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 26.0,)),                     
-                    ],
-                  )
-                ),
-
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(36.0, 10.0, 36.0, 80.0),
-                  child: Text("Bitte überprüfe ob dein GPS eingeschaltet ist, damit wir dir Waschboxen in deiner nähe anzeigen können.", 
-                            style: TextStyle(fontSize: 14.0, color: Colors.white),
-                        ),
-                
-                ),*/
-
-
-          /*
-          Expanded(
-            child: new Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(34.0, 40.0, 36.0, 0.0),
-                  child: new Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-                        child: Text("Standort suche läuft ...", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 26.0,)),   
-                      ),
-                    ],
-                  )
-                ),
-              ],  
-            )
-          ),*/
-
-    
-
-                          /*
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(34.0, 40.0, 36.0, 0.0),
-                        child: Text("Bitte überprüfe ob dein GPS eingeschaltet ist, damit wir dir Waschboxen in deiner nähe anzeigen können.", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 26.0,)),   
-                      )*/
-
-            /*
-            new Expanded(
-              child: new Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  new Expanded(
-                    child: new GestureDetector(
-                      onTap:(){
-                        Navigator.push(
-                          context, 
-                          MaterialPageRoute(builder: (context) => HomeScreen(null)),
-                        );
-                      },
-                      child: new Container(
-                        color: Colors.white,
-                        height: 60.0,
-                        child: new Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Text("Weiter",style: TextStyle(color: Colors.blue, fontSize: 16.0, fontWeight: FontWeight.bold))
-                        ],
-                        ),
-                      )
-                    ) 
-                  )
-                ],
-              )
-            )*/
           ],
         ),
       ),
