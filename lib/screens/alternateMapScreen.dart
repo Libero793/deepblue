@@ -43,6 +43,7 @@ class _AlternateMapScreenState extends State<AlternateMapScreen>{
   List<LatLng> tappedPoints = [];
 
   var washboxMap = null;
+  bool showBoxInfo=false;
   
 
 
@@ -70,14 +71,6 @@ class _AlternateMapScreenState extends State<AlternateMapScreen>{
         if(response.body != "null"){
           washboxMap=json.decode(response.body.toString());
           printWashboxesOnMap(washboxMap);
-          /*
-                  for(int i=0;i<nearestLocation.length;i++){
-                    distanceIndicator=(nearestLocation[i]["distanceValue"]/biggestDistance);
-                    cardsList.add(CardItemModel(nearestLocation[i]["name"], Icons.local_car_wash, nearestLocation[i]["distanceText"], distanceIndicator));
-                  }
-                  washboxesLoaded=true;
-              });
-            */
         }else{
           _reloadTimer = new Timer(const Duration(milliseconds: 3000), () {
             requestWashboxMap(location);
@@ -108,7 +101,7 @@ class _AlternateMapScreenState extends State<AlternateMapScreen>{
                           child: new GestureDetector(
                             onTap: (){
                                 //_launchMaps("51.3703207","12.3652444");
-                                _showDialog(context);
+                                toggleBoxInfo("show",washboxMap[i]);
                             },
                             child: new Stack(
                             alignment: Alignment.topCenter,
@@ -150,6 +143,14 @@ class _AlternateMapScreenState extends State<AlternateMapScreen>{
     }else{
       print("cant Launch");
     } 
+  }
+
+  actionButtonPressed(){
+    if(showBoxInfo){
+      toggleBoxInfo("hide", null);
+    }else{
+      toggleEditMode();
+    }
   }
 
   toggleEditMode(){
@@ -273,7 +274,9 @@ class _AlternateMapScreenState extends State<AlternateMapScreen>{
         if(action == "show"){
           controller = state.showBottomSheet<Null>((BuildContext context) {
                            
-                          return  Container ( 
+                        return  Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Container ( 
                                       height: 150.0,
                                       decoration: new BoxDecoration(
                                         color: Colors.transparent,
@@ -283,7 +286,9 @@ class _AlternateMapScreenState extends State<AlternateMapScreen>{
                                           color: Colors.blue[900],
                                           borderRadius: new BorderRadius.only(
                                               topLeft: const Radius.circular(10.0),
-                                              topRight: const Radius.circular(10.0)
+                                              topRight: const Radius.circular(10.0),
+                                              bottomLeft: const Radius.circular(10.0),
+                                              bottomRight: const Radius.circular(10.0)
                                           )
                                         ),
                                         child: new Column(
@@ -335,11 +340,258 @@ class _AlternateMapScreenState extends State<AlternateMapScreen>{
           
                                         ],
                                       )
-                                      ) 
+                                    ) 
+                                  )
                           );                         
           },);
         }else if(action == "hide"){
           controller.close();
+        }
+   } 
+
+   void toggleBoxInfo(action,washboxInfo){
+        ScaffoldState state = _scaffoldKey.currentState;
+
+        if(action == "show"){
+            print(washboxInfo);
+            if(this.mounted){
+              setState(() {
+                actionButton=Icons.close;
+                actionButtonColor=Colors.white;
+                actionButtonIconColor=Colors.blue[900];
+                showBoxInfo=true;
+              });
+            }
+          controller = state.showBottomSheet<Null>((BuildContext context) {
+                           
+                        return  Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Container ( 
+                                      decoration: new BoxDecoration(
+                                        color: Colors.transparent,
+                                      ),
+                                      child: new Container (
+                                        decoration: new BoxDecoration(
+                                          color: Colors.blue[900],
+                                          borderRadius: new BorderRadius.only(
+                                              topLeft: const Radius.circular(10.0),
+                                              topRight: const Radius.circular(10.0),
+                                              bottomLeft: const Radius.circular(10.0),
+                                              bottomRight: const Radius.circular(10.0),
+                                          )
+                                        ),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: <Widget>[
+                                            Padding(
+                                            padding: const EdgeInsets.all(16.0),
+                                            child:  new Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              mainAxisAlignment: MainAxisAlignment.start,               
+                                              children: <Widget>[
+                                                  new Row(
+                                                    mainAxisAlignment: MainAxisAlignment.start,
+                                                    mainAxisSize: MainAxisSize.max,
+                                                    children: <Widget>[
+                                                      new Padding(
+                                                        padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 16.0),
+                                                        child: new Text(washboxInfo["name"],textAlign: TextAlign.left,style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600, color: Colors.white))
+                                                      ),
+                                                    ]
+                                                  ),
+                                                  
+                                                  Offstage(
+                                                    offstage: !(washboxInfo["hochdruckReiniger"] == "1"),
+                                                    child:new Row(
+                                                      mainAxisAlignment: MainAxisAlignment.start,
+                                                      children: <Widget>[
+                                                        new Padding(
+                                                          padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 8.0),
+                                                          child: Icon(Icons.check, color: Colors.white),
+                                                        ),
+                                                        new Padding(
+                                                          padding: const EdgeInsets.fromLTRB(10.0, 2.0, 0.0, 8.0),
+                                                          child: new Text("Hochdruckreiniger",textAlign: TextAlign.left,style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w400, color: Colors.white))
+                                                        ),
+
+                                                        
+                                                      ]
+                                                    ),
+                                                  ),
+
+                                                  Offstage(
+                                                    offstage: !(washboxInfo["schaumBuerste"] == "1"),
+                                                    child:new Row(
+                                                      mainAxisAlignment: MainAxisAlignment.start,
+                                                      children: <Widget>[
+                                                        new Padding(
+                                                          padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 8.0),
+                                                          child: Icon(Icons.check, color: Colors.white),
+                                                        ),
+                                                        new Padding(
+                                                          padding: const EdgeInsets.fromLTRB(10.0, 2.0, 0.0, 8.0),
+                                                          child: new Text("Schaumbürste",textAlign: TextAlign.left,style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w400, color: Colors.white))
+                                                        ),
+
+                                                        
+                                                      ]
+                                                    ),
+                                                  ),
+
+                                                  
+                                                  Offstage(
+                                                    offstage: !(washboxInfo["schaumPistole"] == "1"),
+                                                    child:new Row(
+                                                      mainAxisAlignment: MainAxisAlignment.start,
+                                                      children: <Widget>[
+                                                        new Padding(
+                                                          padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 8.0),
+                                                          child: Icon(Icons.check, color: Colors.white),
+                                                        ),
+                                                        new Padding(
+                                                          padding: const EdgeInsets.fromLTRB(10.0, 2.0, 0.0, 8.0),
+                                                          child: new Text("Schaumpistole",textAlign: TextAlign.left,style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w400, color: Colors.white))
+                                                        ),
+
+                                                        
+                                                      ]
+                                                    ),
+                                                  ),
+
+                                                  
+                                                  Offstage(
+                                                    offstage: !(washboxInfo["fliessend Wasser"] == "1"),
+                                                    child:new Row(
+                                                      mainAxisAlignment: MainAxisAlignment.start,
+                                                      children: <Widget>[
+                                                        new Padding(
+                                                          padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 8.0),
+                                                          child: Icon(Icons.check, color: Colors.white),
+                                                        ),
+                                                        new Padding(
+                                                          padding: const EdgeInsets.fromLTRB(10.0, 2.0, 0.0, 8.0),
+                                                          child: new Text("fließend Wasser",textAlign: TextAlign.left,style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w400, color: Colors.white))
+                                                        ),
+
+                                                        
+                                                      ]
+                                                    ),
+                                                  ),
+
+                                                  
+                                                  Offstage(
+                                                    offstage: !(washboxInfo["motorWaesche"] == "1"),
+                                                    child:new Row(
+                                                      mainAxisAlignment: MainAxisAlignment.start,
+                                                      children: <Widget>[
+                                                        new Padding(
+                                                          padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 8.0),
+                                                          child: Icon(Icons.check, color: Colors.white),
+                                                        ),
+                                                        new Padding(
+                                                          padding: const EdgeInsets.fromLTRB(10.0, 2.0, 0.0, 8.0),
+                                                          child: new Text("Motorwäsche",textAlign: TextAlign.left,style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w400, color: Colors.white))
+                                                        ),
+
+                                                        
+                                                      ]
+                                                    ),
+                                                  ),
+                                                  
+                                                  
+                                                  new Padding(
+                                                    padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
+                                                    child:new Row(
+                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                    mainAxisSize: MainAxisSize.max,
+                                                    children: <Widget>[
+
+                                                              Row(
+                                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                                mainAxisSize: MainAxisSize.max,
+                                                                children: <Widget>[
+                                                                  new Padding(
+                                                                    padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 8.0),
+                                                                    child: Icon(Icons.hourglass_empty, color: Colors.white),
+                                                                  ),
+                                                                  new Padding(
+                                                                    padding: const EdgeInsets.fromLTRB(10.0, 2.0, 0.0, 8.0),
+                                                                    child: new Text("Fahrtzeit: ${washboxInfo["durationText"]}",textAlign: TextAlign.left,style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w400, color: Colors.white))
+                                                                  ),
+                                                                ],
+                                                              ),
+
+                                                              Row(
+                                                                mainAxisAlignment: MainAxisAlignment.end,
+                                                                mainAxisSize: MainAxisSize.max,
+                                                                children: <Widget>[
+                                                                  new Padding(
+                                                                    padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 8.0),
+                                                                    child: Icon(Icons.golf_course, color: Colors.white),
+                                                                  ),
+                                                                  new Padding(
+                                                                    padding: const EdgeInsets.fromLTRB(10.0, 2.0, 0.0, 8.0),
+                                                                    child: new Text("Entfernung: ${washboxInfo["distanceText"]}",textAlign: TextAlign.left,style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w400, color: Colors.white))
+                                                                  ),
+                                                                ],
+                                                              )
+                                                    ]
+                                                  )
+                                                ),                                                   
+                                              ],
+                                            )
+                                          ),
+
+                                          
+                                          new Row(
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                                    children: <Widget>[
+                                                      new Expanded(
+                                                        child: new GestureDetector(
+                                                          onTap:(){
+                                                          
+                                                          },
+                                                          child: new Container(
+                                                            
+                                                            height: 60.0,
+                                                            decoration: new BoxDecoration(
+                                                              color: Colors.white,
+                                                              borderRadius: new BorderRadius.only(                                                                  
+                                                                  bottomLeft: const Radius.circular(10.0),
+                                                                  bottomRight: const Radius.circular(10.0),
+                                                              ),
+                                                            ),
+                                                            child: new Row(
+                                                            mainAxisAlignment: MainAxisAlignment.center,
+                                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                                            children: <Widget>[
+                                                              Text("Weiter",style: TextStyle(color: Colors.blue[800], fontSize: 16.0, fontWeight: FontWeight.bold))
+                                                            ],
+                                                            ),
+                                                          )
+                                                        ) 
+                                                      )
+                                                    ],
+                                          )
+                                          
+                                          ],
+                                          
+                                        )
+                                      ) 
+                                  )
+                                );                         
+          },);
+        }else if(action == "hide"){
+          if(this.mounted){
+            setState(() {
+              controller.close();
+              actionButton=Icons.add;
+              showBoxInfo=false;
+              actionButtonColor=Colors.blue[900];
+              actionButtonIconColor=Colors.white;
+            });
+          }
         }
    } 
 
@@ -367,6 +619,7 @@ class _AlternateMapScreenState extends State<AlternateMapScreen>{
             icon: new Icon(Icons.arrow_back),
             onPressed: () {
               Navigator.pop(context);
+              Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen(currentLocation)),);
             },
           ),
         ),
@@ -433,12 +686,11 @@ class _AlternateMapScreenState extends State<AlternateMapScreen>{
                 child: new FloatingActionButton(
                         tooltip: 'Increment',
                         child: new IconTheme(
-                                  data: new IconThemeData(
-                                      color: actionButtonIconColor),
+                                  data: new IconThemeData(color: actionButtonIconColor),
                                   child:  new Icon(actionButton),
                         ),
                         backgroundColor: actionButtonColor, 
-                        onPressed: toggleEditMode,
+                        onPressed: actionButtonPressed,
                         ), // 
               ),
         );     
