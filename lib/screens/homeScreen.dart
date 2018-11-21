@@ -78,7 +78,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
 
     var url = "http://www.nell.science/deepblue/index.php";
 
-    http.post(url, body: {"getWashboxesHomescreen":"true","key": "0", "latitude": location['latitude'].toString(), "longitude": location['longitude'].toString(), "limit":"3"})
+    http.post(url, body: {"getWashboxesHomescreen":"true","key": "0", "latitude": location['latitude'].toString(), "longitude": location['longitude'].toString(), "limit":"5"})
         .then((response) {
       print("Response status: ${response.statusCode}");   
       print("Response body: ${response.body}");
@@ -162,38 +162,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
         ],
         elevation: 0.0,
       ),
-      /*
-      drawer: new Drawer(
-        child: new ListView(
-          children: <Widget>[
-            new DrawerHeader(
-              child: new Text("Menu", style: TextStyle(fontSize: 30.0,color: Colors.white),),
-              decoration: BoxDecoration(color: Colors.blue[900])
-            ),
-            new ListTile(
-              title: new Text("Home"),
-              onTap: () {},
-            ),
-            new Divider(),
-            new ListTile(
-              title: new Text("Map"),
-              onTap: () {},
-            ),
-            new Divider(),
-            new ListTile(
-              title: new Text("Add Station"),
-              onTap: () {},
-            )
-          ]
-        )
-      ),*/
+
+
       body: new Center(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Row(),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 64.0, vertical: 32.0),
+              padding: const EdgeInsets.fromLTRB(64.0, 32.0, 64.0, 32.0),
               child: Container(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -204,126 +180,133 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
                     ),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(0.0,16.0,0.0,12.0),
-                      child: Text("Good News", style: TextStyle(fontSize: 30.0, color: Colors.white, fontWeight: FontWeight.w400),),
+                      child: Text("Gute Nachrichten!", style: TextStyle(fontSize: 30.0, color: Colors.white, fontWeight: FontWeight.w400),),
                     ),
-                    Text("We found "+"${nearLocationsCount}"+" Washing Stations next to your Location", style: TextStyle(color: Colors.white),),
+                    Text("Wir haben "+"${nearLocationsCount}"+" WWaschboxen in deiner Nähe gefunden", style: TextStyle(color: Colors.white),),
                     Text("", style: TextStyle(color: Colors.white)),
                   ],
                 ),
               ),
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[ 
-                Offstage(
-                  offstage: washboxesLoaded,
-                  child: new Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        child: new CircularProgressIndicator(backgroundColor: Colors.white,valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),),
-                        height: 68.0,
-                        width: 68.0)                    
-                    ],
-                  ),
-                ),
-                
-                Offstage(
-                  offstage: (!washboxesLoaded),
-                  child: Container(
-                    height: 350.0,
-                    child: ListView.builder(
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: cardsList.length,
-                      controller: scrollController,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, position) {
-                        return GestureDetector(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Card(
-                              child: Container(
-                                width: 250.0,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          Icon(cardsList[position].icon, color: Colors.blue[900],),
-                                          Icon(Icons.more_vert, color: Colors.grey,),
-                                        ],
+
+            Offstage(
+              offstage: washboxesLoaded,
+              child: new Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    child: new CircularProgressIndicator(backgroundColor: Colors.white,valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),),
+                    height: 68.0,
+                    width: 68.0
+                  ),                    
+                ],
+              ),
+            ),
+
+           
+            Expanded(
+              child:  Offstage(
+                offstage: (!washboxesLoaded),
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    Expanded(
+                      child:
+                        ListView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: cardsList.length,
+                        controller: scrollController,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, position) {
+                          return GestureDetector(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Card(
+                                child: Container(
+                                  width: 250.0,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: <Widget>[
+                                            Icon(cardsList[position].icon, color: Colors.blue[900],),
+                                            Icon(Icons.more_vert, color: Colors.grey,),
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-                                            child: Text("${cardsList[position].distance}", style: TextStyle(color: Colors.grey),),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-                                            child: Text("${cardsList[position].cardTitle}", style: TextStyle(fontSize: 28.0),),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: LinearProgressIndicator(value: cardsList[position].taskCompletion,),
-                                          ),
-                                        ],
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Padding(
+                                              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                                              child: Text("${cardsList[position].distance}", style: TextStyle(color: Colors.grey),),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                                              child: Text("${cardsList[position].cardTitle}", style: TextStyle(fontSize: 28.0),),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.all(8.0),
+                                              child: LinearProgressIndicator(value: cardsList[position].taskCompletion,),
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0)
                                 ),
                               ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0)
-                              ),
                             ),
-                          ),
-                          onHorizontalDragEnd: (details) {
-                            
-                            
-                            animationController = AnimationController(vsync: this, duration: Duration(milliseconds: 200));
-                            curvedAnimation = CurvedAnimation(parent: animationController, curve: Curves.fastOutSlowIn);
-                            animationController.addListener(() {
-                              setState(() {
-                                //currentColor = colorTween.evaluate(curvedAnimation);
+                            onHorizontalDragEnd: (details) {
+                              
+                              
+                              animationController = AnimationController(vsync: this, duration: Duration(milliseconds: 200));
+                              curvedAnimation = CurvedAnimation(parent: animationController, curve: Curves.fastOutSlowIn);
+                              animationController.addListener(() {
+                                setState(() {
+                                  //currentColor = colorTween.evaluate(curvedAnimation);
+                                });
                               });
-                            });
 
-                            
-                            if(details.velocity.pixelsPerSecond.dx > 0) {
-                              if(cardIndex>0) {
-                                cardIndex--;
+                              
+                              if(details.velocity.pixelsPerSecond.dx > 0) {
+                                if(cardIndex>0) {
+                                  cardIndex--;
+                                }
+                              }else {
+                                if(cardIndex<(cardsList.length-1)) {
+                                  cardIndex++;
+                                }
                               }
-                            }else {
-                              if(cardIndex<(cardsList.length-1)) {
-                                cardIndex++;
-                              }
-                            }
-                            setState(() {
-                              scrollController.animateTo((cardIndex)*256.0, duration: Duration(milliseconds: 200), curve: Curves.fastOutSlowIn);
-                            });
+                              setState(() {
+                                scrollController.animateTo((cardIndex)*256.0, duration: Duration(milliseconds: 200), curve: Curves.fastOutSlowIn);
+                              });
 
-                            //colorTween.animate(curvedAnimation);
-                            
-                            animationController.forward( );
+                              //colorTween.animate(curvedAnimation);
+                              
+                              animationController.forward( );
 
-                          },
-                        );
-                      },
+                            },
+                          );
+                        },
+                      ),
                     ),
-                  ),
-                ),
-              ],
-            )
+                  ],
+                )
+              ),
+            ),
+
           ],
         ),
       ),

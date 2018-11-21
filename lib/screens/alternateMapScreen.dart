@@ -134,15 +134,37 @@ class _AlternateMapScreenState extends State<AlternateMapScreen>{
   _launchMaps(lat,lng) async {
 
     print("launchMaps");
-    var map_api="AIzaSyCaFbeUE3tEoZyMf1KiF5RWnVSuvX2FId8";
-    String googleUrl =
-      'https://maps.google.com/';
-    if (await canLaunch(googleUrl)) {
-      print('launching com googleUrl');
-      await launch(googleUrl);
-    }else{
-      print("cant Launch");
-    } 
+    String googleMapsAndroidUrl ='google.navigation:q=${lat},${lng}';
+    String googleMapsIosUrl ='comgooglemaps://?q=<$lat>,<$lng>';
+    String appleUrl = 'https://maps.apple.com/?sll=${lat},${lng}';
+
+   
+    /// Documentation :
+    /// Google Maps in a browser: "http://maps.google.com/?q=<lat>,<lng>"
+    /// Google Maps app on an iOS mobile device : "comgooglemaps://?q=<lat>,<lng>"
+    /// Google Maps app on Android : "geo:<lat>,<lng>?z=<zoom>"
+    /// You can also use "google.navigation:q=latitude,longitude"
+    /// z is the zoom level (1-21) , q is the search query
+    /// t is the map type ("m" map, "k" satellite, "h" hybrid, "p" terrain, "e" GoogleEarth)
+    if (await canLaunch(googleMapsAndroidUrl)) {
+
+      print('launching google Maps Android Navigation');
+      await launch(googleMapsAndroidUrl);
+
+    } else if (await canLaunch(googleMapsIosUrl)) {
+
+      print('launching google Maps Ios Navigation');
+      await launch(googleMapsIosUrl);
+
+    } else if (await canLaunch(appleUrl)) {
+
+      print('launching apple url');
+      await launch(appleUrl);
+
+    } else {
+      throw 'Could not launch url';
+    }
+
   }
 
   actionButtonPressed(){
@@ -153,8 +175,7 @@ class _AlternateMapScreenState extends State<AlternateMapScreen>{
     }
   }
 
-  toggleEditMode(){
-    
+  void toggleEditMode(){
     if(addMode){
       addMode=false;
       showHint("hide");
@@ -550,7 +571,7 @@ class _AlternateMapScreenState extends State<AlternateMapScreen>{
                                                       new Expanded(
                                                         child: new GestureDetector(
                                                           onTap:(){
-                                                          
+                                                            _launchMaps(washboxInfo["latitude"], washboxInfo["longitude"]);                                                          
                                                           },
                                                           child: new Container(
                                                             
@@ -566,7 +587,7 @@ class _AlternateMapScreenState extends State<AlternateMapScreen>{
                                                             mainAxisAlignment: MainAxisAlignment.center,
                                                             crossAxisAlignment: CrossAxisAlignment.center,
                                                             children: <Widget>[
-                                                              Text("Weiter",style: TextStyle(color: Colors.blue[800], fontSize: 16.0, fontWeight: FontWeight.bold))
+                                                              Text("Navigation starten",style: TextStyle(color: Colors.blue[800], fontSize: 16.0, fontWeight: FontWeight.bold))
                                                             ],
                                                             ),
                                                           )
