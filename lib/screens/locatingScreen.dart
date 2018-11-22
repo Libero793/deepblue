@@ -5,6 +5,7 @@ import 'package:geolocator/geolocator.dart' as gps;
 import 'package:geolocation/geolocation.dart' ;
 import 'package:location/location.dart' as location;
 import 'package:flutter/services.dart';
+import 'package:settings/settings.dart';
 
 
 class LocatingScreen extends StatefulWidget{
@@ -29,14 +30,19 @@ class LocatingScreen extends StatefulWidget{
 
   bool pushedToHomeScreen=false;
 
+  bool gpsAccessChecked=false;
+  bool gpsStatus = true;
+  bool timerRunning=false;
+
 
 
   getPosition() async {
 
           print("getposition");
           
+
           gps.Position position = await gps.Geolocator().getCurrentPosition(desiredAccuracy: gps.LocationAccuracy.high);
-          
+          gpsTimer.cancel();
           print("gpsPosition:$position");
           if(!pushedToHomeScreen && position != null){
             print("got${position.toString()}");
@@ -48,6 +54,7 @@ class LocatingScreen extends StatefulWidget{
               Navigator.pop(context);
               Navigator.push(context,MaterialPageRoute(builder: (context) => HomeScreen(positionMap)));
               pushedToHomeScreen=true;
+              
             }
           }
           
@@ -56,17 +63,30 @@ class LocatingScreen extends StatefulWidget{
 
   getLocation() async{
 
-    final GeolocationResult result = await Geolocation.isLocationOperational();
-    if(result.isSuccessful) {
-      // location service is enabled, and location permission is granted
-      print("gps enabled");
-      //getPosition();
-    } else {
-      // location service is not enabled, restricted, or location permission is denied
-      print("gps disabled");
-      //Navigator.pop(context);
-      //Navigator.push(context,MaterialPageRoute(builder: (context) => LocatingScreen()));
-    }
+      print("trytogetlocation");
+
+      final GeolocationResult result = await Geolocation.isLocationOperational();
+      if(result.isSuccessful) {
+        /*if(!gpsStatus){
+
+          Navigator.pop(context);
+          Navigator.push(context,MaterialPageRoute(builder: (context) => LocatingScreen()));
+        }*/
+        // location service is enabled, and location permission is granted
+        print("gps enabled");
+        getPosition();
+      } else {
+        // location service is not enabled, restricted, or location permission is denied
+        print("gps disabled");
+        gpsStatus=false;
+        //Settings.openGPSSettings();
+
+        //Navigator.pop(context);
+        //Navigator.push(context,MaterialPageRoute(builder: (context) => LocatingScreen()));
+      }
+  
+    
+
   }
 
    initPlatformState() async {
@@ -103,6 +123,8 @@ class LocatingScreen extends StatefulWidget{
   void initState() {
     super.initState();
 
+
+
     initPlatformState();
 
     _locationSubscription =
@@ -119,11 +141,16 @@ class LocatingScreen extends StatefulWidget{
 
   @override
   Widget build(BuildContext context) {
+  
 
-  // const oneSec = const Duration(seconds:3);
-  //gpsTimer = new Timer.periodic(oneSec, (Timer t) => getLocation());
   //getLocation();
-  getPosition();
+  //getPosition();
+
+  if(!timerRunning){
+          setState(() { timerRunning=true;  });
+          const oneSec = const Duration(seconds:1);
+          gpsTimer = new Timer.periodic(oneSec, (Timer t) => getLocation());
+  }
 
 
     return Scaffold(

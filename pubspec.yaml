@@ -17,7 +17,10 @@ dependencies:
   geolocation:
     git: "https://github.com/driveddy/geolocation.git"
 
-
+  settings: 
+    path: "../../../git/settings"
+    
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter

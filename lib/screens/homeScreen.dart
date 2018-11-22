@@ -204,7 +204,15 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
               ),
             ),
 
-           
+            /*
+            new ConstrainedBox(
+            constraints: new BoxConstraints(
+              minWidth: double.infinity,
+              maxWidth: double.infinity,
+              minHeight: 300.0,
+              maxHeight: 500.0,
+            ),
+            */
             Expanded(
               child:  Offstage(
                 offstage: (!washboxesLoaded),
