@@ -143,7 +143,7 @@ class LocatingScreen extends StatefulWidget{
 
   if(!timerRunning){
           setState(() { timerRunning=true;  });
-          const oneSec = const Duration(seconds:1);
+          const oneSec = const Duration(seconds:33);
           gpsTimer = new Timer.periodic(oneSec, (Timer t) => getLocation());
   }
 
@@ -160,98 +160,136 @@ class LocatingScreen extends StatefulWidget{
 
 
 
-    body: new Center( heightFactor: 100.00,
-        child: Column(        
+    body: new Center(
+        child: Stack(        
             
           children: <Widget>[
              
-          Expanded(
-            child: new Column(
+          Column(
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
-                new Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Padding(
-                          padding: const EdgeInsets.fromLTRB(0.0,0.0,0.0,20.0),
-                          child: Icon(Icons.location_off, size: 100.0, color: Colors.white,),
-                      ),
-                     
-                  ],  
-                ),
 
-                new Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Padding(
-                          padding: const EdgeInsets.fromLTRB(0.0,20.0,0.0,10.0),
-                          child: Text("Standort suche läuft ...", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 26.0,)),
-                      ),
-                      
-                     
-                  ],  
-                ),
-                new Row(
-                  children: <Widget>[
-                    new Flexible(
-                      child:Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                Expanded(
+                  child: new Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.max,
+                    children: <Widget>[
+                      new Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          new Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 48.0),
-                            child:  LinearProgressIndicator()                        
-
-                          ),
-                        ],
+                          Padding(
+                                padding: const EdgeInsets.fromLTRB(0.0,0.0,0.0,20.0),
+                                child: Icon(Icons.location_off, size: 100.0, color: Colors.white,),
+                            ),
+                          
+                        ],  
                       ),
-                    ),
-                  ]
-                ),
 
-                new Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.max,
-                  children: <Widget>[
-                      new Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 0.0),
-                        child: new OutlineButton(
-                          child: const Text('Karten Modus', style: TextStyle(fontSize: 18.0),),
-                          color: Colors.blue[900],
-                          highlightColor: Colors.green,
-                          textColor: Colors.white,
-                          splashColor: Colors.blue[900],
-                          onPressed: () {
-                                // Perform some action
-                                              
-                          },
-                        ),
-                      )
-                      
-                  ],
-                ),
+                      new Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Padding(
+                                padding: const EdgeInsets.fromLTRB(0.0,20.0,0.0,10.0),
+                                child: Text("Standort suche läuft ...", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 26.0,)),
+                            ),
+                            
+                          
+                        ],  
+                      ),
+                      new Row(
+                        children: <Widget>[
+                          new Flexible(
+                            child:Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                new Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 48.0),
+                                  child:  LinearProgressIndicator()                        
 
-                new Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.max,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: <Widget>[
-                    Expanded(
-                      child: Container(
-                        child:new Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 48.0),
-                            child: Text("Verwende den Karten Modus, falls dein Standort über GPS nicht automatisch lokalisiert werden kann.", 
-                              style: TextStyle(fontSize: 14.0, color: Colors.white),
+                                ),
+                              ],
                             ),
                           ),
-                      )
-                    )
-                  ],
+                        ]
+                      ),
+
+                      new Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.max,
+                        children: <Widget>[
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 45.0),
+                              child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: <Widget>[
+                                    Icon(Icons.info_outline,size: 40.0,color: Colors.white),                     
+                                    Container(
+                                      width: 230.0,
+                                      color: Colors.blue,
+                                      child:new Padding(
+                                          padding: const EdgeInsets.fromLTRB(20.0,0.0,0.0,0.0),
+                                          child: Text("Verwende den Karten Modus, falls dein Standort über GPS nicht automatisch lokalisiert werden kann.", 
+                                            style: TextStyle(fontSize: 12.0, color: Colors.white),
+                                            textAlign: TextAlign.left,
+                                          ),
+                                        ),
+                                    )
+                                  ]
+                                )
+                            )
+                            
+                          )
+                          
+                        ]
+                      ),
+                    ],
+                  )
                 )
-              ],
-            )
+              ]
           ),
+              
+  
+         
+          new Column(
+            children: <Widget>[
+              Expanded(
+                child: Container(
+                  
+                  child: new Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        new Expanded(
+                          child: new GestureDetector(
+                            onTap:(){
+                              Navigator.pop(context);  
+                            },
+                              child: new Container(
+                                color: Colors.white,
+                                height: 60.0,
+                                child: new Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  Text("Karten Modus",style: TextStyle(color: Colors.blue, fontSize: 16.0, fontWeight: FontWeight.bold)),
+                                ],
+                                ),
+                              )
+                            ) 
+                          )
+                        ],
+                  )
+                )
+              )
+            ]
+          )
+       
+
           ],
         ),
       ),
