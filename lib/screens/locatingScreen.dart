@@ -67,18 +67,13 @@ class LocatingScreen extends StatefulWidget{
 
       final GeolocationResult result = await Geolocation.isLocationOperational();
       if(result.isSuccessful) {
-        /*if(!gpsStatus){
-
-          Navigator.pop(context);
-          Navigator.push(context,MaterialPageRoute(builder: (context) => LocatingScreen()));
-        }*/
         // location service is enabled, and location permission is granted
         print("gps enabled");
         getPosition();
       } else {
         // location service is not enabled, restricted, or location permission is denied
         print("gps disabled");
-        gpsStatus=false;
+    
         //Settings.openGPSSettings();
 
         //Navigator.pop(context);
@@ -173,6 +168,7 @@ class LocatingScreen extends StatefulWidget{
           Expanded(
             child: new Column(
               mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
               children: <Widget>[
                 new Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -208,18 +204,51 @@ class LocatingScreen extends StatefulWidget{
                             child:  LinearProgressIndicator()                        
 
                           ),
-                          new Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 48.0),
-                            child: Text("Bitte überprüfe ob dein GPS auf den Modus eingeschaltet ist, damit wir dir Waschboxen in deiner Nähe anzeigen können.", 
-                              style: TextStyle(fontSize: 14.0, color: Colors.white),
-                            ),
-                          ),
-
                         ],
                       ),
                     ),
                   ]
                 ),
+
+                new Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.max,
+                  children: <Widget>[
+                      new Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 0.0),
+                        child: new OutlineButton(
+                          child: const Text('Karten Modus', style: TextStyle(fontSize: 18.0),),
+                          color: Colors.blue[900],
+                          highlightColor: Colors.green,
+                          textColor: Colors.white,
+                          splashColor: Colors.blue[900],
+                          onPressed: () {
+                                // Perform some action
+                                              
+                          },
+                        ),
+                      )
+                      
+                  ],
+                ),
+
+                new Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: <Widget>[
+                    Expanded(
+                      child: Container(
+                        child:new Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 48.0),
+                            child: Text("Verwende den Karten Modus, falls dein Standort über GPS nicht automatisch lokalisiert werden kann.", 
+                              style: TextStyle(fontSize: 14.0, color: Colors.white),
+                            ),
+                          ),
+                      )
+                    )
+                  ],
+                )
               ],
             )
           ),
