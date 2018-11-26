@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:deepblue/screens/alternateMapScreen.dart';
+import 'package:deepblue/screens/mapScreen.dart';
 import 'package:deepblue/screens/locatingScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:deepblue/models/CardItemModel.dart';
@@ -141,7 +141,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => AlternateMapScreen(positionMap)),
+              MaterialPageRoute(builder: (context) => mapScreen(positionMap)),
             );
           },
         ),

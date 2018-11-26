@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:deepblue/screens/homeScreen.dart';
+import 'package:deepblue/screens/manualLocationMapScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart' as gps;
 import 'package:geolocation/geolocation.dart' ;
@@ -267,7 +268,7 @@ class LocatingScreen extends StatefulWidget{
                         new Expanded(
                           child: new GestureDetector(
                             onTap:(){
-                              Navigator.pop(context);  
+                              Navigator.push(context,MaterialPageRoute(builder: (context) => manualLocationMapScreen()));
                             },
                               child: new Container(
                                 color: Colors.white,

@@ -13,20 +13,20 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
 
 
-class AlternateMapScreen extends StatefulWidget {
+class mapScreen extends StatefulWidget {
   @override
   Map<String, double> currentLocation;
-  AlternateMapScreen(this.currentLocation);
+  mapScreen(this.currentLocation);
 
-  _AlternateMapScreenState createState() => new _AlternateMapScreenState(currentLocation);
+  _mapScreenState createState() => new _mapScreenState(currentLocation);
   
   
 }
 
-class _AlternateMapScreenState extends State<AlternateMapScreen>{
+class _mapScreenState extends State<mapScreen>{
 
   Map<String, double> currentLocation;
-  _AlternateMapScreenState(this.currentLocation);
+  _mapScreenState(this.currentLocation);
 
   bool addMode = false;
   bool addModeTapped = false;
