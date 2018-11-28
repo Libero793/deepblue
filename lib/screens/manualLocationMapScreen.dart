@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:deepblue/screens/homeScreen.dart';
+import 'package:deepblue/screens/locatingScreen.dart';
 import 'package:deepblue/screens/nameNewLocation.dart';
 import 'package:deepblue/screens/registerLocationScreen.dart';
 import 'package:flutter/cupertino.dart';
@@ -48,7 +49,26 @@ class _manualLocationMapScreenState extends State<manualLocationMapScreen>{
     PersistentBottomSheetController controller;
 
   
- 
+  void _showDialog(context){
+    showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            // return object of type Dialog
+            return AlertDialog(
+              title: new Text("Bitte Standort wählen"),
+              content: new Text("Du musst zuerst deinen Standort auf der Karte auswählen, bevor wir Waschboxen in deiner Nähe suchen können"),
+              actions: <Widget>[
+                // usually buttons at the bottom of the dialog
+                new FlatButton(
+                  child: new Text("Schliessen"),
+                  onPressed:
+                    ()=>Navigator.pop(context),
+                ),
+              ],
+            );
+          },
+        );
+  }
 
 
   void printWashboxesOnMap(var washboxMap){
@@ -165,6 +185,7 @@ class _manualLocationMapScreenState extends State<manualLocationMapScreen>{
             icon: new Icon(Icons.arrow_back),
             onPressed: () {
               Navigator.pop(context);
+              //Navigator.push(context, MaterialPageRoute(builder: (context) => LocatingScreen()),);
             },
           ),
         ),
@@ -235,7 +256,12 @@ class _manualLocationMapScreenState extends State<manualLocationMapScreen>{
                                             splashColor: Colors.blue[900],
                                             padding: EdgeInsets.symmetric(vertical: 10.0,horizontal: 30.0),
                                             onPressed: () {
-                                              Navigator.push(context,MaterialPageRoute(builder: (context) => HomeScreen(selectedLocation)));                                      
+                                                if(pointTapped){
+                                                  Navigator.pop(context);
+                                                  Navigator.push(context,MaterialPageRoute(builder: (context) => HomeScreen(selectedLocation)));  
+                                                }else{
+                                                  _showDialog(context);
+                                                }                              
                                               },
                                             ),
                                       ),

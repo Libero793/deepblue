@@ -268,6 +268,7 @@ class LocatingScreen extends StatefulWidget{
                         new Expanded(
                           child: new GestureDetector(
                             onTap:(){
+                              //Navigator.pop(context);
                               Navigator.push(context,MaterialPageRoute(builder: (context) => manualLocationMapScreen()));
                             },
                               child: new Container(
