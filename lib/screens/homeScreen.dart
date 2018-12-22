@@ -56,6 +56,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
 
   Timer _reloadTimer;
 
+  String temp ="-";
+
 
   @override
   void initState() {
@@ -71,9 +73,24 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
     _reloadTimer.cancel();
   }
 
- 
+  void httpRequestWeather(var location)async {
+    var darkSkyUrl="https://api.darksky.net/forecast/97ada79b0fdc34e056d1cdd1f41c6ddf/"
+                   "${location['latitude']},${location['longitude']}"
+                   "?units=auto";
+   
+    http.read(darkSkyUrl).then((response){
+      print("weatherResponse: ${response}");
 
-  void httpRequest(var location)async {
+      var jsonResp=json.decode(response);
+
+      setState(() {
+              temp=jsonResp["currently"]["temperature"].toStringAsFixed(0);              
+            });
+    });
+
+  }
+
+  void httpRequestLocations(var location)async {
     print("httploc ${location}");
 
     var url = "http://www.nell.science/deepblue/index.php";
@@ -108,7 +125,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
         }else{
           print("reload 3000ms");
           _reloadTimer = new Timer(const Duration(milliseconds: 3000), () {
-            httpRequest(location);
+            httpRequestLocations(location);
           });  
         }
        
@@ -126,9 +143,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
   Widget build(BuildContext context) {
     //print("location${widget._currentLocation}");
     if(!httpRequestExecuted){
-      httpRequest(positionMap);
+      httpRequestLocations(positionMap);
+      httpRequestWeather(positionMap);
       httpRequestExecuted=true;
     }
+
+    
     
     return new Scaffold(
       backgroundColor: currentColor,
@@ -169,20 +189,34 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.fromLTRB(64.0, 32.0, 64.0, 32.0),
+              padding: const EdgeInsets.fromLTRB(48.0, 32.0, 48.0, 32.0),
               child: Container(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 16.0),
-                      child: Icon(Icons.account_circle, size: 45.0, color: Colors.white,),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+
+                          Icon(Icons.cloud, size: 45.0, color: Colors.white,),
+
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
+                            child: Text(temp, style: TextStyle(fontSize: 36.0, color: Colors.white, fontWeight: FontWeight.w400),),
+                          ),
+
+                          Text(" °C", style: TextStyle(fontSize: 20.0, color: Colors.white, fontWeight: FontWeight.w400,)),
+
+                        ]
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(0.0,16.0,0.0,12.0),
-                      child: Text("Gute Nachrichten!", style: TextStyle(fontSize: 30.0, color: Colors.white, fontWeight: FontWeight.w400),),
+                      child: Text("Gute Nachrichten!", style: TextStyle(fontSize: 28.0, color: Colors.white, fontWeight: FontWeight.w400),),
                     ),
-                    Text("Wir haben "+"${nearLocationsCount}"+" WWaschboxen in deiner Nähe gefunden", style: TextStyle(color: Colors.white),),
+                    Text("Heute ist perfektes Wetter zum Autowaschen. Wir haben dazu "+"${nearLocationsCount}"+" Waschboxen in deiner Nähe gefunden", style: TextStyle(color: Colors.white),),
                     Text("", style: TextStyle(color: Colors.white)),
                   ],
                 ),
