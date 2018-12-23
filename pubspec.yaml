@@ -14,6 +14,7 @@ dependencies:
   flutter_rating: ^0.0.2
   flutter_udid: ^0.0.3
   http: ^0.12.0
+  flutter_svg: ^0.8.2
   geolocation:
     git: "https://github.com/driveddy/geolocation.git"
 
@@ -46,6 +47,14 @@ flutter:
   #  - images/a_dot_ham.jpeg
   assets:
     - assets/images/locationWashbox.png
+    - assets/images/Cloud.svg
+    - assets/images/Cloud-Sun.svg
+    - assets/images/Cloud-Rain.svg
+    - assets/images/Cloud-Moon.svg
+    - assets/images/Cloud-Snow.svg
+    - assets/images/Moon.svg
+    - assets/images/Sun.svg
+    - assets/images/Wind.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.

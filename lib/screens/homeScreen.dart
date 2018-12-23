@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:deepblue/screens/registerLocationScreen.dart';
 import 'package:geolocator/geolocator.dart' as gps;
+import 'package:flutter_svg/flutter_svg.dart';
 
 
 
@@ -37,6 +38,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
                    CardItemModel("Total", Icons.local_gas_station,3000, 0.32)*/];
                   
   var cardColors = [];
+  
 
   AnimationController animationController;
   ColorTween colorTween;
@@ -57,6 +59,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
   Timer _reloadTimer;
 
   String temp ="-";
+  String assetName = 'assets/images/Cloud.svg';
 
 
   @override
@@ -64,6 +67,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
     super.initState();
 
     scrollController = new ScrollController();    
+    setupWeatherContext(positionMap);
     
   }
 
@@ -73,21 +77,58 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
     _reloadTimer.cancel();
   }
 
-  void httpRequestWeather(var location)async {
+  Future setupWeatherContext(var location) async {
+    if(httpRequestWeather(location) != "null"){
+      var jsonWeather = await httpRequestWeather(location);
+      var weather = json.decode(jsonWeather);
+      print("jsonWeather $weather");
+
+      
+
+      switch (weather["currently"]["icon"]){
+
+        case "cloudy": assetName = 'assets/images/Cloud.svg';
+         break;
+        
+        case "clear-day": assetName = 'assets/images/Sun.svg';
+         break;
+
+        case "clear-night": assetName = 'assets/images/Moon.svg';
+         break;
+
+        case "rain": assetName = 'assets/images/Cloud-Rain.svg';
+         break;
+
+        case "snow": assetName = 'assets/images/Cloud-Snow.svg';
+         break;
+
+        case "wind": assetName = 'assets/images/Wind.svg';
+         break;
+        
+        case "partly-cloudy-day": assetName = 'assets/images/Cloud.svg';
+         break;
+        
+        case "partly-cloudy-night": assetName = 'assets/images/Cloud-Moon.svg';
+         break;
+
+      }
+        
+
+
+      setState(() {
+              temp = weather["currently"]["temperature"].toStringAsFixed(0);
+            });
+
+    }
+  }
+
+  Future<String> httpRequestWeather(var location)async {
     var darkSkyUrl="https://api.darksky.net/forecast/97ada79b0fdc34e056d1cdd1f41c6ddf/"
                    "${location['latitude']},${location['longitude']}"
                    "?units=auto";
-   
-    http.read(darkSkyUrl).then((response){
-      print("weatherResponse: ${response}");
 
-      var jsonResp=json.decode(response);
-
-      setState(() {
-              temp=jsonResp["currently"]["temperature"].toStringAsFixed(0);              
-            });
-    });
-
+    final res = await http.read(darkSkyUrl);
+    return res;
   }
 
   void httpRequestLocations(var location)async {
@@ -144,9 +185,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
     //print("location${widget._currentLocation}");
     if(!httpRequestExecuted){
       httpRequestLocations(positionMap);
-      httpRequestWeather(positionMap);
       httpRequestExecuted=true;
     }
+
+    
 
     
     
@@ -197,17 +239,31 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 16.0),
                       child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: <Widget>[
 
-                          Icon(Icons.cloud, size: 45.0, color: Colors.white,),
+                          Container(
+                            width: 60.0,
+                            height: 60.0,
+                            child: SvgPicture.asset(
+                                      assetName,
+                                      color: Colors.white,
+                                    ),
+                          ),
+
 
                           Padding(
                             padding: EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
-                            child: Text(temp, style: TextStyle(fontSize: 36.0, color: Colors.white, fontWeight: FontWeight.w400),),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget> [
+                                Text(temp, style: TextStyle(fontSize: 38.0, color: Colors.white, fontWeight: FontWeight.w400),),
+                                Text(" °C", style: TextStyle(fontSize: 20.0, color: Colors.white, fontWeight: FontWeight.w400,)),
+                              ]
+                            ),
                           ),
 
-                          Text(" °C", style: TextStyle(fontSize: 20.0, color: Colors.white, fontWeight: FontWeight.w400,)),
+                          
 
                         ]
                       ),
