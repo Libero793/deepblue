@@ -28,7 +28,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
 
 
   var cardIndex = 0;
-  ScrollController scrollController;
+  ScrollController scrollControllerHorizontal;
+  ScrollController scrollControllerVertical;
   var currentColor = Colors.blue[900];
   var cardsList = [/*CardItemModel("Waschbär", Icons.local_car_wash,300, 0.83),
                    CardItemModel("Aral", Icons.local_gas_station,500, 0.24),
@@ -58,6 +59,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
 
   Timer _reloadTimer;
 
+  String currentCard;
+
   String temp ="-";
   String assetName = 'assets/images/Cloud.svg';
   String welcomeText = "-";
@@ -68,8 +71,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
   void initState() {
     super.initState();
 
-    scrollController = new ScrollController();    
+    scrollControllerHorizontal = new ScrollController();    
+    scrollControllerVertical = new ScrollController(); 
     setupWeatherContext(positionMap);
+
+    currentCard = "washbox";
     
   }
 
@@ -220,7 +226,78 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
     
   }
 
- 
+  Color getCardColor(position){
+    if(position == 0){
+      return Colors.blue;
+    }
+
+    if(position == 1){
+      return Colors.green;
+    }
+
+    if(position == 2){
+      return Colors.yellow;
+    }
+  }
+
+  IconData getNavIcon(locationType){
+    if(locationType == "washbox"){
+      return Icons.local_car_wash;
+    }
+    if(locationType == "gasstation"){
+      return Icons.local_gas_station;
+    }
+    if(locationType == "shootingspot"){
+      return Icons.camera_alt;
+    }
+  }
+
+  double getNavIconSize(navSelected){
+    if(navSelected == currentCard){
+      return 35.0;
+    }else{
+      return 25.0;
+    }
+  }
+
+  double getNavIconBoxSize(navSelected){
+    if(navSelected == currentCard){
+      return 60.0;
+    }else{
+      return 50.0;
+    }
+  }
+
+  Color getNavIconColor(navSelected){
+    if(navSelected == currentCard){
+      return Colors.white;
+    }else{
+      return Colors.grey[400];
+    }
+  }
+
+  Color getNavIconBoxColor(navSelected){
+    if(navSelected == currentCard){
+      return Colors.blue;
+    }else{
+      return Colors.white;
+    }
+  }
+
+  double getScrollToPosition(screenWidth,navSelected){
+    //if(navSelected != currentCard){
+      if(navSelected == "washbox"){
+        return screenWidth*1;
+      }
+      if(navSelected == "gasstation"){
+        return screenWidth*0;
+      }
+      if(navSelected == "shootingspot"){
+        return screenWidth*2;
+      }
+    //}
+  }
+
 
 
 
@@ -338,34 +415,136 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
               ),
             ),
 
-            /*
-            new ConstrainedBox(
-            constraints: new BoxConstraints(
-              minWidth: double.infinity,
-              maxWidth: double.infinity,
-              minHeight: 300.0,
-              maxHeight: 500.0,
-            ),
-            */
+
             Expanded(
               child:  Offstage(
                 offstage: (!washboxesLoaded),
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                child: Stack(
                   children: <Widget>[
-                    Expanded(
-                      child:
-                        ListView.builder(
-                        physics: NeverScrollableScrollPhysics(),
-                        itemCount: cardsList.length,
-                        controller: scrollController,
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, position) {
-                          return GestureDetector(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
+
+
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(0.0, 35.0, 0.0, 0.0),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: <Widget>[
+                          Expanded(
+                            child:
+                              ListView.builder(
+                              physics: AlwaysScrollableScrollPhysics(),
+                              itemCount: 3,
+                              controller: scrollControllerHorizontal,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (context, position) {
+                                return itemList(position);
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.max,
+                      children: <Widget>[
+                        navIcon("gasstation"),
+                        navIcon("washbox"),
+                        navIcon("shootingspot"),
+                      ],
+                    )
+                    
+                
+
+                  ] 
+                ),               
+              ),
+            ),
+          ],
+        ),
+      ),
+      //drawer: Drawer(),
+    );    
+  }
+
+  Widget navIcon(locationType){
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 5.0),
+      child: GestureDetector(
+
+        onTap: (){
+          setState(() {
+            currentCard=locationType;
+            scrollControllerHorizontal.animateTo(getScrollToPosition(MediaQuery.of(context).size.width,locationType), duration: Duration(milliseconds: 200), curve: Curves.fastOutSlowIn);
+          });
+        },
+
+        child: Card(
+          child: Container(
+            width: getNavIconBoxSize(locationType),
+            height: getNavIconBoxSize(locationType),
+            child: Icon(
+              getNavIcon(locationType),
+              color: getNavIconColor(locationType),
+              size: getNavIconSize(locationType),
+            ),
+          ),
+          
+          color: getNavIconBoxColor(locationType),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0)
+          ),
+        ),
+      ),
+    );    
+  }
+
+
+  Widget itemList(listPosition){
+    return Container(
+      width: (MediaQuery.of(context).size.width),
+      color: Colors.grey[200],
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(0.0, 35.0, 0.0, 0.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+                  Expanded(
+                      child: ListView.builder(
+                        physics: AlwaysScrollableScrollPhysics(),
+                        itemCount: 10,
+                        shrinkWrap: true,
+                        controller: scrollControllerVertical,
+                        scrollDirection: Axis.vertical,
+                        itemBuilder: (context, itemPosition) {
+                          return  Padding(
+                              padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 15.0),
                               child: Card(
+                                color: getCardColor(listPosition),
+                                shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5.0)
+                                ),
+
+                                child: Container(
+                                  height: 200.0,
+                                ),                                
+
+                              )
+                          );
+                        }
+                      ),
+                  ),
+          ],
+        ),
+      )    
+    );  
+  }
+
+
+  Widget locationList(position){
+    return Card(
                                 child: Container(
                                   width: 250.0,
                                   child: Column(
@@ -408,55 +587,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10.0)
                                 ),
-                              ),
-                            ),
-                            onHorizontalDragEnd: (details) {
-                              
-                              
-                              animationController = AnimationController(vsync: this, duration: Duration(milliseconds: 200));
-                              curvedAnimation = CurvedAnimation(parent: animationController, curve: Curves.fastOutSlowIn);
-                              animationController.addListener(() {
-                                setState(() {
-                                  //currentColor = colorTween.evaluate(curvedAnimation);
-                                });
-                              });
+                              );
 
-                              
-                              if(details.velocity.pixelsPerSecond.dx > 0) {
-                                if(cardIndex>0) {
-                                  cardIndex--;
-                                }
-                              }else {
-                                if(cardIndex<(cardsList.length-1)) {
-                                  cardIndex++;
-                                }
-                              }
-                              setState(() {
-                                scrollController.animateTo((cardIndex)*256.0, duration: Duration(milliseconds: 200), curve: Curves.fastOutSlowIn);
-                              });
-
-                              //colorTween.animate(curvedAnimation);
-                              
-                              animationController.forward( );
-
-                            },
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                )
-              ),
-            ),
-
-          ],
-        ),
-      ),
-      //drawer: Drawer(),
-    );
-
-    
   }
+
+
 }
 
  
