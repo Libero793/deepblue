@@ -4,14 +4,8 @@ import 'package:deepblue/screens/mapScreen.dart';
 import 'package:deepblue/screens/locatingScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:deepblue/models/CardItemModel.dart';
-import 'package:location/location.dart';
-import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
-import 'package:deepblue/screens/registerLocationScreen.dart';
-import 'package:geolocator/geolocator.dart' as gps;
 import 'package:flutter_svg/flutter_svg.dart';
-
-
 
 
 
@@ -29,14 +23,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
 
   var cardIndex = 0;
   ScrollController scrollControllerHorizontal;
-  ScrollController scrollControllerVertical;
+
+  List verticalScrolls = [];
+  int pagination = 1;
+  int execution = 0;
+  int test = 0;
+
   var currentColor = Colors.blue[900];
-  var cardsList = [/*CardItemModel("Waschbär", Icons.local_car_wash,300, 0.83),
-                   CardItemModel("Aral", Icons.local_gas_station,500, 0.24),
-                   CardItemModel("Waschbox", Icons.local_car_wash,600, 0.24),
-                   CardItemModel("Waschbox", Icons.local_car_wash,700, 0.24),
-                   CardItemModel("Waschbox", Icons.local_car_wash,700, 0.24),
-                   CardItemModel("Total", Icons.local_gas_station,3000, 0.32)*/];
+  var cardsList = [];
                   
   var cardColors = [];
   
@@ -66,17 +60,46 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
   String welcomeText = "-";
   String welcomeTextHeadline = "-";
 
+  bool extendSpaceForScroll;
+  bool horizontalScrollSetup=false;
+ 
+
 
   @override
   void initState() {
-    super.initState();
+    extendSpaceForScroll = false;
+    scrollControllerHorizontal = new ScrollController();     
 
-    scrollControllerHorizontal = new ScrollController();    
-    scrollControllerVertical = new ScrollController(); 
     setupWeatherContext(positionMap);
 
     currentCard = "washbox";
+
+    for(int i=0; i<=2; i++){
+      addVerticalScrollController();
+    }
     
+    super.initState();
+  }
+
+
+  _verticalListener(){
+    ScrollController verticalScroll = verticalScrolls[pagination];
+    print(verticalScroll.offset);
+
+    if(!extendSpaceForScroll){
+      if(verticalScroll.offset>0){
+        setState(() {
+          extendSpaceForScroll=true;       
+        });
+        
+      }
+    }else{
+      if(verticalScroll.offset==0){
+        setState(() {
+          extendSpaceForScroll=false;       
+        });
+      }
+    }
   }
 
   @override
@@ -96,75 +119,37 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
 
         case "cloudy": 
           assetName = 'assets/images/Cloud.svg';
-          welcomeTextHeadline = "Gute Nachrichten";
-          welcomeText = "Aktuell sind nur ein paar Wolken am Himmel - gutes Timing um dein Auto zu waschen! Dazu haben wir $nearLocationsCount Waschboxen in deiner Nähe gefunden.";
-        
          break;
         
         case "clear-day": 
           assetName = 'assets/images/Sun.svg';
-          welcomeTextHeadline = "Perfekt!";
-          welcomeText ="Schnapp dir dein Auto - es ist perfektes Wetter um es zu waschen! Dazu haben wir $nearLocationsCount Waschboxen in deiner Nähe gefunden.";
-         
          break;
 
         case "clear-night": 
           assetName = 'assets/images/Moon.svg';
-          welcomeTextHeadline = "Perfekt!";
-          welcomeText ="Wenn es dir nicht zu spät ist, ist das die perfekte Nacht um dein Auto zu waschen! Dazu haben wir $nearLocationsCount Waschboxen in deiner Nähe gefunden.";
-         
          break;
 
         case "rain": 
           assetName = 'assets/images/Cloud-Rain.svg';
-          welcomeTextHeadline = "Lieber abwarten!";
-          welcomeText ="Aktuell sieht es am Himmel sehr nach Regen aus, warte lieber noch etwas ab! Warte lieber noch bis das Wetter wieder besser wird.";
-
          break;
 
         case "snow": 
           assetName = 'assets/images/Cloud-Snow.svg';
-          welcomeTextHeadline = "Das wird kalt!";
-          welcomeText ="Aktuell sieht es nach Schnee aus, das ist kein gutes Wetter um dein Auto zu waschen. Warte lieber noch bis das Wetter wieder besser wird.";
-         
          break;
 
         case "wind": 
-          assetName = 'assets/images/Wind.svg';
-          welcomeTextHeadline = "Achtung Windig!";
-          welcomeText ="Aktuell ist es etwas windig draußen, aber das ist für dich natürlich kein Grund dein Auto nicht zu waschen! Dazu haben wir $nearLocationsCount Waschboxen in deiner Nähe gefunden.";
-          
-         
+          assetName = 'assets/images/Wind.svg';         
          break;
         
         case "partly-cloudy-day": 
-          assetName = 'assets/images/Cloud.svg';
-          welcomeTextHeadline = "Gute Nachrichten";
-          welcomeText ="Schnapp dir dein Auto - es sind nur wenige Wolken am Himmel! Dazu haben wir $nearLocationsCount Waschboxen in deiner Nähe gefunden.";
-         
+          assetName = 'assets/images/Cloud.svg';         
          break;
         
         case "partly-cloudy-night": 
-          assetName = 'assets/images/Cloud-Moon.svg';
-          welcomeTextHeadline = "Gute Nachrichten";
-          welcomeText ="Schnapp dir dein Auto - es sind nur wenige Wolken am Himmel! Dazu haben wir $nearLocationsCount Waschboxen in deiner Nähe gefunden.";
-         
+          assetName = 'assets/images/Cloud-Moon.svg';         
          break;
 
       }
-
-      if(weather["currently"]["temperature"] < 6){
-        welcomeTextHeadline= "Das wird kalt!";
-        welcomeText = "Aktuell ist es draußen ziemlich kalt, kein gutes Wetter um dein Auto zu waschen. Warte lieber noch bis das Wetter wieder besser wird.";
-      }
-
-      if(nearLocationsCount < 1){
-        welcomeTextHeadline= "Sorry!";
-        welcomeText = "Leider haben wir keine Waschboxen in deiner Nähe gefunden. Wechsel in die Karte um alle Waschboxen zu sehen oder neue hinzuzufügen";
-      }
-        
-
-
       setState(() {
               temp = weather["currently"]["temperature"].toStringAsFixed(0);
             });
@@ -284,8 +269,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
     }
   }
 
-  double getScrollToPosition(screenWidth,navSelected){
-    //if(navSelected != currentCard){
+  double getScrollToPosition(screenWidth,navSelected,index){
+    print(index);
+    if(index != pagination){
+
+      setState(() {
+        pagination = index;
+      });
+
       if(navSelected == "washbox"){
         return screenWidth*1;
       }
@@ -294,24 +285,41 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
       }
       if(navSelected == "shootingspot"){
         return screenWidth*2;
-      }
-    //}
+      }      
+    }
   }
+
+  ScrollController addVerticalScrollController(){
+        verticalScrolls.add(new ScrollController());
+        addScrollControllerListener();
+        return verticalScrolls.last;
+  }
+
+  void addScrollControllerListener(){
+    verticalScrolls.last.addListener(_verticalListener);
+  }
+
+  void setupHorizontal(context){
+    if(!horizontalScrollSetup){
+      scrollControllerHorizontal.animateTo(MediaQuery.of(context).size.width, duration: Duration(milliseconds: 200), curve: Curves.fastOutSlowIn);
+      horizontalScrollSetup=true;
+    }
+  }
+
 
 
 
 
   @override
   Widget build(BuildContext context) {
+
+    print("full$test");
+    test++;
     //print("location${widget._currentLocation}");
     if(!httpRequestExecuted){
       httpRequestLocations(positionMap);
       httpRequestExecuted=true;
     }
-
-    
-
-    
     
     return new Scaffold(
       backgroundColor: currentColor,
@@ -389,12 +397,22 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
                         ]
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0.0,16.0,0.0,12.0),
-                      child: Text(welcomeTextHeadline, style: TextStyle(fontSize: 28.0, color: Colors.white, fontWeight: FontWeight.w400),),
-                    ),
-                    Text(welcomeText, style: TextStyle(color: Colors.white),),
-                    Text("", style: TextStyle(color: Colors.white)),
+
+                    Offstage(
+                      offstage:extendSpaceForScroll,
+                      child: new Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(0.0,16.0,0.0,12.0),
+                            child: Text(welcomeTextHeadline, style: TextStyle(fontSize: 28.0, color: Colors.white, fontWeight: FontWeight.w400),),
+                          ),
+                          Text(pagination.toString(), style: TextStyle(color: Colors.white),),
+                          Text("", style: TextStyle(color: Colors.white)),
+                        ],
+                      ),
+                    )
+
                   ],
                 ),
               ),
@@ -432,11 +450,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
                           Expanded(
                             child:
                               ListView.builder(
-                              physics: AlwaysScrollableScrollPhysics(),
+                              physics: NeverScrollableScrollPhysics(),
                               itemCount: 3,
                               controller: scrollControllerHorizontal,
                               scrollDirection: Axis.horizontal,
                               itemBuilder: (context, position) {
+                                setupHorizontal(context);
                                 return itemList(position);
                               },
                             ),
@@ -449,9 +468,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
                       mainAxisAlignment: MainAxisAlignment.center,
                       mainAxisSize: MainAxisSize.max,
                       children: <Widget>[
-                        navIcon("gasstation"),
-                        navIcon("washbox"),
-                        navIcon("shootingspot"),
+                        navIcon("gasstation",0),
+                        navIcon("washbox",1),
+                        navIcon("shootingspot",2),
                       ],
                     )
                     
@@ -468,7 +487,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
     );    
   }
 
-  Widget navIcon(locationType){
+  Widget navIcon(locationType,index){
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 5.0),
       child: GestureDetector(
@@ -476,7 +495,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
         onTap: (){
           setState(() {
             currentCard=locationType;
-            scrollControllerHorizontal.animateTo(getScrollToPosition(MediaQuery.of(context).size.width,locationType), duration: Duration(milliseconds: 200), curve: Curves.fastOutSlowIn);
+            scrollControllerHorizontal.animateTo(getScrollToPosition(MediaQuery.of(context).size.width,locationType,index), duration: Duration(milliseconds: 200), curve: Curves.fastOutSlowIn);
           });
         },
 
@@ -502,6 +521,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
 
 
   Widget itemList(listPosition){
+    print(execution);
+    execution++;
     return Container(
       width: (MediaQuery.of(context).size.width),
       color: Colors.grey[200],
@@ -516,9 +537,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
                         physics: AlwaysScrollableScrollPhysics(),
                         itemCount: 10,
                         shrinkWrap: true,
-                        controller: scrollControllerVertical,
+                        controller: verticalScrolls[listPosition],
                         scrollDirection: Axis.vertical,
                         itemBuilder: (context, itemPosition) {
+                          
                           return  Padding(
                               padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 15.0),
                               child: Card(
@@ -542,7 +564,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
     );  
   }
 
-
+/*
   Widget locationList(position){
     return Card(
                                 child: Container(
@@ -589,7 +611,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
                                 ),
                               );
 
-  }
+  }*/
 
 
 }

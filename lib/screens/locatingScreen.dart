@@ -35,7 +35,11 @@ class LocatingScreen extends StatefulWidget{
   bool gpsStatus = true;
   bool timerRunning=false;
 
-
+    @override
+  void dispose() {
+    super.dispose();
+    gpsTimer.cancel();
+  }
 
   getPosition() async {
 
@@ -54,7 +58,10 @@ class LocatingScreen extends StatefulWidget{
             if(!pushedToHomeScreen){
               Navigator.pop(context);
               Navigator.push(context,MaterialPageRoute(builder: (context) => HomeScreen(positionMap)));
-              pushedToHomeScreen=true;
+              setState(() {
+                              pushedToHomeScreen=true;
+                            });
+              
               
             }
           }
