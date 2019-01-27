@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:deepblue/screens/homeScreen.dart';
+import 'package:deepblue/ViewModels/homeScreenState.dart';
 import 'package:deepblue/screens/manualLocationMapScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart' as gps;

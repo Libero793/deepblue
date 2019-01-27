@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:deepblue/Views/homeScreenView.dart';
 import 'package:deepblue/screens/mapScreen.dart';
 import 'package:deepblue/screens/locatingScreen.dart';
 import 'package:flutter/material.dart';
@@ -7,19 +8,18 @@ import 'package:deepblue/models/CardItemModel.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_svg/flutter_svg.dart';
 
-/*
 
 class HomeScreen extends StatefulWidget {
 
-  var positionMap = new Map<String,double>();
-  
+  Map<String, double> positionMap;
   HomeScreen(this.positionMap);
 
   @override
-  _HomeScreenState createState() => new _HomeScreenState(positionMap);
+  HomeScreenView createState() => new HomeScreenView();
+
 }
 
-class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
+abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
 
 
   var cardIndex = 0;
@@ -49,8 +49,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
   String nearestLocationsJson;
   bool httpRequestExecuted = false;
 
-  var positionMap = new Map<String,double>();
-  _HomeScreenState(this.positionMap);
+  
 
   Timer _reloadTimer;
 
@@ -71,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
     extendSpaceForScroll = false;
     scrollControllerHorizontal = new ScrollController();     
 
-    setupWeatherContext(positionMap);
+    setupWeatherContext(widget.positionMap);
 
     currentCard = "washbox";
 
@@ -309,10 +308,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin{
 
 
 
-
-
-  
-
 }
-*/
+
  

@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:deepblue/screens/homeScreen.dart';
+import 'package:deepblue/ViewModels/homeScreenState.dart';
 import 'package:deepblue/screens/locatingScreen.dart';
 import 'package:deepblue/screens/nameNewLocation.dart';
 import 'package:deepblue/screens/registerLocationScreen.dart';
