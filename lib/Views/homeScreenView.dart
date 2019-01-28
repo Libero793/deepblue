@@ -24,12 +24,7 @@ class HomeScreenView extends HomeScreenState {
         leading: new IconButton(
           icon: new Icon(Icons.map),
           onPressed: () {
-            /*
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => mapScreen(positionMap)),
-            );
-            */
+            navigatorPushToMap();            
           },
         ),
         actions: <Widget>[

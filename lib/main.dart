@@ -1,8 +1,7 @@
 import 'dart:collection';
 
-import 'package:deepblue/screens/locatingScreen.dart';
+import 'package:deepblue/ViewModels/locatingScreenState.dart';
 import 'package:flutter/material.dart';
-import 'package:deepblue/screens/homeScreen.dart';
 import 'dart:async';
 
 void main(){

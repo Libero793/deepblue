@@ -1,8 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:deepblue/Views/homeScreenView.dart';
-import 'package:deepblue/screens/mapScreen.dart';
-import 'package:deepblue/screens/locatingScreen.dart';
+import 'package:deepblue/ViewModels/mapScreenState.dart';
 import 'package:flutter/material.dart';
 import 'package:deepblue/models/CardItemModel.dart';
 import 'package:http/http.dart' as http;
@@ -304,6 +303,13 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
       scrollControllerHorizontal.animateTo(MediaQuery.of(context).size.width, duration: Duration(milliseconds: 200), curve: Curves.fastOutSlowIn);
       horizontalScrollSetup=true;
     }
+  }
+
+  void navigatorPushToMap(){
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => MapScreen(widget.positionMap)),
+    );
   }
 
 

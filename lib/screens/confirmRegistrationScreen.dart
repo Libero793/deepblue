@@ -1,8 +1,6 @@
 import 'dart:async';
 
-import 'package:deepblue/screens/mapScreen.dart';
 import 'package:deepblue/ViewModels/homeScreenState.dart';
-import 'package:deepblue/screens/locatingScreen.dart';
 import 'package:deepblue/screens/nameNewLocation.dart';
 import 'package:flutter/material.dart';
 import 'package:latlong/latlong.dart';

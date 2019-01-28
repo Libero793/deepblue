@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:deepblue/ViewModels/homeScreenState.dart';
+import 'package:deepblue/Views/mapScreenView.dart';
 import 'package:deepblue/screens/nameNewLocation.dart';
 import 'package:deepblue/screens/registerLocationScreen.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,20 +14,19 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
 
 
-class mapScreen extends StatefulWidget {
+class MapScreen extends StatefulWidget {
   @override
   Map<String, double> currentLocation;
-  mapScreen(this.currentLocation);
+  MapScreen(this.currentLocation);
 
-  _mapScreenState createState() => new _mapScreenState(currentLocation);
+  MapScreenView createState() => new MapScreenView();
   
   
 }
 
-class _mapScreenState extends State<mapScreen>{
+abstract class MapScreenState extends State<MapScreen>{
 
-  Map<String, double> currentLocation;
-  _mapScreenState(this.currentLocation);
+
 
   bool addMode = false;
   bool addModeTapped = false;
@@ -47,14 +47,14 @@ class _mapScreenState extends State<mapScreen>{
   
 
 
-  final GlobalKey<ScaffoldState> _scaffoldKey = new 
+  final GlobalKey<ScaffoldState> scaffoldKey = new 
         GlobalKey<ScaffoldState>();
 
     PersistentBottomSheetController controller;
 
   
   void initState(){
-    requestWashboxMap(currentLocation);
+    requestWashboxMap(widget.currentLocation);
   }
 
   void requestWashboxMap(var location)async {
@@ -206,7 +206,7 @@ class _mapScreenState extends State<mapScreen>{
               });
       }
       
-      LatLng handler = new LatLng(currentLocation['latitude'], currentLocation['longitude']);
+      LatLng handler = new LatLng(widget.currentLocation['latitude'], widget.currentLocation['longitude']);
       addLocation(handler); //initial cal for drawing thecurrent position cross
       print("addmode: on");
     }
@@ -278,7 +278,7 @@ class _mapScreenState extends State<mapScreen>{
                     Navigator.pop(context);
                          Navigator.push(
                           context, 
-                          MaterialPageRoute(builder: (context) => HomeScreen(currentLocation)),
+                          MaterialPageRoute(builder: (context) => HomeScreen(widget.currentLocation)),
                         );
                   },
                 ),
@@ -290,7 +290,7 @@ class _mapScreenState extends State<mapScreen>{
 
 
   void showHint(action){
-        ScaffoldState state = _scaffoldKey.currentState;
+        ScaffoldState state = scaffoldKey.currentState;
         
         if(action == "show"){
           controller = state.showBottomSheet<Null>((BuildContext context) {
@@ -352,7 +352,7 @@ class _mapScreenState extends State<mapScreen>{
                                                   padding: EdgeInsets.symmetric(vertical: 10.0,horizontal: 30.0),
                                                   onPressed: () {
                                                     // Perform some action
-                                                    Navigator.push(context,MaterialPageRoute(builder: (context) => NameNewLocationScreen(registerLocation,currentLocation)));
+                                                    Navigator.push(context,MaterialPageRoute(builder: (context) => NameNewLocationScreen(registerLocation,widget.currentLocation)));
                                                   },
                                                 ),
                                               ]
@@ -371,8 +371,8 @@ class _mapScreenState extends State<mapScreen>{
    } 
 
    void toggleBoxInfo(action,washboxInfo){
-        ScaffoldState state = _scaffoldKey.currentState;
-
+        ScaffoldState state = scaffoldKey.currentState;
+        
         if(action == "show"){
             print(washboxInfo);
             if(this.mounted){
@@ -617,104 +617,6 @@ class _mapScreenState extends State<mapScreen>{
    } 
 
   
-  @override
-  Widget build(BuildContext context) {
-    registerLocation=currentLocation;
-    print("map register location$currentLocation");
   
-    _handleTap(LatLng latlng){
-      setState(() {
-        addLocation(latlng);
-        //addMode = true;
-      });
-    }
-
-    return new Scaffold(
-        key: _scaffoldKey,
-        backgroundColor: Colors.blue[900],
-        appBar: new AppBar(
-          title: new Text(headlineText, style: TextStyle(fontSize: 16.0),),
-          backgroundColor: Colors.blue[900],
-          centerTitle: true,
-          leading: new IconButton(
-            icon: new Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.pop(context);
-              Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen(currentLocation)),);
-            },
-          ),
-        ),
-
-        body: new FlutterMap(
-          options: new MapOptions(
-            center: new LatLng(currentLocation["latitude"], currentLocation["longitude"]),
-            zoom: 13.0,
-            onTap: _handleTap,
-          ),
-          layers: [
-            new TileLayerOptions(
-              urlTemplate: "https://api.tiles.mapbox.com/v4/"
-                  "{id}/{z}/{x}/{y}@2x.png?access_token={accessToken}",
-              additionalOptions: {
-                'accessToken': 'pk.eyJ1IjoibGliZXJvOTMiLCJhIjoiY2ptNmtpNWJ0MGx0ZzNrbjNpMG45M2YxdiJ9.meI1vzcg8VkYPRUPizn6qw',
-                'id': 'mapbox.streets',
-              },
-            ),
-            new MarkerLayerOptions(markers: markers),
-            
-            /*
-            MarkerLayerOptions(
-              markers: [
-                new Marker(
-                  width: 60.0,
-                  height: 90.0,
-                  point: new LatLng(51.3703207,12.3652444),
-                  builder: (ctx) =>
-                   new Container(
-                      child: new GestureDetector(
-                         onTap: (){
-                            //_launchMaps("51.3703207","12.3652444");
-                            _showDialog(context);
-                        },
-                        child: new Stack(
-                        alignment: Alignment.topCenter,
-                        overflow: Overflow.visible,
-                        children: [
-                                  new Positioned(
-                                    top: 0.0,
-                                    width: 60.0,
-                                    height: 60.0,
-                                        
-                                        child: new Image.asset(
-                                            'assets/images/locationWashbox.png',
-                                            fit: BoxFit.cover,    
-                                            ),
-                                      ),                                                          
-                                  ]
-                        ),
-                      )
-                    ),
-                ),
-              ],
-            ),*/
-            
-          ],
-        ),
-
-        floatingActionButton:
-              new Container(
-                height: containerFloatingActionButtonHeight,
-                child: new FloatingActionButton(
-                        tooltip: 'Increment',
-                        child: new IconTheme(
-                                  data: new IconThemeData(color: actionButtonIconColor),
-                                  child:  new Icon(actionButton),
-                        ),
-                        backgroundColor: actionButtonColor, 
-                        onPressed: actionButtonPressed,
-                        ), // 
-              ),
-        );     
-  }
 
 }
