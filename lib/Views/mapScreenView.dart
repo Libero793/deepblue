@@ -27,10 +27,7 @@ class MapScreenView extends MapScreenState{
           leading: new IconButton(
             icon: new Icon(Icons.arrow_back),
             onPressed: () {
-              /*
-              Navigator.pop(context);
-              Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen(currentLocation)),);
-              */
+              navigatorPushToHomeScreen();              
             },
           ),
         ),

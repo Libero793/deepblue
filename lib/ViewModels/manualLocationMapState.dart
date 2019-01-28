@@ -3,8 +3,6 @@ import 'dart:convert';
 
 import 'package:deepblue/ViewModels/homeScreenState.dart';
 import 'package:deepblue/Views/manualLocationMapView.dart';
-import 'package:deepblue/screens/nameNewLocation.dart';
-import 'package:deepblue/screens/registerLocationScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';

@@ -1,30 +1,18 @@
-import 'dart:async';
-
-import 'package:deepblue/ViewModels/homeScreenState.dart';
-import 'package:deepblue/screens/nameNewLocation.dart';
 import 'package:flutter/material.dart';
-import 'package:latlong/latlong.dart';
-import 'package:deepblue/models/RegisterLocationModel.dart';
-import 'package:http/http.dart' as http;
+import 'package:deepblue/ViewModels/confirmLocationRegistrationState.dart';
 
+class ConfirmLocationRegistrationView extends ConfirmLocationRegistrationState{
 
-class confirmRegistrationScreen extends StatelessWidget{
-
-  Color menuBackgroundColor = Colors.blue[900];  
-  Map <String, double> currentLocation;
-
-  confirmRegistrationScreen(this.currentLocation);
-   
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
   
     return Scaffold(
-      backgroundColor: menuBackgroundColor,
+      backgroundColor: widget.menuBackgroundColor,
       appBar: AppBar(
         title: Text(""),
         centerTitle: true,
-        backgroundColor: menuBackgroundColor,
+        backgroundColor: widget.menuBackgroundColor,
         elevation: 0.0,
         automaticallyImplyLeading: false,
       ),
@@ -65,11 +53,9 @@ class confirmRegistrationScreen extends StatelessWidget{
                   new Expanded(
                     child: new GestureDetector(
                       onTap:(){
-                        Navigator.pop(context);
-                         Navigator.push(
-                          context, 
-                          MaterialPageRoute(builder: (context) => HomeScreen(currentLocation)),
-                        );
+
+                        navigatorPushToHomeScreen();
+
                       },
                       child: new Container(
                         color: Colors.white,
@@ -78,7 +64,7 @@ class confirmRegistrationScreen extends StatelessWidget{
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
-                          Text("Schliessen",style: TextStyle(color: menuBackgroundColor, fontSize: 16.0, fontWeight: FontWeight.bold)),
+                          Text("Schliessen",style: TextStyle(color: widget.menuBackgroundColor, fontSize: 16.0, fontWeight: FontWeight.bold)),
                         ],
                         ),
                       )
@@ -93,5 +79,4 @@ class confirmRegistrationScreen extends StatelessWidget{
       ),
     );
   }
-
 }

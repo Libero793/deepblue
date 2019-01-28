@@ -18,27 +18,22 @@ class HomeScreenView extends HomeScreenState {
     return new Scaffold(
       backgroundColor: currentColor,
       appBar: new AppBar(
-        title: new Text("DeepBlue", style: TextStyle(fontSize: 16.0),),
+        title: new Text("", style: TextStyle(fontSize: 16.0),),
         backgroundColor: currentColor,
         centerTitle: true,
         leading: new IconButton(
-          icon: new Icon(Icons.map),
+          icon: new Icon(Icons.menu),
           onPressed: () {
-            navigatorPushToMap();            
+                    
           },
         ),
         actions: <Widget>[
           Padding(
             padding: const EdgeInsets.only(right: 16.0),
             child: new IconButton(
-              icon: new Icon(Icons.refresh),
+              icon: new Icon(Icons.map),
               onPressed: () {
-                /*
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => LocatingScreen()),
-                );
-                */
+               navigatorPushToMap();
               },
             )
           ),

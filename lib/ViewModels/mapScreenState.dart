@@ -2,9 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:deepblue/ViewModels/homeScreenState.dart';
+import 'package:deepblue/ViewModels/nameNewLocationState.dart';
 import 'package:deepblue/Views/mapScreenView.dart';
-import 'package:deepblue/screens/nameNewLocation.dart';
-import 'package:deepblue/screens/registerLocationScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -55,6 +54,11 @@ abstract class MapScreenState extends State<MapScreen>{
   
   void initState(){
     requestWashboxMap(widget.currentLocation);
+  }
+
+  void navigatorPushToHomeScreen(){
+    Navigator.pop(context);
+    Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen(widget.currentLocation)),);
   }
 
   void requestWashboxMap(var location)async {
@@ -352,7 +356,7 @@ abstract class MapScreenState extends State<MapScreen>{
                                                   padding: EdgeInsets.symmetric(vertical: 10.0,horizontal: 30.0),
                                                   onPressed: () {
                                                     // Perform some action
-                                                    Navigator.push(context,MaterialPageRoute(builder: (context) => NameNewLocationScreen(registerLocation,widget.currentLocation)));
+                                                    Navigator.push(context,MaterialPageRoute(builder: (context) => NameNewLocation(registerLocation,widget.currentLocation)));
                                                   },
                                                 ),
                                               ]

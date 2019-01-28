@@ -1,57 +1,12 @@
-import 'dart:async';
-import 'package:deepblue/screens/registerLocationScreen.dart';
-import 'package:http/http.dart' as http;
+import 'package:deepblue/ViewModels/nameNewLocationState.dart';
 import 'package:flutter/material.dart';
-import 'package:latlong/latlong.dart';
-import 'package:flutter_rating/flutter_rating.dart';
 
-class NameNewLocationScreen extends StatefulWidget{
-
-   Map<String, double> pushedLocation;
-   Map<String, double> currentLocation;
-  NameNewLocationScreen(this.pushedLocation, this.currentLocation);
-  @override
-  _NameNewLocationScreen createState() => _NameNewLocationScreen(pushedLocation, currentLocation);
-
-}
-
-class _NameNewLocationScreen extends State<NameNewLocationScreen>{
-
-  Map<String, double> pushedLocation;
-  Map<String, double> currentLocation;
-  _NameNewLocationScreen (this.pushedLocation, this.currentLocation);
-
-  Color menuBackgroundColor = Colors.blue[900];
-  
-  
-  //_RegisterLocationScreen(this.pushedLocation);
-  
-  FocusNode _focus = new FocusNode();
-  final textFieldController = TextEditingController();
-  
-
-  @override
-  void initState() {
-    super.initState();
-    _focus.addListener(_onFocusChange);
-  }
-
-  void _onFocusChange(){
-    debugPrint("Focus: "+_focus.hasFocus.toString());
-  }
-
-  @override
-  void dispose(){
-    textFieldController.dispose();
-    super.dispose();
-  }
-
- 
-  
+class NameNewLocationView extends NameNewLocationState{
+    
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    print("location: $pushedLocation");
+    print("location: $widget.pushedLocation");
     final theme = Theme.of(context);
 
     
@@ -102,7 +57,7 @@ class _NameNewLocationScreen extends State<NameNewLocationScreen>{
               child: new Theme(
                         data: theme.copyWith(primaryColor: Colors.white,accentColor: Colors.white, hintColor: Colors.white),
                         child: new TextField(
-                          focusNode: _focus,
+                          focusNode: focus,
                           controller: textFieldController,
                           keyboardType: TextInputType.text,
                           style: TextStyle(fontWeight: FontWeight.normal, color: Colors.white, fontSize: 22.0, ),
@@ -147,10 +102,7 @@ class _NameNewLocationScreen extends State<NameNewLocationScreen>{
                   new Expanded(
                     child: new GestureDetector(
                       onTap:(){
-                         Navigator.push(
-                          context, 
-                          MaterialPageRoute(builder: (context) => RegisterNewLocationScreen(pushedLocation,currentLocation,textFieldController.text)),
-                        );
+                        navigatorPushRegisterNewLocation();
                       },
                       child: new Container(
                         color: Colors.white,
@@ -176,5 +128,4 @@ class _NameNewLocationScreen extends State<NameNewLocationScreen>{
       ),
     );
   }
-
 }
