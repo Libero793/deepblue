@@ -16,127 +16,163 @@ class HomeScreenView extends HomeScreenState {
     }
     
     return new Scaffold(
-      backgroundColor: currentColor,
-      appBar: new AppBar(
-        title: new Text("", style: TextStyle(fontSize: 16.0),),
-        backgroundColor: currentColor,
-        centerTitle: true,
-        leading: new IconButton(
-          icon: new Icon(Icons.menu),
-          onPressed: () {
-                    
-          },
-        ),
-        actions: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(right: 16.0),
-            child: new IconButton(
-              icon: new Icon(Icons.map),
-              onPressed: () {
-               navigatorPushToMap();
-              },
-            )
-          ),
-        ],
-        elevation: 0.0,
-      ),
 
+      body: Stack(
+        children: <Widget>[
+          
+          new Container(
+            decoration: new BoxDecoration(
+              image: new DecorationImage(
+                image: new AssetImage("assets/images/backgroundImageTest.jpg"),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(48.0, 70.0, 48.0, 32.0),
+                  child: Container(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        
+                        weatherWidget(),
+                        infoTextWidget(),
 
-      body: new Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.fromLTRB(48.0, 32.0, 48.0, 32.0),
-              child: Container(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 16.0),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: <Widget>[
-
-                          Container(
-                            width: 60.0,
-                            height: 60.0,
-                            child: SvgPicture.asset(
-                                      assetName,
-                                      color: Colors.white,
-                                    ),
-                          ),
-
-
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget> [
-                                Text(temp, style: TextStyle(fontSize: 38.0, color: Colors.white, fontWeight: FontWeight.w400),),
-                                Text(" °C", style: TextStyle(fontSize: 20.0, color: Colors.white, fontWeight: FontWeight.w400,)),
-                              ]
-                            ),
-                          ),
-
-                          
-
-                        ]
-                      ),
+                      ],
                     ),
-
-                    Offstage(
-                      offstage:extendSpaceForScroll,
-                      child: new Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0.0,16.0,0.0,12.0),
-                            child: Text(welcomeTextHeadline, style: TextStyle(fontSize: 28.0, color: Colors.white, fontWeight: FontWeight.w400),),
-                          ),
-                          Text(pagination.toString(), style: TextStyle(color: Colors.white),),
-                          Text("", style: TextStyle(color: Colors.white)),
-                        ],
-                      ),
-                    )
-
-                  ],
+                  ),
                 ),
-              ),
+
+                loadingAnimationWidget(),
+
+                locationSliderWidget(),
+              ],
             ),
+          ),
 
-            Offstage(
-              offstage: washboxesLoaded,
-              child: new Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    child: new CircularProgressIndicator(backgroundColor: Colors.white,valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),),
-                    height: 68.0,
-                    width: 68.0
-                  ),                    
-                ],
+          new Positioned(
+            top: 0.0,
+            left: 0.0,
+            right: 0.0,
+            child: new AppBar(
+              title: new Text("", style: TextStyle(fontSize: 16.0),),
+              backgroundColor: Colors.transparent,
+              centerTitle: true,
+              elevation: 0.0,
+              leading: new IconButton(
+              icon: new Icon(Icons.menu),
+                onPressed: () {
+                            
+                },
               ),
+              actions: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(right: 16.0),
+                  child: new IconButton(
+                    icon: new Icon(Icons.map),
+                      onPressed: () {
+                        navigatorPushToMap();
+                      },
+                  )
+                ),
+              ],
             ),
+          ),
+        
+        ]
+      )
+      
 
+      //drawer: Drawer(),
+    );    
+  }
 
-            Expanded(
-              child:  Offstage(
-                offstage: (!washboxesLoaded),
-                child: Stack(
-                  children: <Widget>[
+  Widget weatherWidget(){
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 16.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
 
+          Container(
+            width: 100.0,
+            height: 100.0,
+            child: SvgPicture.asset(
+              assetName,
+              color: Colors.white,
+            ),
+          ),
 
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(0.0, 35.0, 0.0, 0.0),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: <Widget>[
-                          Expanded(
-                            child:
-                              ListView.builder(
+          Padding(
+            padding: EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget> [
+                Text(temp, style: TextStyle(fontSize: 54.0, color: Colors.white, fontWeight: FontWeight.w400),),
+                Text(" °C", style: TextStyle(fontSize: 26.0, color: Colors.white, fontWeight: FontWeight.w400,)),
+              ]
+            ),
+          ),
+               
+        ]
+      ),
+    );
+  }
+
+  Widget infoTextWidget(){
+    return Offstage(
+      offstage:extendSpaceForScroll,
+      child: new Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0.0,0.0,0.0,12.0),
+            child: Text(welcomeTextHeadline, style: TextStyle(fontSize: 28.0, color: Colors.white, fontWeight: FontWeight.w400),),
+          ),
+      
+          Text(welcomeText, style: TextStyle(color: Colors.white)),
+          Container(
+            height: 150.0,
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget loadingAnimationWidget(){
+    return Offstage(
+      offstage: washboxesLoaded,
+      child: new Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              child: new CircularProgressIndicator(backgroundColor: Colors.white,valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),),
+              height: 68.0,
+              width: 68.0
+            ),                    
+          ],
+        ),
+      );
+  }
+
+  Widget locationSliderWidget(){
+    return Expanded(
+      child:  Offstage(
+        offstage: (!washboxesLoaded),
+        child: Stack(
+          children: <Widget>[
+
+            Padding(
+              padding: EdgeInsets.fromLTRB(0.0, 35.0, 0.0, 0.0),
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Expanded(
+                    child:  ListView.builder(
                               physics: NeverScrollableScrollPhysics(),
                               itemCount: 3,
                               controller: scrollControllerHorizontal,
@@ -146,32 +182,24 @@ class HomeScreenView extends HomeScreenState {
                                 return itemList(position);
                               },
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.max,
-                      children: <Widget>[
-                        navIcon("gasstation",0),
-                        navIcon("washbox",1),
-                        navIcon("shootingspot",2),
-                      ],
-                    )
-                    
-                
-
-                  ] 
-                ),               
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
+                    
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                navIcon("gasstation",0),
+                navIcon("washbox",1),
+                navIcon("shootingspot",2),
+              ],
+            )
+          ] 
+        ),               
       ),
-      //drawer: Drawer(),
-    );    
+    );
   }
 
   Widget navIcon(locationType,index){
@@ -212,7 +240,7 @@ class HomeScreenView extends HomeScreenState {
     execution++;
     return Container(
       width: (MediaQuery.of(context).size.width),
-      color: Colors.grey[200],
+      color: Colors.grey[850],
       child: Padding(
         padding: EdgeInsets.fromLTRB(0.0, 35.0, 0.0, 0.0),
         child: Column(

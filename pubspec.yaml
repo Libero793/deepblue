@@ -18,8 +18,8 @@ dependencies:
   geolocation:
     git: "https://github.com/driveddy/geolocation.git"
 
-  settings: 
-    path: "../../../git/settings"
+  # settings: 
+  # path: "../../../git/settings"
     
   
 dev_dependencies:
@@ -55,6 +55,7 @@ flutter:
     - assets/images/Moon.svg
     - assets/images/Sun.svg
     - assets/images/Wind.svg
+    - assets/images/backgroundImageTest.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.

@@ -115,40 +115,75 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
 
   
       switch (weather["currently"]["icon"]){
-
         case "cloudy": 
           assetName = 'assets/images/Cloud.svg';
+          welcomeTextHeadline = "Gute Nachrichten";
+          welcomeText = "Aktuell sind nur ein paar Wolken am Himmel - gutes Timing um dein Auto zu waschen! Dazu haben wir $nearLocationsCount Waschboxen in deiner Nähe gefunden.";
+
          break;
-        
+
         case "clear-day": 
           assetName = 'assets/images/Sun.svg';
+          welcomeTextHeadline = "Perfekt!";
+          welcomeText ="Schnapp dir dein Auto - es ist perfektes Wetter um es zu waschen! Dazu haben wir $nearLocationsCount Waschboxen in deiner Nähe gefunden.";
+
          break;
 
         case "clear-night": 
           assetName = 'assets/images/Moon.svg';
+          welcomeTextHeadline = "Perfekt!";
+          welcomeText ="Wenn es dir nicht zu spät ist, ist das die perfekte Nacht um dein Auto zu waschen! Dazu haben wir $nearLocationsCount Waschboxen in deiner Nähe gefunden.";
+
          break;
 
         case "rain": 
           assetName = 'assets/images/Cloud-Rain.svg';
+          welcomeTextHeadline = "Lieber abwarten!";
+          welcomeText ="Aktuell sieht es am Himmel sehr nach Regen aus, warte lieber noch etwas ab! Warte lieber noch bis das Wetter wieder besser wird.";
+
          break;
 
         case "snow": 
           assetName = 'assets/images/Cloud-Snow.svg';
+          welcomeTextHeadline = "Das wird kalt!";
+          welcomeText ="Aktuell sieht es nach Schnee aus, das ist kein gutes Wetter um dein Auto zu waschen. Warte lieber noch bis das Wetter wieder besser wird.";
+
          break;
 
         case "wind": 
-          assetName = 'assets/images/Wind.svg';         
+          assetName = 'assets/images/Wind.svg';
+          welcomeTextHeadline = "Achtung Windig!";
+          welcomeText ="Aktuell ist es etwas windig draußen, aber das ist für dich natürlich kein Grund dein Auto nicht zu waschen! Dazu haben wir $nearLocationsCount Waschboxen in deiner Nähe gefunden.";
+
+
          break;
-        
+
         case "partly-cloudy-day": 
-          assetName = 'assets/images/Cloud.svg';         
+          assetName = 'assets/images/Cloud.svg';
+          welcomeTextHeadline = "Gute Nachrichten";
+          welcomeText ="Schnapp dir dein Auto - es sind nur wenige Wolken am Himmel! Dazu haben wir $nearLocationsCount Waschboxen in deiner Nähe gefunden.";
+
          break;
-        
+
         case "partly-cloudy-night": 
-          assetName = 'assets/images/Cloud-Moon.svg';         
+          assetName = 'assets/images/Cloud-Moon.svg';
+          welcomeTextHeadline = "Gute Nachrichten";
+          welcomeText ="Schnapp dir dein Auto - es sind nur wenige Wolken am Himmel! Dazu haben wir $nearLocationsCount Waschboxen in deiner Nähe gefunden.";
+
          break;
 
       }
+
+      if(weather["currently"]["temperature"] < 6){
+        welcomeTextHeadline= "Das wird kalt!";
+        welcomeText = "Aktuell ist es draußen ziemlich kalt, kein gutes Wetter um dein Auto zu waschen. Warte lieber noch bis das Wetter wieder besser wird.";
+      }
+
+      if(nearLocationsCount < 1){
+        welcomeTextHeadline= "Sorry!";
+        welcomeText = "Leider haben wir keine Waschboxen in deiner Nähe gefunden. Wechsel in die Karte um alle Waschboxen zu sehen oder neue hinzuzufügen";
+      }
+      
       setState(() {
               temp = weather["currently"]["temperature"].toStringAsFixed(0);
             });
@@ -212,15 +247,15 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
 
   Color getCardColor(position){
     if(position == 0){
-      return Colors.blue;
+      return Colors.grey[600];
     }
 
     if(position == 1){
-      return Colors.green;
+      return Colors.grey[800];
     }
 
     if(position == 2){
-      return Colors.yellow;
+      return Colors.grey[700];
     }
   }
 
@@ -232,13 +267,13 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
       return Icons.local_gas_station;
     }
     if(locationType == "shootingspot"){
-      return Icons.camera_alt;
+      return Icons.linked_camera;
     }
   }
 
   double getNavIconSize(navSelected){
     if(navSelected == currentCard){
-      return 35.0;
+      return 45.0;
     }else{
       return 25.0;
     }
@@ -246,7 +281,7 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
 
   double getNavIconBoxSize(navSelected){
     if(navSelected == currentCard){
-      return 60.0;
+      return 70.0;
     }else{
       return 50.0;
     }
@@ -262,9 +297,9 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
 
   Color getNavIconBoxColor(navSelected){
     if(navSelected == currentCard){
-      return Colors.blue;
+      return Colors.red;
     }else{
-      return Colors.white;
+      return Colors.grey[600];
     }
   }
 
