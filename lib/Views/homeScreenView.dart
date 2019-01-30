@@ -31,7 +31,7 @@ class HomeScreenView extends HomeScreenState {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(48.0, 70.0, 48.0, 32.0),
+                  padding: const EdgeInsets.fromLTRB(48.0, 70.0, 48.0, 16.0),
                   child: Container(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -80,6 +80,9 @@ class HomeScreenView extends HomeScreenState {
               ],
             ),
           ),
+          
+          
+    
         
         ]
       )
@@ -89,16 +92,17 @@ class HomeScreenView extends HomeScreenState {
     );    
   }
 
+
   Widget weatherWidget(){
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 16.0),
+      padding: const EdgeInsets.fromLTRB(0.0, 16.0, 16.0, 0.0),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: <Widget>[
 
           Container(
-            width: 100.0,
-            height: 100.0,
+            width: 70.0,
+            height: 70.0,
             child: SvgPicture.asset(
               assetName,
               color: Colors.white,
@@ -106,11 +110,11 @@ class HomeScreenView extends HomeScreenState {
           ),
 
           Padding(
-            padding: EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 0.0),
+            padding: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 10.0),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget> [
-                Text(temp, style: TextStyle(fontSize: 54.0, color: Colors.white, fontWeight: FontWeight.w400),),
+                Text(temp, style: TextStyle(fontSize: 40.0, color: Colors.white, fontWeight: FontWeight.w400),),
                 Text(" °C", style: TextStyle(fontSize: 26.0, color: Colors.white, fontWeight: FontWeight.w400,)),
               ]
             ),
@@ -123,7 +127,7 @@ class HomeScreenView extends HomeScreenState {
 
   Widget infoTextWidget(){
     return Offstage(
-      offstage:extendSpaceForScroll,
+      offstage: false,
       child: new Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -133,8 +137,11 @@ class HomeScreenView extends HomeScreenState {
           ),
       
           Text(welcomeText, style: TextStyle(color: Colors.white)),
-          Container(
-            height: 150.0,
+          Offstage(
+            offstage: extendSpaceForScroll,
+            child:Container(
+              height: 270.0,
+            )
           )
         ],
       ),
@@ -166,7 +173,7 @@ class HomeScreenView extends HomeScreenState {
           children: <Widget>[
 
             Padding(
-              padding: EdgeInsets.fromLTRB(0.0, 35.0, 0.0, 0.0),
+              padding: EdgeInsets.fromLTRB(0.0, firstCardOffset, 0.0, 0.0),
               child: Row(
                 mainAxisSize: MainAxisSize.max,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -186,22 +193,132 @@ class HomeScreenView extends HomeScreenState {
                 ],
               ),
             ),
-                    
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                navIcon("gasstation",0),
-                navIcon("washbox",1),
-                navIcon("shootingspot",2),
-              ],
-            )
+
+            navBarSliderWidget(),
+
           ] 
         ),               
       ),
     );
   }
 
+  Widget navBarSliderWidget(){
+    return Padding(
+              padding: EdgeInsets.fromLTRB(9.0, 0.0, 9.0, 0.0),
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                
+                children: <Widget>[
+                  Expanded(
+                    child:  Container(
+                      color: Colors.transparent,
+                      height: 45.0,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        mainAxisSize: MainAxisSize.max,
+                        children: <Widget>[
+
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: (){
+                                setState(() {
+                                  currentCard="gasstation";
+                                  scrollControllerHorizontal.animateTo(getScrollToPosition(MediaQuery.of(context).size.width,"gasstation",0), duration: Duration(milliseconds: 200), curve: Curves.fastOutSlowIn);
+                                });
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: getNavCardColor("gasstation"),
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: const Radius.circular(10.0),
+                                    bottomLeft: const Radius.circular(10.0),
+                                  )
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                                  children: <Widget>[
+                                    Icon(
+                                      Icons.local_gas_station,
+                                      size: 28.0,
+                                      color: getNavIconColor("gasstation"),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: (){
+                                setState(() {
+                                  currentCard="washbox";
+                                  scrollControllerHorizontal.animateTo(getScrollToPosition(MediaQuery.of(context).size.width,"washbox",1), duration: Duration(milliseconds: 200), curve: Curves.fastOutSlowIn);
+                                });
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: getNavCardColor("washbox"),                             
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                                  children: <Widget>[
+                                    Icon(
+                                      Icons.local_car_wash,
+                                      size: 28.0,
+                                      color: getNavIconColor("washbox"),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: (){
+                                setState(() {
+                                  currentCard="shootingspot";
+                                  scrollControllerHorizontal.animateTo(getScrollToPosition(MediaQuery.of(context).size.width,"shootingspot",2), duration: Duration(milliseconds: 200), curve: Curves.fastOutSlowIn);
+                                });
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: getNavCardColor("shootingspot"),
+                                  borderRadius: BorderRadius.only(
+                                    topRight: const Radius.circular(10.0),
+                                    bottomRight: const Radius.circular(10.0),
+                                  )
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                                  children: <Widget>[
+                                    Icon(
+                                      Icons.linked_camera,
+                                      size: 28.0,
+                                      color: getNavIconColor("shootingspot"),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+
+                        ],
+                      ),
+                      
+                                
+                    )
+                  ),
+                ],
+              ),
+            );
+  }
+
+  /*
   Widget navIcon(locationType,index){
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 5.0),
@@ -227,22 +344,22 @@ class HomeScreenView extends HomeScreenState {
           
           color: getNavIconBoxColor(locationType),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15.0)
+            borderRadius: BorderRadius.circular(10.0)
           ),
         ),
       ),
     );    
   }
-
+  */
 
   Widget itemList(listPosition){
     print(execution);
     execution++;
     return Container(
       width: (MediaQuery.of(context).size.width),
-      color: Colors.grey[850],
+      color: Colors.transparent,
       child: Padding(
-        padding: EdgeInsets.fromLTRB(0.0, 35.0, 0.0, 0.0),
+        padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -257,15 +374,15 @@ class HomeScreenView extends HomeScreenState {
                         itemBuilder: (context, itemPosition) {
                           
                           return  Padding(
-                              padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 15.0),
+                              padding: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 5.0),
                               child: Card(
-                                color: getCardColor(listPosition),
+                                color: Colors.white,
                                 shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5.0)
+                                      borderRadius: BorderRadius.circular(10.0)
                                 ),
 
                                 child: Container(
-                                  height: 200.0,
+                                  height: 175.0,
                                 ),                                
 
                               )

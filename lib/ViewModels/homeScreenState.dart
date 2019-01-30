@@ -61,6 +61,8 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
 
   bool extendSpaceForScroll;
   bool horizontalScrollSetup=false;
+
+  double firstCardOffset = 30.0;
  
 
 
@@ -88,14 +90,16 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
     if(!extendSpaceForScroll){
       if(verticalScroll.offset>10){
         setState(() {
-          extendSpaceForScroll=true;       
+          extendSpaceForScroll=true;   
+          firstCardOffset=50.0;    
         });
         
       }
     }else{
       if(verticalScroll.offset<=10){
         setState(() {
-          extendSpaceForScroll=false;       
+          extendSpaceForScroll=false;    
+          firstCardOffset= 30.0;  
         });
       }
     }
@@ -245,18 +249,12 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
     
   }
 
-  Color getCardColor(position){
-    if(position == 0){
-      return Colors.grey[600];
-    }
-
-    if(position == 1){
-      return Colors.grey[800];
-    }
-
-    if(position == 2){
-      return Colors.grey[700];
-    }
+  Color getNavCardColor(navSelected){
+   if(navSelected == currentCard){
+     return Colors.grey[400];
+   }else{
+     return Colors.white;
+   }
   }
 
   IconData getNavIcon(locationType){
@@ -273,7 +271,7 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
 
   double getNavIconSize(navSelected){
     if(navSelected == currentCard){
-      return 45.0;
+      return 40.0;
     }else{
       return 25.0;
     }
@@ -281,7 +279,7 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
 
   double getNavIconBoxSize(navSelected){
     if(navSelected == currentCard){
-      return 70.0;
+      return 65.0;
     }else{
       return 50.0;
     }
@@ -297,9 +295,9 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
 
   Color getNavIconBoxColor(navSelected){
     if(navSelected == currentCard){
-      return Colors.red;
+      return Colors.blue[400];
     }else{
-      return Colors.grey[600];
+      return Colors.grey[200];
     }
   }
 
