@@ -1,6 +1,7 @@
 import 'dart:collection';
 
 import 'package:deepblue/ViewModels/locatingScreenState.dart';
+import 'package:deepblue/ViewModels/startScreenState.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: 'locate',
       routes: {
-        '/':(context) => new LocatingScreen(),
+        '/':(context) => new StartScreen(),
       },
       debugShowCheckedModeBanner: false,
     );

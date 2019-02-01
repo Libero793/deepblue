@@ -56,6 +56,15 @@ flutter:
     - assets/images/Sun.svg
     - assets/images/Wind.svg
     - assets/images/backgroundImageTest.jpg
+    - assets/images/startScreenBackgroundImage.jpg
+    - assets/images/startScreenBackgroundImage2.jpg
+    - assets/images/logo_2edit.svg
+    - assets/images/logo_3edit.svg
+    - assets/images/image3.jpg
+
+    
+
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
