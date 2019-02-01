@@ -112,6 +112,9 @@ class LocatingScreenView extends LocatingScreenState {
                           
                         ]
                       ),
+
+                      homeLocationWidget(),
+                      
                     ],
                   )
                 )
@@ -163,5 +166,63 @@ class LocatingScreenView extends LocatingScreenState {
     );
 
       
+  }
+
+  Widget homeLocationWidget(){
+    
+    return new Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      mainAxisSize: MainAxisSize.max,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: <Widget>[
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 45.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+
+                Padding(
+                  padding: EdgeInsets.fromLTRB(5, 0, 25, 0),
+                  child: Container(
+                    width: 30.0,
+                    height: 30.0,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.white, width: 2.0),
+                      borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                    ),
+                    child:  Theme(
+                      data: ThemeData(
+                        unselectedWidgetColor: Colors.blue,         
+                      ),
+                      child: Checkbox(                   
+                        value: setAsHomeLocation,
+                        onChanged: (bool e) => toggleHomeLocationBox(e),
+                        activeColor: Colors.blue,
+                      ),
+                    ),          
+                  ),
+                ),
+
+                Icon(Icons.home, color: Colors.white),
+                      
+                Expanded(
+                  child:new Padding(
+                    padding: const EdgeInsets.fromLTRB(10.0,0.0,0.0,0.0),
+                    child: Text("Neuer Heimat Standort", 
+                      style: TextStyle(fontSize: 16.0, color: Colors.white, fontWeight: FontWeight.normal),
+                      textAlign: TextAlign.left,
+                    ),
+                  ),
+                )
+              
+              ]
+            )
+          )
+        )
+      ]
+    );
+
   }
 }

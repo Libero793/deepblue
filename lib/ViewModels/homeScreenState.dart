@@ -11,7 +11,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 class HomeScreen extends StatefulWidget {
 
   Map<String, double> positionMap;
-  HomeScreen(this.positionMap);
+  bool setAsHomeScreen;
+  HomeScreen(this.positionMap,this.setAsHomeScreen);
 
   @override
   HomeScreenView createState() => new HomeScreenView();

@@ -58,7 +58,7 @@ abstract class MapScreenState extends State<MapScreen>{
 
   void navigatorPushToHomeScreen(){
     Navigator.pop(context);
-    Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen(widget.currentLocation)),);
+    Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen(widget.currentLocation,false)),);
   }
 
   void requestWashboxMap(var location)async {
@@ -282,7 +282,7 @@ abstract class MapScreenState extends State<MapScreen>{
                     Navigator.pop(context);
                          Navigator.push(
                           context, 
-                          MaterialPageRoute(builder: (context) => HomeScreen(widget.currentLocation)),
+                          MaterialPageRoute(builder: (context) => HomeScreen(widget.currentLocation,false)),
                         );
                   },
                 ),

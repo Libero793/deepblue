@@ -86,11 +86,9 @@ class StartScreenView extends StartScreenState {
                                             ]                                                 
                                           ),      
                                           padding: EdgeInsets.fromLTRB(0.0, 10.0, 0, 10.0),
-                                          color: Colors.white,
                                           textColor: Colors.white,
-                                          splashColor: Colors.blue[900],
                                           onPressed: () {
-                                                              
+                                             useCurrentLocation();                 
                                           },
                                         ),
                                         
@@ -131,16 +129,17 @@ class StartScreenView extends StartScreenState {
                                             children: <Widget>[
                                               Padding(
                                                 padding: EdgeInsets.fromLTRB(0, 0, 5, 0),
-                                                child: Icon(Icons.home,color: Colors.white,),
+                                                child: Icon(Icons.home,color: homeLocationButtonColor,),
                                               ),                               
                                               Text('Heimat Standort', style: TextStyle(fontSize: 16.0),),
                                             ]                                                 
-                                          ),                                                
-                                          color: Colors.blue[900],
-                                          highlightColor: Colors.green,
-                                          textColor: Colors.white,
-                                          splashColor: Colors.blue[900],
+                                          ),                     
+                                          borderSide: BorderSide(
+                                            color: homeLocationButtonColor,
+                                          ),                          
+                                          textColor: homeLocationButtonColor,
                                           onPressed: () {
+                                            useHomeLocation();
                                           },
                                         ),
                               

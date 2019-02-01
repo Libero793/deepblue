@@ -14,6 +14,9 @@ import 'package:http/http.dart' as http;
 
 class ManualLocationMap extends StatefulWidget {
 
+  bool setAsHomeLocation;
+  ManualLocationMap(this.setAsHomeLocation);
+
   @override
   ManualLocationMapView createState() => new ManualLocationMapView();
   
@@ -70,7 +73,7 @@ abstract class ManualLocationMapState extends State<ManualLocationMap>{
 
   void pushToHomeScreen(selectedLocation){
     Navigator.pop(context);
-    Navigator.push(context,MaterialPageRoute(builder: (context) => HomeScreen(selectedLocation)));  
+    Navigator.push(context,MaterialPageRoute(builder: (context) => HomeScreen(selectedLocation, widget.setAsHomeLocation)));  
   }
 
 

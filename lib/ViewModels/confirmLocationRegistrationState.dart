@@ -22,7 +22,7 @@ abstract class ConfirmLocationRegistrationState extends State<ConfirmLocationReg
                             Navigator.pop(context);
                          Navigator.push(
                           context, 
-                          MaterialPageRoute(builder: (context) => HomeScreen(widget.currentLocation)),
+                          MaterialPageRoute(builder: (context) => HomeScreen(widget.currentLocation,false)),
                         );
   }
    

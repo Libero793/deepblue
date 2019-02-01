@@ -34,14 +34,12 @@ abstract class LocatingScreenState extends State<LocatingScreen>{
   bool gpsStatus = true;
   bool timerRunning=false;
 
-    @override
+  bool setAsHomeLocation = false;
+
+  @override
   void dispose() {
     super.dispose();
     gpsTimer.cancel();
-  }
-
-  pushToManualLocationMap(){
-    Navigator.push(context,MaterialPageRoute(builder: (context) => ManualLocationMap()));
   }
 
   getPosition() async {
@@ -60,7 +58,7 @@ abstract class LocatingScreenState extends State<LocatingScreen>{
         
             if(!pushedToHomeScreen){
               Navigator.pop(context);
-              Navigator.push(context,MaterialPageRoute(builder: (context) => HomeScreen(positionMap)));
+              Navigator.push(context,MaterialPageRoute(builder: (context) => HomeScreen(positionMap,setAsHomeLocation)));
               setState(() {
                               pushedToHomeScreen=true;
                             });
@@ -121,6 +119,18 @@ abstract class LocatingScreenState extends State<LocatingScreen>{
       });
     }
 
+  }
+
+  toggleHomeLocationBox(bool e){
+    if(this.mounted){
+      setState(() {
+        setAsHomeLocation = e;
+      });
+    }
+  }
+
+  pushToManualLocationMap(){
+    Navigator.push(context,MaterialPageRoute(builder: (context) => ManualLocationMap(setAsHomeLocation)));
   }
 
 
