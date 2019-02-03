@@ -72,7 +72,7 @@ class LocatingScreenView extends LocatingScreenState {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
                                 new Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 48.0),
+                                  padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 40.0),
                                   child:  LinearProgressIndicator()                        
 
                                 ),
@@ -80,6 +80,21 @@ class LocatingScreenView extends LocatingScreenState {
                             ),
                           ),
                         ]
+                      ),
+
+                      Row(
+                        children: <Widget>[
+                            Expanded(
+                              child:Padding(
+                                padding: EdgeInsets.fromLTRB(40, 20, 40, 0),
+                                child: Container(
+                                  color: Colors.blue[300],
+                                  height: 1.0,
+                                )
+                              )
+                            ),
+                        ],
+
                       ),
 
 
@@ -210,14 +225,14 @@ class LocatingScreenView extends LocatingScreenState {
       children: <Widget>[
         Expanded(
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 45.0),
+            padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 40.0),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
 
                 Padding(
-                  padding: EdgeInsets.fromLTRB(0, 0, 40, 0),
+                  padding: EdgeInsets.fromLTRB(0, 0, 50, 0),
                   child: Container(
                     width: 25.0,
                     height: 25.0,
