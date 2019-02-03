@@ -171,42 +171,50 @@ class LocatingScreenView extends LocatingScreenState {
                 Expanded(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 30.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.white, width: 2.0, ),
-                          borderRadius: BorderRadius.all(Radius.circular(4.0)),
-                          color: Colors.white,
-                        ),
-                        
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          mainAxisSize: MainAxisSize.max,
-                          children: <Widget>[
-                            
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(20.0, 15, 0, 15),                   
-                              child: Container(
-                                width: 210.0,
-                                color: Colors.transparent,
-                                child:new Padding(
-                                  padding: const EdgeInsets.fromLTRB(0.0,0.0,0.0,0.0),
-                                  child: Text("Verwende den Karten Modus, falls dein Standort über GPS nicht automatisch lokalisiert werden kann.", 
-                                    style: TextStyle(fontSize: 12.0, color: Colors.blue),
-                                    textAlign: TextAlign.left,
+                      child: AnimatedOpacity(
+                        opacity: widget.hideHint ? 0 : 1,
+                        duration: Duration(milliseconds: 500),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.white, width: 2.0, ),
+                            borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                            color: Colors.white,
+                          ),
+                          
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            mainAxisSize: MainAxisSize.max,
+                            children: <Widget>[
+                              
+                              Padding(
+                                padding: EdgeInsets.fromLTRB(20.0, 15, 0, 15),                   
+                                child: Container(
+                                  width: 210.0,
+                                  color: Colors.transparent,
+                                  child:new Padding(
+                                    padding: const EdgeInsets.fromLTRB(0.0,0.0,0.0,0.0),
+                                    child: Text("Verwende den Karten Modus, falls dein Standort über GPS nicht automatisch lokalisiert werden kann.", 
+                                      style: TextStyle(fontSize: 12.0, color: Colors.blue),
+                                      textAlign: TextAlign.left,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                            
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(10,0,10,0),
-                              child:Icon(Icons.close,size: 30.0,color: Colors.blue), 
-                            )
-                            
+                              
+                              GestureDetector(
+                                onTap: (){
+                                  hideHint();
+                                },
+                                child:Padding(
+                                  padding: EdgeInsets.fromLTRB(10,0,10,0),
+                                  child:Icon(Icons.close,size: 30.0,color: Colors.blue), 
+                                )
+                              )
 
-                          ]
+                            ]
+                          )
                         )
-                      )
+                      ) 
                     )            
                   
                 )
@@ -259,7 +267,7 @@ class LocatingScreenView extends LocatingScreenState {
                     Padding(
                         padding: const EdgeInsets.fromLTRB(10.0,0.0,0.0,0.0),
                         child: Text("Neuer Heimat Standort", 
-                          style: TextStyle(fontSize: 16.0, color: Colors.white, fontWeight: FontWeight.normal),
+                          style: TextStyle(fontSize: 18.0, color: Colors.white, fontWeight: FontWeight.normal),
                           textAlign: TextAlign.left,
                         ),
                       ),

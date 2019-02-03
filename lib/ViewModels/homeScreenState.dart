@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:deepblue/Views/homeScreenView.dart';
 import 'package:deepblue/ViewModels/mapScreenState.dart';
+import 'package:deepblue/models/setupFile.dart';
 import 'package:flutter/material.dart';
 import 'package:deepblue/models/CardItemModel.dart';
 import 'package:http/http.dart' as http;
@@ -11,8 +12,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 class HomeScreen extends StatefulWidget {
 
   Map<String, double> positionMap;
-  bool setAsHomeScreen;
-  HomeScreen(this.positionMap,this.setAsHomeScreen);
+  bool setAsHomeLocation;
+  HomeScreen(this.positionMap,this.setAsHomeLocation);
 
   @override
   HomeScreenView createState() => new HomeScreenView();
@@ -64,6 +65,8 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
   bool horizontalScrollSetup=false;
 
   double firstCardOffset = 30.0;
+
+  SetupFile fileHandler = new SetupFile();
  
 
 
@@ -79,8 +82,18 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
     for(int i=0; i<=2; i++){
       addVerticalScrollController();
     }
+
+    if(widget.setAsHomeLocation){
+      writeHomeLocationToFile(widget.positionMap);
+    }
     
     super.initState();
+  }
+
+  Future writeHomeLocationToFile(positionMap) async {
+    fileHandler.initFileDirectory().then((init){
+      fileHandler.writeToFile("homeLocation", json.encode(positionMap));
+    });
   }
 
 

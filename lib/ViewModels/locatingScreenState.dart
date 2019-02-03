@@ -10,6 +10,8 @@ import 'package:flutter/services.dart';
 
 
 class LocatingScreen extends StatefulWidget{
+    bool hideHint;
+    LocatingScreen(this.hideHint);
 
     LocatingScreenView createState() => new LocatingScreenView();
 }
@@ -121,7 +123,7 @@ abstract class LocatingScreenState extends State<LocatingScreen>{
 
   }
 
-  toggleHomeLocationBox(bool e){
+  void toggleHomeLocationBox(bool e){
     if(this.mounted){
       setState(() {
         setAsHomeLocation = e;
@@ -129,8 +131,15 @@ abstract class LocatingScreenState extends State<LocatingScreen>{
     }
   }
 
-  pushToManualLocationMap(){
+  void pushToManualLocationMap(){
     Navigator.push(context,MaterialPageRoute(builder: (context) => ManualLocationMap(setAsHomeLocation)));
+  }
+
+  void hideHint(){
+    print("test");
+    setState(() {
+      widget.hideHint=true;
+    });
   }
 
 

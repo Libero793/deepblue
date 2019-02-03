@@ -87,6 +87,9 @@ class StartScreenView extends StartScreenState {
                                           ),      
                                           padding: EdgeInsets.fromLTRB(0.0, 10.0, 0, 10.0),
                                           textColor: Colors.white,
+                                          splashColor: Colors.blue,
+                                          highlightColor: Colors.transparent,
+                                          highlightedBorderColor: Colors.white,
                                           onPressed: () {
                                              useCurrentLocation();                 
                                           },
@@ -138,6 +141,9 @@ class StartScreenView extends StartScreenState {
                                             color: homeLocationButtonColor,
                                           ),                          
                                           textColor: homeLocationButtonColor,
+                                          splashColor: Colors.grey[400],
+                                          highlightColor: Colors.grey[400],
+                                          highlightedBorderColor: Colors.white,
                                           onPressed: () {
                                             useHomeLocation();
                                           },
