@@ -231,9 +231,8 @@ class LocatingScreenView extends LocatingScreenState {
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
 
-                Padding(
-                  padding: EdgeInsets.fromLTRB(0, 0, 50, 0),
-                  child: Container(
+               
+                Container(
                     width: 25.0,
                     height: 25.0,
                     decoration: BoxDecoration(
@@ -250,20 +249,24 @@ class LocatingScreenView extends LocatingScreenState {
                         activeColor: Colors.blue,
                       ),
                     ),          
-                  ),
                 ),
-
-                Icon(Icons.home, color: Colors.white),
+                
+                Row(
+                  children: <Widget>[
+                    Icon(Icons.home, color: Colors.white),
                       
-                Expanded(
-                  child:new Padding(
-                    padding: const EdgeInsets.fromLTRB(10.0,0.0,0.0,0.0),
-                    child: Text("Neuer Heimat Standort", 
-                      style: TextStyle(fontSize: 16.0, color: Colors.white, fontWeight: FontWeight.normal),
-                      textAlign: TextAlign.left,
-                    ),
-                  ),
+                    
+                    Padding(
+                        padding: const EdgeInsets.fromLTRB(10.0,0.0,0.0,0.0),
+                        child: Text("Neuer Heimat Standort", 
+                          style: TextStyle(fontSize: 16.0, color: Colors.white, fontWeight: FontWeight.normal),
+                          textAlign: TextAlign.left,
+                        ),
+                      ),
+                    
+                  ],
                 )
+                
               
               ]
             )
