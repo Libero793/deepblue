@@ -32,7 +32,7 @@ class LocatingScreenView extends LocatingScreenState {
           children: <Widget>[
              
           Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
 
@@ -41,6 +41,7 @@ class LocatingScreenView extends LocatingScreenState {
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.max,
                     children: <Widget>[
+
                       new Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
@@ -81,40 +82,18 @@ class LocatingScreenView extends LocatingScreenState {
                         ]
                       ),
 
-                      new Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.max,
-                        children: <Widget>[
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 45.0),
-                              child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: <Widget>[
-                                    Icon(Icons.info_outline,size: 40.0,color: Colors.white),                     
-                                    Container(
-                                      width: 230.0,
-                                      color: Colors.blue,
-                                      child:new Padding(
-                                          padding: const EdgeInsets.fromLTRB(20.0,0.0,0.0,0.0),
-                                          child: Text("Verwende den Karten Modus, falls dein Standort über GPS nicht automatisch lokalisiert werden kann.", 
-                                            style: TextStyle(fontSize: 12.0, color: Colors.white),
-                                            textAlign: TextAlign.left,
-                                          ),
-                                        ),
-                                    )
-                                  ]
-                                )
-                            )
-                            
-                          )
-                          
-                        ]
-                      ),
+
 
                       homeLocationWidget(),
+
                       
+
+                      Container(
+                        height: 60.0,
+                      ),
+                      
+                      mapHintWidget(),
+
                     ],
                   )
                 )
@@ -168,6 +147,60 @@ class LocatingScreenView extends LocatingScreenState {
       
   }
 
+  Widget mapHintWidget(){
+    return  Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+
+                Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 30.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.white, width: 2.0, ),
+                          borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                          color: Colors.white,
+                        ),
+                        
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          mainAxisSize: MainAxisSize.max,
+                          children: <Widget>[
+                            
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(20.0, 15, 0, 15),                   
+                              child: Container(
+                                width: 210.0,
+                                color: Colors.transparent,
+                                child:new Padding(
+                                  padding: const EdgeInsets.fromLTRB(0.0,0.0,0.0,0.0),
+                                  child: Text("Verwende den Karten Modus, falls dein Standort über GPS nicht automatisch lokalisiert werden kann.", 
+                                    style: TextStyle(fontSize: 12.0, color: Colors.blue),
+                                    textAlign: TextAlign.left,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(10,0,10,0),
+                              child:Icon(Icons.close,size: 30.0,color: Colors.blue), 
+                            )
+                            
+
+                          ]
+                        )
+                      )
+                    )            
+                  
+                )
+                          
+              ]
+            );
+  }
+
+
   Widget homeLocationWidget(){
     
     return new Row(
@@ -184,10 +217,10 @@ class LocatingScreenView extends LocatingScreenState {
               children: <Widget>[
 
                 Padding(
-                  padding: EdgeInsets.fromLTRB(5, 0, 25, 0),
+                  padding: EdgeInsets.fromLTRB(0, 0, 40, 0),
                   child: Container(
-                    width: 30.0,
-                    height: 30.0,
+                    width: 25.0,
+                    height: 25.0,
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.white, width: 2.0),
                       borderRadius: BorderRadius.all(Radius.circular(4.0)),
