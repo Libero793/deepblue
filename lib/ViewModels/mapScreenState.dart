@@ -4,6 +4,8 @@ import 'dart:convert';
 import 'package:deepblue/ViewModels/homeScreenState.dart';
 import 'package:deepblue/ViewModels/nameNewLocationState.dart';
 import 'package:deepblue/Views/mapScreenView.dart';
+import 'package:deepblue/models/CoreFunctionsModel.dart';
+import 'package:deepblue/models/RegisterNewLocationModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -15,8 +17,9 @@ import 'package:http/http.dart' as http;
 
 class MapScreen extends StatefulWidget {
   @override
-  Map<String, double> currentLocation;
-  MapScreen(this.currentLocation);
+
+  CoreFunctionsModel coreClass;
+  MapScreen(this.coreClass);
 
   MapScreenView createState() => new MapScreenView();
   
@@ -44,7 +47,7 @@ abstract class MapScreenState extends State<MapScreen>{
   var washboxMap = null;
   bool showBoxInfo=false;
   
-
+  RegisterNewLocationModel registerLocationClass = new RegisterNewLocationModel();
 
   final GlobalKey<ScaffoldState> scaffoldKey = new 
         GlobalKey<ScaffoldState>();
@@ -53,12 +56,12 @@ abstract class MapScreenState extends State<MapScreen>{
 
   
   void initState(){
-    requestWashboxMap(widget.currentLocation);
+    requestWashboxMap(widget.coreClass.getSelectedLocation());
   }
 
   void navigatorPushToHomeScreen(){
     Navigator.pop(context);
-    Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen(widget.currentLocation,false)),);
+    Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen(widget.coreClass)));
   }
 
   void requestWashboxMap(var location)async {
@@ -210,7 +213,7 @@ abstract class MapScreenState extends State<MapScreen>{
               });
       }
       
-      LatLng handler = new LatLng(widget.currentLocation['latitude'], widget.currentLocation['longitude']);
+      LatLng handler = new LatLng(widget.coreClass.getSelectedLocation()['latitude'], widget.coreClass.getSelectedLocation()['longitude']);
       addLocation(handler); //initial cal for drawing thecurrent position cross
       print("addmode: on");
     }
@@ -259,6 +262,8 @@ abstract class MapScreenState extends State<MapScreen>{
          // setState(() {
             registerLocation["longitude"] = latlng.longitude;
             registerLocation["latitude"] = latlng.latitude;
+            registerLocationClass.setLocation(registerLocation);
+
          // });}
           addModeTapped = true;
         }
@@ -282,7 +287,7 @@ abstract class MapScreenState extends State<MapScreen>{
                     Navigator.pop(context);
                          Navigator.push(
                           context, 
-                          MaterialPageRoute(builder: (context) => HomeScreen(widget.currentLocation,false)),
+                          MaterialPageRoute(builder: (context) => HomeScreen(widget.coreClass)),
                         );
                   },
                 ),
@@ -356,7 +361,7 @@ abstract class MapScreenState extends State<MapScreen>{
                                                   padding: EdgeInsets.symmetric(vertical: 10.0,horizontal: 30.0),
                                                   onPressed: () {
                                                     // Perform some action
-                                                    Navigator.push(context,MaterialPageRoute(builder: (context) => NameNewLocation(registerLocation,widget.currentLocation)));
+                                                    Navigator.push(context,MaterialPageRoute(builder: (context) => NameNewLocation(registerLocationClass,widget.coreClass)));
                                                   },
                                                 ),
                                               ]

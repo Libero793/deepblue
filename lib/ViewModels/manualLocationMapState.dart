@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:deepblue/ViewModels/homeScreenState.dart';
 import 'package:deepblue/Views/manualLocationMapView.dart';
+import 'package:deepblue/models/CoreFunctionsModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -15,7 +16,8 @@ import 'package:http/http.dart' as http;
 class ManualLocationMap extends StatefulWidget {
 
   bool setAsHomeLocation;
-  ManualLocationMap(this.setAsHomeLocation);
+  CoreFunctionsModel coreClass;
+  ManualLocationMap(this.coreClass);
 
   @override
   ManualLocationMapView createState() => new ManualLocationMapView();
@@ -73,7 +75,7 @@ abstract class ManualLocationMapState extends State<ManualLocationMap>{
 
   void pushToHomeScreen(selectedLocation){
     Navigator.pop(context);
-    Navigator.push(context,MaterialPageRoute(builder: (context) => HomeScreen(selectedLocation, widget.setAsHomeLocation)));  
+    Navigator.push(context,MaterialPageRoute(builder: (context) => HomeScreen(widget.coreClass)));  
   }
 
 
@@ -164,6 +166,7 @@ abstract class ManualLocationMapState extends State<ManualLocationMap>{
             pointTapped = true;
             selectedLocation["longitude"] = latlng.longitude;
             selectedLocation["latitude"] = latlng.latitude;
+            widget.coreClass.setSelectedLocation(selectedLocation);
           });
           
   }

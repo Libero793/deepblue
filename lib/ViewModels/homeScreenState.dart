@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:deepblue/Views/homeScreenView.dart';
 import 'package:deepblue/ViewModels/mapScreenState.dart';
+import 'package:deepblue/models/CoreFunctionsModel.dart';
 import 'package:deepblue/models/setupFile.dart';
 import 'package:flutter/material.dart';
 import 'package:deepblue/models/CardItemModel.dart';
@@ -11,9 +12,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class HomeScreen extends StatefulWidget {
 
-  Map<String, double> positionMap;
-  bool setAsHomeLocation;
-  HomeScreen(this.positionMap,this.setAsHomeLocation);
+  CoreFunctionsModel coreClass;
+  HomeScreen(this.coreClass);
 
   @override
   HomeScreenView createState() => new HomeScreenView();
@@ -75,7 +75,7 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
     extendSpaceForScroll = false;
     scrollControllerHorizontal = new ScrollController();     
 
-    setupWeatherContext(widget.positionMap);
+    setupWeatherContext(widget.coreClass.getSelectedLocation());
 
     currentCard = "washbox";
 
@@ -83,8 +83,8 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
       addVerticalScrollController();
     }
 
-    if(widget.setAsHomeLocation){
-      writeHomeLocationToFile(widget.positionMap);
+    if(widget.coreClass.getHomeLocationTrigger()){
+      writeHomeLocationToFile(widget.coreClass.getSelectedLocation());
     }
     
     super.initState();
@@ -125,7 +125,7 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
     _reloadTimer.cancel();
   }
 
-  Future setupWeatherContext(var location) async {
+  Future setupWeatherContext(Map<String,double> location) async {
     if(httpRequestWeather(location) != "null"){
       var jsonWeather = await httpRequestWeather(location);
       var weather = json.decode(jsonWeather);
@@ -209,7 +209,7 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
     }
   }
 
-  Future<String> httpRequestWeather(var location)async {
+  Future<String> httpRequestWeather(Map<String,double> location)async {
     var darkSkyUrl="https://api.darksky.net/forecast/97ada79b0fdc34e056d1cdd1f41c6ddf/"
                    "${location['latitude']},${location['longitude']}"
                    "?units=auto";
@@ -355,7 +355,7 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
   void navigatorPushToMap(){
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => MapScreen(widget.positionMap)),
+      MaterialPageRoute(builder: (context) => MapScreen(widget.coreClass)),
     );
   }
 

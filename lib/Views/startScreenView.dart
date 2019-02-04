@@ -2,6 +2,7 @@
 import 'package:deepblue/ViewModels/startScreenState.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:deepblue/models/CoreFunctionsModel.dart';
 
 
 class StartScreenView extends StartScreenState {

@@ -15,6 +15,7 @@ class SetupFile {
   Future initFileDirectory() async {
 
     String path = await getFilePath();
+    print(path);
     jsonFile = new File(path + "/" + fileName);
     if(jsonFile.existsSync()){
       fileExists=true;

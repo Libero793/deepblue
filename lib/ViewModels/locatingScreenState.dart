@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:deepblue/ViewModels/homeScreenState.dart';
 import 'package:deepblue/Views/locatingScreenView.dart';
 import 'package:deepblue/ViewModels/manualLocationMapState.dart';
+import 'package:deepblue/models/CoreFunctionsModel.dart';
+import 'package:deepblue/models/setupFile.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart' as gps;
 import 'package:geolocation/geolocation.dart' ;
@@ -10,8 +12,9 @@ import 'package:flutter/services.dart';
 
 
 class LocatingScreen extends StatefulWidget{
-    bool hideHint;
-    LocatingScreen(this.hideHint);
+
+    CoreFunctionsModel coreClass;
+    LocatingScreen(this.coreClass);
 
     LocatingScreenView createState() => new LocatingScreenView();
 }
@@ -20,6 +23,7 @@ abstract class LocatingScreenState extends State<LocatingScreen>{
 
   Map<String, double> _startLocation;
   Map<String, double> _currentLocation;
+  SetupFile fileHandler = new SetupFile();
 
   StreamSubscription<Map<String, double>> _locationSubscription;
 
@@ -57,10 +61,12 @@ abstract class LocatingScreenState extends State<LocatingScreen>{
             var positionMap = new Map<String,double>();
             positionMap["latitude"] = position.latitude;
             positionMap["longitude"] = position.longitude;
+
+            widget.coreClass.setSelectedLocation(positionMap);
         
             if(!pushedToHomeScreen){
               Navigator.pop(context);
-              Navigator.push(context,MaterialPageRoute(builder: (context) => HomeScreen(positionMap,setAsHomeLocation)));
+              Navigator.push(context,MaterialPageRoute(builder: (context) => HomeScreen(widget.coreClass)));
               setState(() {
                               pushedToHomeScreen=true;
                             });
@@ -127,18 +133,22 @@ abstract class LocatingScreenState extends State<LocatingScreen>{
     if(this.mounted){
       setState(() {
         setAsHomeLocation = e;
+        widget.coreClass.setHomeLocationTrigger(e);
+        print("homeLocationTrigger set to $e");
       });
     }
   }
 
   void pushToManualLocationMap(){
-    Navigator.push(context,MaterialPageRoute(builder: (context) => ManualLocationMap(setAsHomeLocation)));
+    Navigator.push(context,MaterialPageRoute(builder: (context) => ManualLocationMap(widget.coreClass)));
   }
 
   void hideHint(){
-    print("test");
     setState(() {
-      widget.hideHint=true;
+      widget.coreClass.setManualMapHintStatus(false);
+      SetupFile file = widget.coreClass.getSetupFile();
+      file.writeToFile("manualMapHintStatus", "false");
+      print("manualMapHintStatus changed to false");
     });
   }
 

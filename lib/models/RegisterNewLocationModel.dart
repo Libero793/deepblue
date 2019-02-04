@@ -1,14 +1,29 @@
-import 'dart:core';
+class RegisterNewLocationModel{
 
-class RegisterLocationModel {
+  Map<String,double> location;
+  String locationName;
 
-  bool hochdruckReiniger;
-  bool schaumBuerste;
-  bool schaumPistole;
-  bool fliessendWasser;
-  bool motorWaesche;
+  bool hochdruckReiniger=false;
+  bool schaumBuerste=false;
+  bool schaumPistole=false;
+  bool fliessendWasser=false;
+  bool motorWaesche=false;
 
-  RegisterLocationModel(this.hochdruckReiniger, this.schaumBuerste, this.schaumPistole, this.fliessendWasser, this.motorWaesche);
+  void setLocation(loc){
+    location = loc;
+  }
+
+  Map <String,double> getLocation(){
+    return location;
+  }
+
+  void setLocationName(name){
+    locationName = name;
+  }
+
+  String getLocationName(){
+    return locationName;
+  }
 
   //hochdruck Reiniger
   void setHochdruckReiniger(bool value){
@@ -57,4 +72,5 @@ class RegisterLocationModel {
   bool getMotorWaesche(){
     return motorWaesche;
   }
+
 }

@@ -5,8 +5,7 @@ class RegisterNewLocationView extends RegisterNewLocationState{
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    print(widget.pushedLocation);
-    print(widget.locationName);
+    print(widget.registerLocationClass.toString());
     print("uid: $finudid");
     return Scaffold(
       backgroundColor: menuBackgroundColor,

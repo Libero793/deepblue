@@ -7,7 +7,7 @@ class MapScreenView extends MapScreenState{
 
   @override
   Widget build(BuildContext context) {
-    registerLocation=widget.currentLocation;
+    registerLocation=widget.coreClass.getSelectedLocation();
     print("map register location$widget.currentLocation");
   
     _handleTap(LatLng latlng){
@@ -34,7 +34,7 @@ class MapScreenView extends MapScreenState{
 
         body: new FlutterMap(
           options: new MapOptions(
-            center: new LatLng(widget.currentLocation["latitude"], widget.currentLocation["longitude"]),
+            center: new LatLng(widget.coreClass.getSelectedLocation()["latitude"], widget.coreClass.getSelectedLocation()["longitude"]),
             zoom: 13.0,
             onTap: _handleTap,
           ),

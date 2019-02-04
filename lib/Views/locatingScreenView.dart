@@ -172,7 +172,7 @@ class LocatingScreenView extends LocatingScreenState {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 30.0),
                       child: AnimatedOpacity(
-                        opacity: widget.hideHint ? 0 : 1,
+                        opacity: widget.coreClass.getManualMapHintStatus() ? 1 : 0,
                         duration: Duration(milliseconds: 500),
                         child: Container(
                           decoration: BoxDecoration(

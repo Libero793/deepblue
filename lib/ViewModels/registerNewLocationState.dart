@@ -1,19 +1,19 @@
 import 'dart:async';
 import 'package:deepblue/ViewModels/confirmLocationRegistrationState.dart';
+import 'package:deepblue/models/CoreFunctionsModel.dart';
+import 'package:deepblue/models/RegisterNewLocationModel.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_udid/flutter_udid.dart';
 import 'package:flutter/material.dart';
-import 'package:deepblue/models/RegisterLocationModel.dart';
 import 'package:http/http.dart' as http;
 import 'package:deepblue/Views/registerNewLocationView.dart';
 
 
 class RegisterNewLocation extends StatefulWidget{
 
-  Map<String, double> pushedLocation;
-  Map<String, double> currentLocation;
-  String locationName;
-  RegisterNewLocation(this.pushedLocation,this.currentLocation,this.locationName);
+  CoreFunctionsModel coreClass;
+  RegisterNewLocationModel registerLocationClass;
+  RegisterNewLocation(this.registerLocationClass, this.coreClass);
 
   @override
   RegisterNewLocationView createState() => RegisterNewLocationView();
@@ -32,7 +32,7 @@ abstract class RegisterNewLocationState extends State<RegisterNewLocation>{
   bool schaumPistole = false;
   bool fliessendWasser = false;
   bool motorWaesche = false;
-  RegisterLocationModel registerModel = RegisterLocationModel(false, false, false, false, false);
+  
   String finudid;
   
 
@@ -68,7 +68,7 @@ abstract class RegisterNewLocationState extends State<RegisterNewLocation>{
                 hochdruckReiniger=false;
               }
 
-              registerModel.setHochdruckReiniger(hochdruckReiniger);
+              widget.registerLocationClass.setHochdruckReiniger(hochdruckReiniger);
 
             }else if(val == "schaumBuerste"){
               if(e){
@@ -77,7 +77,7 @@ abstract class RegisterNewLocationState extends State<RegisterNewLocation>{
                 schaumBuerste=false;
               }
 
-              registerModel.setSchaumBuerste(schaumBuerste);
+              widget.registerLocationClass.setSchaumBuerste(schaumBuerste);
 
             }else if(val == "schaumPistole"){
               if(e){
@@ -86,7 +86,7 @@ abstract class RegisterNewLocationState extends State<RegisterNewLocation>{
                 schaumPistole=false;
               }
 
-              registerModel.setSchaumPistole(schaumPistole);
+              widget.registerLocationClass.setSchaumPistole(schaumPistole);
 
             }else if(val == "fliessendWasser"){
               if(e){
@@ -95,7 +95,7 @@ abstract class RegisterNewLocationState extends State<RegisterNewLocation>{
                 fliessendWasser=false;
               }
 
-              registerModel.setFliessendWasser(fliessendWasser);
+              widget.registerLocationClass.setFliessendWasser(fliessendWasser);
 
             }else if(val == "motorWaesche"){
               if(e){
@@ -104,7 +104,7 @@ abstract class RegisterNewLocationState extends State<RegisterNewLocation>{
                 motorWaesche=false;
               }
 
-              registerModel.setMotorWaesche(motorWaesche);
+              widget.registerLocationClass.setMotorWaesche(motorWaesche);
 
             }
         
@@ -120,21 +120,31 @@ abstract class RegisterNewLocationState extends State<RegisterNewLocation>{
 
     var url = "http://www.nell.science/deepblue/index.php";
 
+    print(widget.registerLocationClass.getLocation()['latitude'].toString());
+    print(widget.registerLocationClass.getLocation()['longitude'].toString());
+    print(widget.registerLocationClass.getHochdruckReiniger().toString());
+    print(widget.registerLocationClass.getSchaumBuerste().toString());
+    print(widget.registerLocationClass.getSchaumPistole().toString());
+    print(widget.registerLocationClass.getFliessendWasser().toString());
+    print(widget.registerLocationClass.getMotorWaesche().toString());
+    print(widget.registerLocationClass.getLocationName().toString());
+    print(finudid.toString());
+
     http.post(url, body: {"registerNewWashingLocation":"true",
                           "key": "0", 
-                          "latitude": widget.pushedLocation['latitude'].toString(), 
-                          "longitude": widget.pushedLocation['longitude'].toString(),
-                          "hochdruckReiniger": registerModel.getHochdruckReiniger().toString(), 
-                          "schaumBuerste": registerModel.getSchaumBuerste().toString(),
-                          "schaumPistole": registerModel.getSchaumPistole().toString(),
-                          "fliessendWasser": registerModel.getFliessendWasser().toString(),
-                          "motorWaesche": registerModel.getMotorWaesche().toString(),
-                          "nameWaschbox": widget.locationName.toString(),
+                          "latitude": widget.registerLocationClass.getLocation()['latitude'].toString(), 
+                          "longitude": widget.registerLocationClass.getLocation()['longitude'].toString(),
+                          "hochdruckReiniger": widget.registerLocationClass.getHochdruckReiniger().toString(), 
+                          "schaumBuerste": widget.registerLocationClass.getSchaumBuerste().toString(),
+                          "schaumPistole": widget.registerLocationClass.getSchaumPistole().toString(),
+                          "fliessendWasser": widget.registerLocationClass.getFliessendWasser().toString(),
+                          "motorWaesche": widget.registerLocationClass.getMotorWaesche().toString(),
+                          "nameWaschbox": widget.registerLocationClass.getLocationName().toString(),
                           "udid": finudid.toString(),
                           
                           })
         .then((response) {
-      print("Response status: ${response.statusCode}");   
+      print("register Response status: ${response.statusCode}");   
       print("Response body: ${response.body}");
       print("httpreq");
 
@@ -142,7 +152,7 @@ abstract class RegisterNewLocationState extends State<RegisterNewLocation>{
         Navigator.pop(context);
         Navigator.push(
                           context, 
-                          MaterialPageRoute(builder: (context) => ConfirmLocationRegistration(widget.currentLocation)),
+                          MaterialPageRoute(builder: (context) => ConfirmLocationRegistration(widget.coreClass)),
                         );
       }else{
         print("location registration failed");

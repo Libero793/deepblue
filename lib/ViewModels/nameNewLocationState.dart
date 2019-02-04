@@ -1,14 +1,17 @@
 import 'dart:async';
 import 'package:deepblue/ViewModels/registerNewLocationState.dart';
 import 'package:deepblue/Views/nameNewLocationView.dart';
+import 'package:deepblue/models/CoreFunctionsModel.dart';
+import 'package:deepblue/models/RegisterNewLocationModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating/flutter_rating.dart';
 
 class NameNewLocation extends StatefulWidget{
 
-   Map<String, double> pushedLocation;
-   Map<String, double> currentLocation;
-  NameNewLocation(this.pushedLocation, this.currentLocation);
+  RegisterNewLocationModel registerLocationClass;
+  CoreFunctionsModel coreClass;
+
+  NameNewLocation(this.registerLocationClass, this.coreClass);
 
   @override
   NameNewLocationView createState() => NameNewLocationView();
@@ -44,9 +47,10 @@ abstract class NameNewLocationState extends State<NameNewLocation>{
   }
 
   void navigatorPushRegisterNewLocation(){
-     Navigator.push(
+    widget.registerLocationClass.setLocationName(textFieldController.text);
+    Navigator.push(
       context, 
-      MaterialPageRoute(builder: (context) => RegisterNewLocation(widget.pushedLocation,widget.currentLocation,textFieldController.text)),
+      MaterialPageRoute(builder: (context) => RegisterNewLocation(widget.registerLocationClass,widget.coreClass)),
     );
   }
 

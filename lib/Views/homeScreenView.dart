@@ -11,7 +11,7 @@ class HomeScreenView extends HomeScreenState {
     test++;
     //print("location${widget._currentLocation}");
     if(!httpRequestExecuted){
-      httpRequestLocations(widget.positionMap);
+      httpRequestLocations(widget.coreClass.getSelectedLocation());
       httpRequestExecuted=true;
     }
     
