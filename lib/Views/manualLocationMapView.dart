@@ -17,10 +17,10 @@ class ManualLocationMapView extends ManualLocationMapState {
 
     return new Scaffold(
         //key: _scaffoldKey,
-        backgroundColor: Colors.blue[900],
+        backgroundColor: widget.coreClass.getHighlightColor(),
         appBar: new AppBar(
           title: new Text(headlineText, style: TextStyle(fontSize: 16.0),),
-          backgroundColor: Colors.blue[900],
+          backgroundColor: widget.coreClass.getHighlightColor(),
           centerTitle: true,
           leading: new IconButton(
             icon: new Icon(Icons.arrow_back),
@@ -59,7 +59,7 @@ class ManualLocationMapView extends ManualLocationMapState {
                   ),
                   child:new Container (
                     decoration: new BoxDecoration(
-                      color: Colors.blue[900],
+                      color: widget.coreClass.getHighlightColor(),
                       borderRadius: new BorderRadius.only(
                         topLeft: const Radius.circular(10.0),
                         topRight: const Radius.circular(10.0),
@@ -93,8 +93,8 @@ class ManualLocationMapView extends ManualLocationMapState {
                                               
                                           child: const Text('Weiter'),
                                             color: Colors.white,
-                                            textColor: Colors.blue[900],
-                                            splashColor: Colors.blue[900],
+                                            textColor: widget.coreClass.getHighlightColor(),
+                                            splashColor: widget.coreClass.getHighlightColor(),
                                             padding: EdgeInsets.symmetric(vertical: 10.0,horizontal: 30.0),
                                             onPressed: () {
                                                 if(pointTapped){

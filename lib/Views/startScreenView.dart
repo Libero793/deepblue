@@ -12,7 +12,7 @@ class StartScreenView extends StartScreenState {
   Widget build(BuildContext context){
 
     return Scaffold(
-      backgroundColor: Colors.blue,
+      backgroundColor: coreClass.getHighlightColor(),
 
       body: new Center(
               child: Stack(                
@@ -86,9 +86,13 @@ class StartScreenView extends StartScreenState {
                                               Text('Aktueller Standort', style: TextStyle(fontSize: 16.0),),
                                             ]                                                 
                                           ),      
+                                          borderSide: BorderSide(
+                                            color: Colors.white,
+                                            width: 1.5,
+                                          ),  
                                           padding: EdgeInsets.fromLTRB(0.0, 10.0, 0, 10.0),
                                           textColor: Colors.white,
-                                          splashColor: Colors.blue,
+                                          splashColor: coreClass.getHighlightColor(),
                                           highlightColor: Colors.transparent,
                                           highlightedBorderColor: Colors.white,
                                           onPressed: () {
@@ -126,8 +130,7 @@ class StartScreenView extends StartScreenState {
                                           ),
                                         ),
 
-                                        new OutlineButton(  
-                                          padding: EdgeInsets.fromLTRB(0.0, 10.0, 0, 10.0),
+                                        new OutlineButton(                                         
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             children: <Widget>[
@@ -140,15 +143,18 @@ class StartScreenView extends StartScreenState {
                                           ),                     
                                           borderSide: BorderSide(
                                             color: homeLocationButtonColor,
+                                            width: 1.5,
                                           ),                          
-                                          textColor: homeLocationButtonColor,
-                                          splashColor: Colors.grey[400],
-                                          highlightColor: Colors.grey[400],
+                                          padding: EdgeInsets.fromLTRB(0.0, 10.0, 0, 10.0),
+                                          textColor: Colors.white,
+                                          splashColor: coreClass.getHighlightColor(),
+                                          highlightColor: Colors.transparent,
                                           highlightedBorderColor: Colors.white,
                                           onPressed: () {
                                             useHomeLocation();
                                           },
                                         ),
+
                               
                                       ],
                                     ),

@@ -23,7 +23,7 @@ class HomeScreenView extends HomeScreenState {
           new Container(
             decoration: new BoxDecoration(
               image: new DecorationImage(
-                image: new AssetImage("assets/images/backgroundImageTest.jpg"),
+                image: new AssetImage("assets/images/startScreenBackgroundImage.jpg"),
                 fit: BoxFit.cover,
               ),
             ),

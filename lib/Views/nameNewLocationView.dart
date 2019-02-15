@@ -12,11 +12,11 @@ class NameNewLocationView extends NameNewLocationState{
     
 
     return Scaffold(
-      backgroundColor: menuBackgroundColor,
+      backgroundColor: widget.coreClass.getHighlightColor(),
       appBar: AppBar(
         title: Text(""),
         centerTitle: true,
-        backgroundColor: menuBackgroundColor,
+        backgroundColor: widget.coreClass.getHighlightColor(),
         elevation: 0.0,
       ),
 
@@ -63,7 +63,7 @@ class NameNewLocationView extends NameNewLocationState{
                           style: TextStyle(fontWeight: FontWeight.normal, color: Colors.white, fontSize: 22.0, ),
                           decoration: new InputDecoration(
                             hintText: "Waschbox-Name",
-                            hintStyle: TextStyle(color: Colors.indigo[400], fontSize: 20.0,fontWeight: FontWeight.normal),
+                            hintStyle: TextStyle(color: Colors.blue[100], fontSize: 20.0,fontWeight: FontWeight.normal),
                             border: new UnderlineInputBorder(
                               borderSide: new BorderSide(
                                 color: Colors.red
@@ -111,7 +111,7 @@ class NameNewLocationView extends NameNewLocationState{
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
-                          Text("Speichern",style: TextStyle(color: menuBackgroundColor, fontSize: 16.0, fontWeight: FontWeight.bold)),
+                          Text("Speichern",style: TextStyle(color: widget.coreClass.getHighlightColor(), fontSize: 16.0, fontWeight: FontWeight.bold)),
                          
                         ],
                         ),

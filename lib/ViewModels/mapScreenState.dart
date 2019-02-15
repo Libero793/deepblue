@@ -38,7 +38,7 @@ abstract class MapScreenState extends State<MapScreen>{
 
   Timer _reloadTimer;
   IconData actionButton = Icons.add;
-  Color actionButtonColor = Colors.blue[900];
+  Color actionButtonColor;
   Color actionButtonIconColor = Colors.white;
 
   Map<String, double> registerLocation;
@@ -56,6 +56,7 @@ abstract class MapScreenState extends State<MapScreen>{
 
   
   void initState(){
+    actionButtonColor = widget.coreClass.getHighlightColor();
     requestWashboxMap(widget.coreClass.getSelectedLocation());
   }
 
@@ -248,7 +249,7 @@ abstract class MapScreenState extends State<MapScreen>{
                       ),
                       child: Column(
                         children: <Widget>[
-                          Icon(Icons.my_location,color: Colors.blue[900],size: 60.0,),
+                          Icon(Icons.my_location,color: widget.coreClass.getHighlightColor(),size: 60.0,),
                         ]
                       )
                       
@@ -313,7 +314,7 @@ abstract class MapScreenState extends State<MapScreen>{
                                       ),
                                       child:new Container (
                                         decoration: new BoxDecoration(
-                                          color: Colors.blue[900],
+                                          color: widget.coreClass.getHighlightColor(),
                                           borderRadius: new BorderRadius.only(
                                               topLeft: const Radius.circular(10.0),
                                               topRight: const Radius.circular(10.0),
@@ -338,10 +339,10 @@ abstract class MapScreenState extends State<MapScreen>{
                                               children: <Widget>[
                                                 new OutlineButton(
                                                   child: const Text('Abbrechen'),
-                                                  color: Colors.blue[900],
+                                                  color: widget.coreClass.getHighlightColor(),
                                                   highlightColor: Colors.green,
                                                   textColor: Colors.white,
-                                                  splashColor: Colors.blue[900],
+                                                  splashColor: widget.coreClass.getHighlightColor(),
                                                   onPressed: () {
                                                     // Perform some action
                                                     toggleEditMode();
@@ -356,8 +357,8 @@ abstract class MapScreenState extends State<MapScreen>{
                                               
                                                   child: const Text('Weiter'),
                                                   color: Colors.white,
-                                                  textColor: Colors.blue[900],
-                                                  splashColor: Colors.blue[900],
+                                                  textColor: widget.coreClass.getHighlightColor(),
+                                                  splashColor: widget.coreClass.getHighlightColor(),
                                                   padding: EdgeInsets.symmetric(vertical: 10.0,horizontal: 30.0),
                                                   onPressed: () {
                                                     // Perform some action
@@ -388,7 +389,7 @@ abstract class MapScreenState extends State<MapScreen>{
               setState(() {
                 actionButton=Icons.close;
                 actionButtonColor=Colors.white;
-                actionButtonIconColor=Colors.blue[900];
+                actionButtonIconColor=widget.coreClass.getHighlightColor();
                 showBoxInfo=true;
               });
             }
@@ -402,7 +403,7 @@ abstract class MapScreenState extends State<MapScreen>{
                                       ),
                                       child: new Container (
                                         decoration: new BoxDecoration(
-                                          color: Colors.blue[900],
+                                          color: widget.coreClass.getHighlightColor(),
                                           borderRadius: new BorderRadius.only(
                                               topLeft: const Radius.circular(10.0),
                                               topRight: const Radius.circular(10.0),
@@ -618,7 +619,7 @@ abstract class MapScreenState extends State<MapScreen>{
               controller.close();
               actionButton=Icons.add;
               showBoxInfo=false;
-              actionButtonColor=Colors.blue[900];
+              actionButtonColor=widget.coreClass.getHighlightColor();
               actionButtonIconColor=Colors.white;
             });
           }

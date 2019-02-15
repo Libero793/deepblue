@@ -19,10 +19,10 @@ class MapScreenView extends MapScreenState{
 
     return new Scaffold(
         key: scaffoldKey,
-        backgroundColor: Colors.blue[900],
+        backgroundColor: widget.coreClass.getHighlightColor(),
         appBar: new AppBar(
           title: new Text(headlineText, style: TextStyle(fontSize: 16.0),),
-          backgroundColor: Colors.blue[900],
+          backgroundColor: widget.coreClass.getHighlightColor(),
           centerTitle: true,
           leading: new IconButton(
             icon: new Icon(Icons.arrow_back),

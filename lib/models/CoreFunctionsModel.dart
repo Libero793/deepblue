@@ -1,6 +1,8 @@
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:deepblue/models/setupFile.dart';
+import 'package:flutter/material.dart';
 
 class CoreFunctionsModel{
 
@@ -8,6 +10,7 @@ class CoreFunctionsModel{
   Map <String,double> selectedLocation;
   bool setAsHomeLocation = false;
   bool manualMapHintStatus;
+  Color highlightColor = Color(0xff2980b9);
 
   getSetupFile(){
     return setupFile;
@@ -40,5 +43,10 @@ class CoreFunctionsModel{
   setManualMapHintStatus(status){
     manualMapHintStatus=status;
   }
+
+  getHighlightColor(){
+    return highlightColor;
+  }
+
 
 }

@@ -15,11 +15,11 @@ class LocatingScreenView extends LocatingScreenState {
 
 
     return Scaffold(
-      backgroundColor: Colors.blue,
+      backgroundColor: widget.coreClass.getHighlightColor(),
       appBar: AppBar(
         title: Text(""),
         centerTitle: true,
-        backgroundColor: Colors.blue,
+        backgroundColor: widget.coreClass.getHighlightColor(),
         elevation: 0.0,
     ),
 
@@ -65,15 +65,26 @@ class LocatingScreenView extends LocatingScreenState {
                           
                         ],  
                       ),
+
+                      
                       new Row(
                         children: <Widget>[
                           new Flexible(
                             child:Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
+
                                 new Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 40.0),
-                                  child:  LinearProgressIndicator()                        
+                                  padding: EdgeInsets.fromLTRB(40, 14, 40, 8),
+                                  child:  Theme(
+                                    data: new ThemeData(
+                                      highlightColor: Colors.white,
+                                      accentColor: Colors.grey,
+                                    ),
+                                    child: LinearProgressIndicator(
+                                      valueColor: AlwaysStoppedAnimation(Colors.white),
+                                    ),
+                                  )                       
 
                                 ),
                               ],
@@ -82,13 +93,16 @@ class LocatingScreenView extends LocatingScreenState {
                         ]
                       ),
 
+                   
+                     
+
                       Row(
                         children: <Widget>[
                             Expanded(
                               child:Padding(
-                                padding: EdgeInsets.fromLTRB(40, 20, 40, 0),
+                                padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
                                 child: Container(
-                                  color: Colors.blue[300],
+                                  color: widget.coreClass.getHighlightColor(),
                                   height: 1.0,
                                 )
                               )
@@ -140,7 +154,7 @@ class LocatingScreenView extends LocatingScreenState {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: <Widget>[
-                                  Text("Karten Modus",style: TextStyle(color: Colors.blue, fontSize: 16.0, fontWeight: FontWeight.bold)),
+                                  Text("Karten Modus",style: TextStyle(color: widget.coreClass.getHighlightColor(), fontSize: 16.0, fontWeight: FontWeight.bold)),
                                 ],
                                 ),
                               )
@@ -194,7 +208,7 @@ class LocatingScreenView extends LocatingScreenState {
                                   child:new Padding(
                                     padding: const EdgeInsets.fromLTRB(0.0,0.0,0.0,0.0),
                                     child: Text("Verwende den Karten Modus, falls dein Standort über GPS nicht automatisch lokalisiert werden kann.", 
-                                      style: TextStyle(fontSize: 12.0, color: Colors.blue),
+                                      style: TextStyle(fontSize: 12.0, color: widget.coreClass.getHighlightColor()),
                                       textAlign: TextAlign.left,
                                     ),
                                   ),
@@ -207,7 +221,7 @@ class LocatingScreenView extends LocatingScreenState {
                                 },
                                 child:Padding(
                                   padding: EdgeInsets.fromLTRB(10,0,10,0),
-                                  child:Icon(Icons.close,size: 30.0,color: Colors.blue), 
+                                  child:Icon(Icons.close,size: 30.0,color: widget.coreClass.getHighlightColor()), 
                                 )
                               )
 
@@ -249,12 +263,12 @@ class LocatingScreenView extends LocatingScreenState {
                     ),
                     child:  Theme(
                       data: ThemeData(
-                        unselectedWidgetColor: Colors.blue,         
+                        unselectedWidgetColor: widget.coreClass.getHighlightColor(),         
                       ),
                       child: Checkbox(                   
                         value: setAsHomeLocation,
                         onChanged: (bool e) => toggleHomeLocationBox(e),
-                        activeColor: Colors.blue,
+                        activeColor: widget.coreClass.getHighlightColor(),
                       ),
                     ),          
                 ),

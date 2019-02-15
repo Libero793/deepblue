@@ -140,6 +140,7 @@ abstract class LocatingScreenState extends State<LocatingScreen>{
   }
 
   void pushToManualLocationMap(){
+    gpsTimer.cancel();
     Navigator.push(context,MaterialPageRoute(builder: (context) => ManualLocationMap(widget.coreClass)));
   }
 

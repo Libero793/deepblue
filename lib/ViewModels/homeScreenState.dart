@@ -265,7 +265,7 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
 
   Color getNavCardColor(navSelected){
    if(navSelected == currentCard){
-     return Colors.grey[400];
+     return widget.coreClass.getHighlightColor();
    }else{
      return Colors.white;
    }

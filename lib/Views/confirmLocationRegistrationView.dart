@@ -8,11 +8,11 @@ class ConfirmLocationRegistrationView extends ConfirmLocationRegistrationState{
     // TODO: implement build
   
     return Scaffold(
-      backgroundColor: widget.menuBackgroundColor,
+      backgroundColor: widget.coreClass.getHighlightColor(),
       appBar: AppBar(
         title: Text(""),
         centerTitle: true,
-        backgroundColor: widget.menuBackgroundColor,
+        backgroundColor: widget.coreClass.getHighlightColor(),
         elevation: 0.0,
         automaticallyImplyLeading: false,
       ),
@@ -64,7 +64,7 @@ class ConfirmLocationRegistrationView extends ConfirmLocationRegistrationState{
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
-                          Text("Schliessen",style: TextStyle(color: widget.menuBackgroundColor, fontSize: 16.0, fontWeight: FontWeight.bold)),
+                          Text("Schliessen",style: TextStyle(color: widget.coreClass.getHighlightColor(), fontSize: 16.0, fontWeight: FontWeight.bold)),
                         ],
                         ),
                       )
