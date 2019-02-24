@@ -95,7 +95,7 @@ class HomeScreenView extends HomeScreenState {
 
   Widget weatherWidget(){
     return Padding(
-      padding: const EdgeInsets.fromLTRB(0.0, 16.0, 16.0, 0.0),
+      padding: const EdgeInsets.fromLTRB(0.0, 16.0, 16.0, 10.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: <Widget>[
