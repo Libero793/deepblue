@@ -138,7 +138,7 @@ class StartScreenView extends StartScreenState {
                                                 padding: EdgeInsets.fromLTRB(0, 0, 5, 0),
                                                 child: Icon(Icons.home,color: homeLocationButtonColor,),
                                               ),                               
-                                              Text('Heimat Standort', style: TextStyle(fontSize: 16.0),),
+                                              Text('Heimat Standort', style: TextStyle(fontSize: 16.0, color: homeLocationButtonColor),),
                                             ]                                                 
                                           ),                     
                                           borderSide: BorderSide(
