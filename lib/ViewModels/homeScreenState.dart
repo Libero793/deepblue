@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:deepblue/Views/homeScreenView.dart';
 import 'package:deepblue/ViewModels/mapScreenState.dart';
 import 'package:deepblue/models/CoreFunctionsModel.dart';
+import 'package:deepblue/models/nearLocationsModel.dart';
 import 'package:deepblue/models/setupFile.dart';
 import 'package:flutter/material.dart';
 import 'package:deepblue/models/CardItemModel.dart';
@@ -50,6 +51,8 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
   String nearestLocationsJson;
   bool httpRequestExecuted = false;
 
+  NearLocations nearLocations;
+
   
 
   Timer _reloadTimer;
@@ -74,6 +77,7 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
   void initState() {
     extendSpaceForScroll = false;
     scrollControllerHorizontal = new ScrollController();     
+    nearLocations = new NearLocations();
 
     setupWeatherContext(widget.coreClass.getSelectedLocation());
 
@@ -231,6 +235,8 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
       if (this.mounted){
         if(response.body != "null"){
 
+          
+
           var nearestLocation;
           var nearestLocationsJson = "";
           var distanceIndicator;
@@ -241,9 +247,15 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
           nearLocationsCount=json.decode(nearestLocationsJson).length;
           biggestDistance=nearestLocation[nearLocationsCount-1]["distanceValue"];
 
+
+
           print("biggestDistance$biggestDistance");
 
           setState((){
+
+                  nearLocations.setNearWashboxes(response.body.toString());
+                  nearLocations.setCount(json.decode(response.body.toString()).length);
+                  
                   for(int i=0;i<nearestLocation.length;i++){
                     distanceIndicator=(nearestLocation[i]["distanceValue"]/biggestDistance);
                     cardsList.add(CardItemModel(nearestLocation[i]["name"], Icons.local_car_wash, nearestLocation[i]["distanceText"], distanceIndicator));

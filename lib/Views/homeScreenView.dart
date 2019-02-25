@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:deepblue/ViewModels/homeScreenState.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -367,26 +369,14 @@ class HomeScreenView extends HomeScreenState {
                   Expanded(
                       child: ListView.builder(
                         physics: AlwaysScrollableScrollPhysics(),
-                        itemCount: 10,
+                        itemCount: nearLocations.getCount(listPosition),
                         shrinkWrap: true,
                         controller: verticalScrolls[listPosition],
                         scrollDirection: Axis.vertical,
                         itemBuilder: (context, itemPosition) {
                           
-                          return  Padding(
-                              padding: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 5.0),
-                              child: Card(
-                                color: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10.0)
-                                ),
-
-                                child: Container(
-                                  height: 175.0,
-                                ),                                
-
-                              )
-                          );
+                          return createListItem(listPosition, itemPosition);
+                         
                         }
                       ),
                   ),
@@ -396,6 +386,149 @@ class HomeScreenView extends HomeScreenState {
     );  
   }
 
+
+Widget createListItem(listPosition, itemPosition){
+
+  
+   var locationsJson = nearLocations.getNearLocations(1);
+   var locations;
+   print("testlocationscount: ${locationsJson}");
+   
+   if(locationsJson != "null"){
+      locations = json.decode(locationsJson);
+   }
+   
+    return Padding(
+            padding: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 5.0),
+            child: Card(
+              color: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0)
+              ),
+
+              child: Container(
+                height: 115.0,
+                width: (MediaQuery.of(context).size.width -10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.max,
+                  children: <Widget>[
+
+                    Padding(
+                      padding: EdgeInsets.all(5),
+                      child: Container(
+                        decoration: new BoxDecoration(
+                          color: Colors.grey[300],
+                          /*
+                          borderRadius: new BorderRadius.only(
+                            topLeft: const Radius.circular(10.0),
+                            bottomLeft: const Radius.circular(10.0)
+                          )*/
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                        ),
+                        height: 115.0,
+                        width: 115.0,
+                        
+                      ),
+                    ),
+
+                    Expanded(
+                      
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(10, 10, 10, 10),      
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text("${locations[itemPosition]["name"]}",style: TextStyle(fontSize: 20.0, color: Colors.grey, fontWeight: FontWeight.w400)),
+
+                              
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 0, vertical: 5),
+                                  child: Container(
+                                    color: Colors.grey[300],
+                                    height: 2.0,
+                                    width: (MediaQuery.of(context).size.width - 170),
+                                ),
+                              ),
+                              
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.max,
+                              
+                                children: <Widget>[
+
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(horizontal: 0, vertical: 5),
+                                        child: Row(
+                                          children: <Widget>[
+                                            Icon(Icons.hourglass_empty, color: Colors.grey[500], size: 18.0,),
+                                            Padding(
+                                              padding: EdgeInsets.only( left: 5),
+                                              child: Text("${locations[itemPosition]["durationText"]}",textAlign: TextAlign.left,style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w400, color: Colors.grey[400]))
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(horizontal: 0, vertical: 5),
+                                        child: Row(
+                                          children: <Widget>[
+                                            Icon(Icons.golf_course, color: Colors.grey[500], size: 18.0,),
+                                            Padding(
+                                              padding: EdgeInsets.only( left: 5),
+                                              child: Text("${locations[itemPosition]["distanceText"]}",textAlign: TextAlign.left,style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w400, color: Colors.grey[400]))
+                                            )
+                                          ],
+                                        )
+                                      ),
+                                    
+                                    ],
+                                  ),
+
+                                  Expanded(
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: <Widget>[
+
+                                        Padding(
+                                          padding:EdgeInsets.only(right: 5),
+                                          child: Icon(Icons.near_me,size: 40, color: Colors.blue),
+                                        )
+                                        
+                                      ],
+                                    ),
+                                  )
+                                  
+
+
+                                ],
+                              ),
+                            ],
+
+                          )
+                        )
+                      ),
+                  
+                    
+
+                    
+                  ],
+                )
+                
+               
+                
+                
+              ),                                
+
+            )
+          );
+}
 /*
   Widget locationList(position){
     return Card(
