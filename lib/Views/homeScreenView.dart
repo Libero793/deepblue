@@ -392,7 +392,7 @@ Widget createListItem(listPosition, itemPosition){
   
    var locationsJson = nearLocations.getNearLocations(1);
    var locations;
-   print("testlocationscount: ${locationsJson}");
+   //print("testlocationscount: ${locationsJson}");
    
    if(locationsJson != "null"){
       locations = json.decode(locationsJson);

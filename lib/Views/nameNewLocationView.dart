@@ -25,9 +25,6 @@ class NameNewLocationView extends NameNewLocationState{
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
 
-            Row(),
-
-
             Padding(
               padding: const EdgeInsets.fromLTRB(36.0, 40.0, 36.0, 0.0),
               child: Row(
@@ -36,7 +33,7 @@ class NameNewLocationView extends NameNewLocationState{
                   //Icon(Icons.check_circle_outline,color: Colors.white,size: 30.0,),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-                    child:  Text("Waschbox bennen", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 26.0)),
+                    child:  Text("Location bennen", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 26.0)),
                     ),
                 ],
               )
@@ -46,7 +43,7 @@ class NameNewLocationView extends NameNewLocationState{
 
             Padding(
               padding: const EdgeInsets.fromLTRB(36.0, 10.0, 36.0, 40.0),
-              child: Text("Gib deiner Waschbox die du hinzufügen möchtests einen Namen, damit andere Mitglieder diese eifnacher finden können", 
+              child: Text("Gib deiner Location die du hinzufügen möchtests einen Namen, damit andere Mitglieder diese einfacher finden können", 
                         style: TextStyle(fontSize: 14.0, color: Colors.white),
                      ),
             
@@ -62,7 +59,7 @@ class NameNewLocationView extends NameNewLocationState{
                           keyboardType: TextInputType.text,
                           style: TextStyle(fontWeight: FontWeight.normal, color: Colors.white, fontSize: 22.0, ),
                           decoration: new InputDecoration(
-                            hintText: "Waschbox-Name",
+                            hintText: "Location",
                             hintStyle: TextStyle(color: Colors.blue[100], fontSize: 20.0,fontWeight: FontWeight.normal),
                             border: new UnderlineInputBorder(
                               borderSide: new BorderSide(
@@ -111,7 +108,7 @@ class NameNewLocationView extends NameNewLocationState{
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
-                          Text("Speichern",style: TextStyle(color: widget.coreClass.getHighlightColor(), fontSize: 16.0, fontWeight: FontWeight.bold)),
+                          Text("Weiter",style: TextStyle(color: widget.coreClass.getHighlightColor(), fontSize: 16.0, fontWeight: FontWeight.bold)),
                          
                         ],
                         ),

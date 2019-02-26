@@ -32,8 +32,9 @@ abstract class MapScreenState extends State<MapScreen>{
 
   bool addMode = false;
   bool addModeTapped = false;
+  bool chooseLocationTapped = false;
   String headlineText = "Kartenübersicht";
-  double containerFloatingActionButtonHeight = 80.0;
+  double containerFloatingActionButtonHeight = 300.0;
   var markers = <Marker>[];
 
   Timer _reloadTimer;
@@ -66,7 +67,7 @@ abstract class MapScreenState extends State<MapScreen>{
   }
 
   void requestWashboxMap(var location)async {
-    print("httploc ${location}");
+    //print("httploc ${location}");
 
     var url = "http://www.nell.science/deepblue/index.php";
 
@@ -183,6 +184,14 @@ abstract class MapScreenState extends State<MapScreen>{
     }
   }
 
+  chooseLocationToggle(){
+    if(!chooseLocationTapped){
+      setState(() {
+              chooseLocationTapped = true;
+      });
+    }
+  }
+
   void toggleEditMode(){
     if(addMode){
       addMode=false;
@@ -198,7 +207,7 @@ abstract class MapScreenState extends State<MapScreen>{
         setState(() {
                 actionButtonIconColor=Colors.white;
                 headlineText="Kartenübersicht";
-                containerFloatingActionButtonHeight = 80.0;
+                containerFloatingActionButtonHeight = 300.0;
         });
       }
 
@@ -209,7 +218,7 @@ abstract class MapScreenState extends State<MapScreen>{
       if (this.mounted){
         setState(() {
                 actionButtonIconColor=Colors.transparent;
-                headlineText="Waschbox hinzufügen";
+                headlineText="Location hinzufügen";
                 containerFloatingActionButtonHeight = 0.0;
               });
       }
@@ -329,7 +338,7 @@ abstract class MapScreenState extends State<MapScreen>{
                                                 padding: const EdgeInsets.all(16.0),
                                                 child: new Text(
                                                           'Klick auf die Map '
-                                                          'um eine neue Waschbox hinzuzufügen',
+                                                          'um eine neue Location hinzuzufügen',
                                                           textAlign: TextAlign.center,style: TextStyle(fontSize: 18.0, color: Colors.white, fontWeight: FontWeight.w400)
                                                         )
                                             ),

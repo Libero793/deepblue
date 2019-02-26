@@ -91,15 +91,59 @@ class MapScreenView extends MapScreenState{
         floatingActionButton:
               new Container(
                 height: containerFloatingActionButtonHeight,
-                child: new FloatingActionButton(
-                        tooltip: 'Increment',
-                        child: new IconTheme(
-                                  data: new IconThemeData(color: actionButtonIconColor),
-                                  child:  new Icon(actionButton),
+                color: Colors.red,
+                child: Column(
+                  children: <Widget>[
+
+                    new Offstage(
+                      offstage: chooseLocationTapped,
+                      child: Column(
+                        children: <Widget>[
+                          new FloatingActionButton(
+                            tooltip: 'Increment',
+                            child: new IconTheme(
+                                      data: new IconThemeData(color: actionButtonIconColor),
+                                      child:  new Icon(actionButton),
+                            ),
+                            backgroundColor: actionButtonColor, 
+                            onPressed: chooseLocationToggle,
+                          ),  
+                        ]
+                      ),
+                    ),
+
+                  new Offstage(
+                    offstage: !chooseLocationTapped,
+                    child: Column(
+                      children: <Widget>[
+
+                        Container(
+                          width: 40,
+                          height: 40,
+                          color: Colors.purple,
                         ),
-                        backgroundColor: actionButtonColor, 
-                        onPressed: actionButtonPressed,
-                        ), // 
+
+                        Container(
+                          width: 40,
+                          height: 40,
+                          color: Colors.purple,
+                        ),
+
+                        Container(
+                          width: 40,
+                          height: 40,
+                          color: Colors.purple,
+                        ),
+                      ],
+                    ),
+                  )
+                    
+                    
+                    
+                  ],
+                ) 
+
+                        
               ),
         );     
   }
