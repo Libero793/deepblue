@@ -2,6 +2,7 @@ class RegisterNewLocationModel{
 
   Map<String,double> location;
   String locationName;
+  String locationType;
 
   bool hochdruckReiniger=false;
   bool schaumBuerste=false;
@@ -9,12 +10,21 @@ class RegisterNewLocationModel{
   bool fliessendWasser=false;
   bool motorWaesche=false;
 
+
   void setLocation(loc){
     location = loc;
   }
 
   Map <String,double> getLocation(){
     return location;
+  }
+
+  void setLocationType(String type){
+    locationType = type;
+  }
+
+  String getLocationType(){
+    return locationType;
   }
 
   void setLocationName(name){
@@ -72,5 +82,7 @@ class RegisterNewLocationModel{
   bool getMotorWaesche(){
     return motorWaesche;
   }
+
+
 
 }

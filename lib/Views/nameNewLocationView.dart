@@ -9,6 +9,20 @@ class NameNewLocationView extends NameNewLocationState{
     print("location: $widget.pushedLocation");
     final theme = Theme.of(context);
 
+    String addLocationTypeName;
+    String addLocationTypeShortName;
+
+    if(widget.registerLocationClass.getLocationType() == "washbox"){
+      addLocationTypeName = "deiner Waschbox";
+      addLocationTypeShortName = "Waschbox";
+    }else if(widget.registerLocationClass.getLocationType() == "shooting"){
+      addLocationTypeName = "deinem Foto Spot";
+      addLocationTypeShortName = "Foto Spot";
+    }else if(widget.registerLocationClass.getLocationType() == "event"){
+      addLocationTypeName = "deinem Event";
+      addLocationTypeShortName = "Event";
+    }
+
     
 
     return Scaffold(
@@ -33,7 +47,7 @@ class NameNewLocationView extends NameNewLocationState{
                   //Icon(Icons.check_circle_outline,color: Colors.white,size: 30.0,),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-                    child:  Text("Location bennen", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 26.0)),
+                    child:  Text("$addLocationTypeShortName bennen", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 26.0)),
                     ),
                 ],
               )
@@ -43,7 +57,7 @@ class NameNewLocationView extends NameNewLocationState{
 
             Padding(
               padding: const EdgeInsets.fromLTRB(36.0, 10.0, 36.0, 40.0),
-              child: Text("Gib deiner Location die du hinzufügen möchtests einen Namen, damit andere Mitglieder diese einfacher finden können", 
+              child: Text("Gib $addLocationTypeName die du hinzufügen möchtests einen Namen, damit andere Mitglieder diese einfacher finden können", 
                         style: TextStyle(fontSize: 14.0, color: Colors.white),
                      ),
             
@@ -59,7 +73,7 @@ class NameNewLocationView extends NameNewLocationState{
                           keyboardType: TextInputType.text,
                           style: TextStyle(fontWeight: FontWeight.normal, color: Colors.white, fontSize: 22.0, ),
                           decoration: new InputDecoration(
-                            hintText: "Location",
+                            hintText: addLocationTypeShortName,
                             hintStyle: TextStyle(color: Colors.blue[100], fontSize: 20.0,fontWeight: FontWeight.normal),
                             border: new UnderlineInputBorder(
                               borderSide: new BorderSide(

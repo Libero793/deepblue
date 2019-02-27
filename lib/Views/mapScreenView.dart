@@ -89,62 +89,122 @@ class MapScreenView extends MapScreenState{
         ),
 
         floatingActionButton:
-              new Container(
+            Offstage(
+              offstage: false,
+              child: new Container(
                 height: containerFloatingActionButtonHeight,
-                color: Colors.red,
+                color: Colors.transparent,
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
-
                     new Offstage(
-                      offstage: chooseLocationTapped,
+                      offstage: !chooseLocationTapped,
                       child: Column(
                         children: <Widget>[
-                          new FloatingActionButton(
-                            tooltip: 'Increment',
-                            child: new IconTheme(
-                                      data: new IconThemeData(color: actionButtonIconColor),
-                                      child:  new Icon(actionButton),
+
+                          GestureDetector(
+                            onTap: (){
+                              setAddLocationType("washbox");
+                              toggleEditMode();
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.only(bottom: 10),
+                              child: Container(
+                                width: 55,
+                                height: 55,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(Radius.circular(27.5)),
+                                  color: widget.coreClass.getWashboxColor(),
+                                ),
+                                child: Icon(
+                                  Icons.local_car_wash,
+                                  color: Colors.white,
+                                  size: 30,
+                                ),
+                              ),
                             ),
-                            backgroundColor: actionButtonColor, 
-                            onPressed: chooseLocationToggle,
-                          ),  
-                        ]
+                          ),
+
+                          GestureDetector(
+                            onTap: (){
+                              setAddLocationType("shooting");
+                              toggleEditMode();
+                            },
+                            child: Padding(
+                            padding: EdgeInsets.only(bottom: 10),
+                              child: Container(
+                                width: 55,
+                                height: 55,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(Radius.circular(27.5)),
+                                  color: widget.coreClass.getShootingColor(),
+                                ),
+                                child: Icon(
+                                  Icons.camera_alt,
+                                  color: Colors.white,
+                                  size: 30,
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          GestureDetector(
+                            onTap: (){
+                              setAddLocationType("event");
+                              toggleEditMode();
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.only(bottom: 10),
+                              child: Container(
+                                width: 55,
+                                height: 55,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(Radius.circular(27.5)),
+                                  color: widget.coreClass.getEventColor(),
+                                ),
+                                child: Icon(
+                                  Icons.star,
+                                  color: Colors.white,
+                                  size: 30,
+                                ),
+                              ),
+                            ),
+                          ),
+                          
+                        ],
                       ),
                     ),
-
-                  new Offstage(
-                    offstage: !chooseLocationTapped,
-                    child: Column(
+                      
+                    Column(
                       children: <Widget>[
-
-                        Container(
-                          width: 40,
-                          height: 40,
-                          color: Colors.purple,
-                        ),
-
-                        Container(
-                          width: 40,
-                          height: 40,
-                          color: Colors.purple,
-                        ),
-
-                        Container(
-                          width: 40,
-                          height: 40,
-                          color: Colors.purple,
-                        ),
-                      ],
+                        
+                        GestureDetector(
+                          onTap: chooseLocationToggle,
+                          child: Padding(
+                              padding: EdgeInsets.only(bottom: 10),
+                              child: Container(
+                                width: 55,
+                                height: 55,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(Radius.circular(27.5)),
+                                  color: actionButtonColor,
+                                ),
+                                child: Icon(
+                                  actionButtonIcon,
+                                  color: Colors.white,
+                                  size: 30,
+                                ),
+                              ),
+                            ),
+                        )
+                          
+                      ]
                     ),
-                  )
-                    
-                    
-                    
+                      
                   ],
                 ) 
-
-                        
               ),
+            ),
         );     
   }
 }

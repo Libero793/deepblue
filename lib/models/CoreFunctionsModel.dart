@@ -10,7 +10,10 @@ class CoreFunctionsModel{
   Map <String,double> selectedLocation;
   bool setAsHomeLocation = false;
   bool manualMapHintStatus;
-  Color highlightColor = Color(0xff2980b9);
+  static Color highlightColor = Color(0xff2980b9);
+  Color eventColor = Colors.yellow;
+  Color washboxColor = highlightColor;
+  Color shootingColor = Colors.green;
 
   getSetupFile(){
     return setupFile;
@@ -46,6 +49,18 @@ class CoreFunctionsModel{
 
   getHighlightColor(){
     return highlightColor;
+  }
+
+  Color getShootingColor(){
+    return shootingColor;
+  }
+
+  Color getWashboxColor(){
+    return washboxColor;
+  }
+
+  Color getEventColor(){
+    return eventColor;
   }
 
 

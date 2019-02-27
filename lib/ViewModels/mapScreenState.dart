@@ -33,20 +33,21 @@ abstract class MapScreenState extends State<MapScreen>{
   bool addMode = false;
   bool addModeTapped = false;
   bool chooseLocationTapped = false;
+  String addLocationType;
   String headlineText = "Kartenübersicht";
-  double containerFloatingActionButtonHeight = 300.0;
+  double containerFloatingActionButtonHeight = 65.0;
   var markers = <Marker>[];
 
   Timer _reloadTimer;
-  IconData actionButton = Icons.add;
   Color actionButtonColor;
-  Color actionButtonIconColor = Colors.white;
 
   Map<String, double> registerLocation;
   List<LatLng> tappedPoints = [];
 
   var washboxMap = null;
   bool showBoxInfo=false;
+
+  IconData actionButtonIcon;
   
   RegisterNewLocationModel registerLocationClass = new RegisterNewLocationModel();
 
@@ -58,6 +59,7 @@ abstract class MapScreenState extends State<MapScreen>{
   
   void initState(){
     actionButtonColor = widget.coreClass.getHighlightColor();
+    actionButtonIcon = Icons.add;
     requestWashboxMap(widget.coreClass.getSelectedLocation());
   }
 
@@ -184,12 +186,31 @@ abstract class MapScreenState extends State<MapScreen>{
     }
   }
 
-  chooseLocationToggle(){
+  void chooseLocationToggle(){
     if(!chooseLocationTapped){
       setState(() {
               chooseLocationTapped = true;
+              containerFloatingActionButtonHeight=260;
+              actionButtonColor = Colors.red;
+              actionButtonIcon = Icons.close;
       });
+    }else{
+      setState(() {
+        chooseLocationTapped = false;
+        containerFloatingActionButtonHeight = 65;
+        actionButtonColor = widget.coreClass.getHighlightColor();
+        actionButtonIcon = Icons.add;
+      });
+
     }
+  }
+
+  void setAddLocationType(var type){
+    addLocationType = type;
+  }
+
+  String getAddLocationType(){
+    return addLocationType;
   }
 
   void toggleEditMode(){
@@ -205,9 +226,8 @@ abstract class MapScreenState extends State<MapScreen>{
       }
       if (this.mounted){
         setState(() {
-                actionButtonIconColor=Colors.white;
                 headlineText="Kartenübersicht";
-                containerFloatingActionButtonHeight = 300.0;
+                containerFloatingActionButtonHeight = 290.0;
         });
       }
 
@@ -217,7 +237,6 @@ abstract class MapScreenState extends State<MapScreen>{
       showHint("show");
       if (this.mounted){
         setState(() {
-                actionButtonIconColor=Colors.transparent;
                 headlineText="Location hinzufügen";
                 containerFloatingActionButtonHeight = 0.0;
               });
@@ -273,6 +292,7 @@ abstract class MapScreenState extends State<MapScreen>{
             registerLocation["longitude"] = latlng.longitude;
             registerLocation["latitude"] = latlng.latitude;
             registerLocationClass.setLocation(registerLocation);
+            registerLocationClass.setLocationType(getAddLocationType());
 
          // });}
           addModeTapped = true;
@@ -310,6 +330,15 @@ abstract class MapScreenState extends State<MapScreen>{
 
   void showHint(action){
         ScaffoldState state = scaffoldKey.currentState;
+        String addLocationTypeName;
+
+        if(getAddLocationType() == "washbox"){
+          addLocationTypeName = "eine Waschbox";
+        }else if(getAddLocationType() == "shooting"){
+          addLocationTypeName = "einen Foto Spot";
+        }else if(getAddLocationType() == "event"){
+          addLocationTypeName = "ein Event";
+        }
         
         if(action == "show"){
           controller = state.showBottomSheet<Null>((BuildContext context) {
@@ -338,7 +367,7 @@ abstract class MapScreenState extends State<MapScreen>{
                                                 padding: const EdgeInsets.all(16.0),
                                                 child: new Text(
                                                           'Klick auf die Map '
-                                                          'um eine neue Location hinzuzufügen',
+                                                          'um $addLocationTypeName hinzuzufügen',
                                                           textAlign: TextAlign.center,style: TextStyle(fontSize: 18.0, color: Colors.white, fontWeight: FontWeight.w400)
                                                         )
                                             ),
@@ -396,9 +425,7 @@ abstract class MapScreenState extends State<MapScreen>{
             print(washboxInfo);
             if(this.mounted){
               setState(() {
-                actionButton=Icons.close;
                 actionButtonColor=Colors.white;
-                actionButtonIconColor=widget.coreClass.getHighlightColor();
                 showBoxInfo=true;
               });
             }
@@ -626,10 +653,8 @@ abstract class MapScreenState extends State<MapScreen>{
           if(this.mounted){
             setState(() {
               controller.close();
-              actionButton=Icons.add;
               showBoxInfo=false;
               actionButtonColor=widget.coreClass.getHighlightColor();
-              actionButtonIconColor=Colors.white;
             });
           }
         }

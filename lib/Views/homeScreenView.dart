@@ -396,138 +396,140 @@ Widget createListItem(listPosition, itemPosition){
    
    if(locationsJson != "null"){
       locations = json.decode(locationsJson);
-   }
    
-    return Padding(
-            padding: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 5.0),
-            child: Card(
-              color: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0)
-              ),
-
-              child: Container(
-                height: 115.0,
-                width: (MediaQuery.of(context).size.width -10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.max,
-                  children: <Widget>[
-
-                    Padding(
-                      padding: EdgeInsets.all(5),
-                      child: Container(
-                        decoration: new BoxDecoration(
-                          color: Colors.grey[300],
-                          /*
-                          borderRadius: new BorderRadius.only(
-                            topLeft: const Radius.circular(10.0),
-                            bottomLeft: const Radius.circular(10.0)
-                          )*/
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                        ),
-                        height: 115.0,
-                        width: 115.0,
-                        
-                      ),
+          return Padding(
+                  padding: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 5.0),
+                  child: Card(
+                    color: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0)
                     ),
 
-                    Expanded(
-                      
-                        child: Padding(
-                          padding: EdgeInsets.fromLTRB(10, 10, 10, 10),      
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text("${locations[itemPosition]["name"]}",style: TextStyle(fontSize: 20.0, color: Colors.grey, fontWeight: FontWeight.w400)),
+                    child: Container(
+                      height: 115.0,
+                      width: (MediaQuery.of(context).size.width -10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.max,
+                        children: <Widget>[
 
-                              
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 0, vertical: 5),
-                                  child: Container(
-                                    color: Colors.grey[300],
-                                    height: 2.0,
-                                    width: (MediaQuery.of(context).size.width - 170),
-                                ),
+                          Padding(
+                            padding: EdgeInsets.all(5),
+                            child: Container(
+                              decoration: new BoxDecoration(
+                                color: Colors.grey[300],
+                                /*
+                                borderRadius: new BorderRadius.only(
+                                  topLeft: const Radius.circular(10.0),
+                                  bottomLeft: const Radius.circular(10.0)
+                                )*/
+                                borderRadius: BorderRadius.all(Radius.circular(10)),
                               ),
+                              height: 115.0,
+                              width: 115.0,
                               
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.max,
-                              
-                                children: <Widget>[
+                            ),
+                          ),
 
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Padding(
-                                        padding: EdgeInsets.symmetric(horizontal: 0, vertical: 5),
-                                        child: Row(
-                                          children: <Widget>[
-                                            Icon(Icons.hourglass_empty, color: Colors.grey[500], size: 18.0,),
-                                            Padding(
-                                              padding: EdgeInsets.only( left: 5),
-                                              child: Text("${locations[itemPosition]["durationText"]}",textAlign: TextAlign.left,style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w400, color: Colors.grey[400]))
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      
-                                      Padding(
-                                        padding: EdgeInsets.symmetric(horizontal: 0, vertical: 5),
-                                        child: Row(
-                                          children: <Widget>[
-                                            Icon(Icons.golf_course, color: Colors.grey[500], size: 18.0,),
-                                            Padding(
-                                              padding: EdgeInsets.only( left: 5),
-                                              child: Text("${locations[itemPosition]["distanceText"]}",textAlign: TextAlign.left,style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w400, color: Colors.grey[400]))
-                                            )
-                                          ],
-                                        )
-                                      ),
+                          Expanded(
+                            
+                              child: Padding(
+                                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),      
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text("${locations[itemPosition]["name"]}",style: TextStyle(fontSize: 20.0, color: Colors.grey, fontWeight: FontWeight.w400)),
+
                                     
-                                    ],
-                                  ),
-
-                                  Expanded(
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(horizontal: 0, vertical: 5),
+                                        child: Container(
+                                          color: Colors.grey[300],
+                                          height: 2.0,
+                                          width: (MediaQuery.of(context).size.width - 170),
+                                      ),
+                                    ),
+                                    
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
                                       mainAxisSize: MainAxisSize.max,
+                                    
                                       children: <Widget>[
 
-                                        Padding(
-                                          padding:EdgeInsets.only(right: 5),
-                                          child: Icon(Icons.near_me,size: 40, color: Colors.blue),
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Padding(
+                                              padding: EdgeInsets.symmetric(horizontal: 0, vertical: 5),
+                                              child: Row(
+                                                children: <Widget>[
+                                                  Icon(Icons.hourglass_empty, color: Colors.grey[500], size: 18.0,),
+                                                  Padding(
+                                                    padding: EdgeInsets.only( left: 5),
+                                                    child: Text("${locations[itemPosition]["durationText"]}",textAlign: TextAlign.left,style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w400, color: Colors.grey[400]))
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            
+                                            Padding(
+                                              padding: EdgeInsets.symmetric(horizontal: 0, vertical: 5),
+                                              child: Row(
+                                                children: <Widget>[
+                                                  Icon(Icons.golf_course, color: Colors.grey[500], size: 18.0,),
+                                                  Padding(
+                                                    padding: EdgeInsets.only( left: 5),
+                                                    child: Text("${locations[itemPosition]["distanceText"]}",textAlign: TextAlign.left,style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w400, color: Colors.grey[400]))
+                                                  )
+                                                ],
+                                              )
+                                            ),
+                                          
+                                          ],
+                                        ),
+
+                                        Expanded(
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.end,
+                                            mainAxisSize: MainAxisSize.max,
+                                            children: <Widget>[
+
+                                              Padding(
+                                                padding:EdgeInsets.only(right: 5),
+                                                child: Icon(Icons.near_me,size: 40, color: Colors.blue),
+                                              )
+                                              
+                                            ],
+                                          ),
                                         )
                                         
+
+
                                       ],
                                     ),
-                                  )
-                                  
+                                  ],
 
+                                )
+                              )
+                            ),
+                        
+                          
 
-                                ],
-                              ),
-                            ],
-
-                          )
-                        )
-                      ),
-                  
+                          
+                        ],
+                      )
+                      
                     
+                      
+                      
+                    ),                                
 
-                    
-                  ],
-                )
-                
-               
-                
-                
-              ),                                
-
-            )
-          );
+                  )
+                );
+   }else{
+     return Container();                                    //insert Loading Icon here
+   }
 }
 /*
   Widget locationList(position){
