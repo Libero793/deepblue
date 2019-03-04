@@ -1,5 +1,6 @@
 import 'package:deepblue/ViewModels/nameNewLocationState.dart';
 import 'package:flutter/material.dart';
+import 'package:deepblue/models/RegisterLocationStyleModel.dart';
 
 class NameNewLocationView extends NameNewLocationState{
     
@@ -26,12 +27,16 @@ class NameNewLocationView extends NameNewLocationState{
     
 
     return Scaffold(
-      backgroundColor: widget.coreClass.getHighlightColor(),
+
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text(""),
+        title: Text("Location hinzufügen", style: TextStyle(color: Colors.black),),
         centerTitle: true,
-        backgroundColor: widget.coreClass.getHighlightColor(),
+        backgroundColor: Colors.white,
         elevation: 0.0,
+        iconTheme: IconThemeData(
+            color: Colors.black, //change your color here
+        ),
       ),
 
       body: new Center(
@@ -39,72 +44,48 @@ class NameNewLocationView extends NameNewLocationState{
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
 
-            Padding(
-              padding: const EdgeInsets.fromLTRB(36.0, 40.0, 36.0, 0.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  //Icon(Icons.check_circle_outline,color: Colors.white,size: 30.0,),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-                    child:  Text("$addLocationTypeShortName bennen", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 26.0)),
+            Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 0, vertical: 20),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(75)),
+                      color: Colors.grey[300],
                     ),
-                ],
-              )
-            ),
+                    width: 125,
+                    height: 125,
+                    child: Icon(
+                      Icons.camera_alt,
+                      color: Colors.grey[400],
+                      size: 45,
+                    ),
+                  ),
+                )
 
-
-
-            Padding(
-              padding: const EdgeInsets.fromLTRB(36.0, 10.0, 36.0, 40.0),
-              child: Text("Gib $addLocationTypeName die du hinzufügen möchtests einen Namen, damit andere Mitglieder diese einfacher finden können", 
-                        style: TextStyle(fontSize: 14.0, color: Colors.white),
-                     ),
+              ],
+            ),   
             
-            ),
+            getInputLineWidget(theme),
+            
+            
 
-            Padding(
-              padding: const EdgeInsets.fromLTRB(36.0, 0.0, 36.0, 80.0),
-              child: new Theme(
-                        data: theme.copyWith(primaryColor: Colors.white,accentColor: Colors.white, hintColor: Colors.white),
-                        child: new TextField(
-                          focusNode: focus,
-                          controller: textFieldController,
-                          keyboardType: TextInputType.text,
-                          style: TextStyle(fontWeight: FontWeight.normal, color: Colors.white, fontSize: 22.0, ),
-                          decoration: new InputDecoration(
-                            hintText: addLocationTypeShortName,
-                            hintStyle: TextStyle(color: Colors.blue[100], fontSize: 20.0,fontWeight: FontWeight.normal),
-                            border: new UnderlineInputBorder(
-                              borderSide: new BorderSide(
-                                color: Colors.red
-                              )
-                            )
-                          ),
-                        ),
+            new Expanded(
+              child:  ListView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: boxStyleMap.length,
+                        controller: ScrollController(),
+                        scrollDirection: Axis.vertical,
+                        itemBuilder: (context, position) {
+                          return getCheckboxWidget(position);
+                        },
                       ),
             ),
             
 
-            
-
-            /*
-             new StarRating(
-                            size: 40.0,
-                            rating: rating,
-                            color: Colors.white,
-                            borderColor: Colors.white,
-                            starCount: starCount,
-                            onRatingChanged: (rating) => setState(
-                                  () {
-                                    this.rating = rating;
-                                  },
-                                ),
-                          ),
-            */
-            
-
-            
             new Expanded(
               child: new Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -139,4 +120,97 @@ class NameNewLocationView extends NameNewLocationState{
       ),
     );
   }
+
+  Widget  getInputLineWidget(theme){
+    return  Padding(
+              padding: EdgeInsets.symmetric(horizontal: 30,vertical: 15),
+              child:  Container(
+                
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(width: 2, color: locationNameUnderlineColor),
+                  )
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
+                      child:Icon(Icons.my_location,color: locationNameIconColor,),
+                    ),
+                    
+
+                    Expanded(
+                      child:  Theme(
+                          data: theme.copyWith(
+                            primaryColor: Colors.transparent,
+                            accentColor: Colors.orange, 
+                            hintColor: Colors.transparent),
+                          child: new TextField(
+                            focusNode: focusTextWidget,
+                            controller: textFieldController,
+                            keyboardType: TextInputType.text,
+                            style: TextStyle(fontWeight: FontWeight.normal, color: Colors.black, fontSize: 20.0, ),
+                            decoration: new InputDecoration(
+                              hintText: "Location Name",
+                              hintStyle: TextStyle(color: Colors.grey[500], fontSize: 20.0,fontWeight: FontWeight.normal)
+                            ),
+                          ),
+                        ),
+                    )
+                          
+                  ],
+                ),
+              ),
+            );
+  }
+
+  Widget getCheckboxWidget(position){
+
+    return 
+    Padding(
+      padding:EdgeInsets.symmetric(horizontal: 30, vertical: 5),
+      child: Container(
+        decoration:  new BoxDecoration(
+          border: new Border.all(color: Colors.grey[300]),
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+          color: boxStyleMap[position].backgroundColor,
+        ),
+        child:  Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10.0,vertical: 2.0),
+          child:    Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisSize: MainAxisSize.max,
+            children: <Widget>[
+        
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: new Text(boxStyleMap[position].option, style: TextStyle(fontWeight: FontWeight.normal,fontSize: 16.0, color: boxStyleMap[position].textColor),)    
+              ),
+        
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical:0.0),
+                child: Theme(
+                  data: ThemeData(
+                    disabledColor: Colors.grey,
+                    unselectedWidgetColor: Colors.grey,
+                  ),
+                  child: Checkbox(                                          
+                    value: boxStyleMap[position].state,
+                    onChanged: (bool e) => toggleSwitch(e),
+                    activeColor: widget.coreClass.getHighlightColor(),
+                  ),
+                ),                                            
+              ),
+
+            ],
+          )    
+        ),
+      ),  
+    );
+  }
+
 }
