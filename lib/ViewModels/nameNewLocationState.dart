@@ -1,11 +1,12 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:deepblue/ViewModels/registerNewLocationState.dart';
 import 'package:deepblue/Views/nameNewLocationView.dart';
 import 'package:deepblue/models/CoreFunctionsModel.dart';
 import 'package:deepblue/models/RegisterNewLocationStyleModel.dart';
 import 'package:deepblue/models/RegisterNewLocationModel.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating/flutter_rating.dart';
+import 'package:image_picker/image_picker.dart';
 
 class NameNewLocation extends StatefulWidget{
 
@@ -31,6 +32,22 @@ abstract class NameNewLocationState extends State<NameNewLocation>{
 
   Map <String,RegisterLocationBoxStyle> boxStyleMap;
   List <String> boxStyleEntrys = new List();
+
+  File locationImage;
+
+  Future getImage(source) async {
+    var image;
+    if(source == "gallery"){
+      image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    }else{
+      image = await ImagePicker.pickImage(source: ImageSource.camera);
+    }
+    
+
+    setState(() {
+      locationImage = image;
+    });
+  }
 
   
   

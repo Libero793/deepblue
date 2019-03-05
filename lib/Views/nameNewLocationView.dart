@@ -36,23 +36,27 @@ class NameNewLocationView extends NameNewLocationState{
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-
-                Padding(
-                  padding: EdgeInsets.only(bottom: 20),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(75)),
-                      color: Colors.grey[300],
-                    ),
-                    width: 125,
-                    height: 125,
-                    child: Icon(
-                      Icons.camera_alt,
-                      color: Colors.grey[400],
-                      size: 45,
+                
+                GestureDetector(
+                  onTap: _optionsDialogBox,
+                  child:  Padding(
+                    padding: EdgeInsets.only(bottom: 20),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(75)),
+                        color: Colors.grey[300],
+                      ),
+                      width: 125,
+                      height: 125,
+                      child: Icon(
+                        Icons.add_a_photo,
+                        color: Colors.grey[400],
+                        size: 45,
+                      ),
                     ),
                   ),
                 )
+               
 
               ],
             ),   
@@ -199,5 +203,34 @@ class NameNewLocationView extends NameNewLocationState{
       ),  
     );
   }
+
+  Future<void> _optionsDialogBox() {
+  return showDialog(context: context,
+    builder: (BuildContext context) {
+        return AlertDialog(
+          content: new SingleChildScrollView(
+            child: new ListBody(
+              children: <Widget>[
+                GestureDetector(
+                  child: new Text('Take a picture'),
+                  onTap: (){
+                    getImage("camera");
+                  }
+                ),
+                Padding(
+                  padding: EdgeInsets.all(8.0),
+                ),
+                GestureDetector(
+                  child: new Text('Select from gallery'),
+                  onTap: (){
+                    getImage("gallery");
+                  }
+                ),
+              ],
+            ),
+          ),
+        );
+      });
+}
 
 }
