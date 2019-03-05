@@ -6,7 +6,6 @@ import 'package:deepblue/models/CoreFunctionsModel.dart';
 import 'package:deepblue/models/nearLocationsModel.dart';
 import 'package:deepblue/models/setupFile.dart';
 import 'package:flutter/material.dart';
-import 'package:deepblue/models/CardItemModel.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -255,11 +254,6 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
 
                   nearLocations.setNearWashboxes(response.body.toString());
                   nearLocations.setCount(json.decode(response.body.toString()).length);
-                  
-                  for(int i=0;i<nearestLocation.length;i++){
-                    distanceIndicator=(nearestLocation[i]["distanceValue"]/biggestDistance);
-                    cardsList.add(CardItemModel(nearestLocation[i]["name"], Icons.local_car_wash, nearestLocation[i]["distanceText"], distanceIndicator));
-                  }
                   washboxesLoaded=true;
               });
         }else{

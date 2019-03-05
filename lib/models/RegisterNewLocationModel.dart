@@ -1,3 +1,6 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
 class RegisterNewLocationModel{
 
   Map<String,double> location;
@@ -9,6 +12,8 @@ class RegisterNewLocationModel{
   bool schaumPistole=false;
   bool fliessendWasser=false;
   bool motorWaesche=false;
+
+  IconData icon;
 
 
   void setLocation(loc){
@@ -25,6 +30,25 @@ class RegisterNewLocationModel{
 
   String getLocationType(){
     return locationType;
+  }
+
+  IconData getIcon(){
+    switch (locationType) {
+      case "washbox" :  {
+        return Icons.local_car_wash;
+      }
+
+      case "event" : {
+        return Icons.star;
+      }
+
+      case "shooting" : {
+        return Icons.camera_alt;
+      }
+        
+        break;
+      default:
+    }
   }
 
   void setLocationName(name){

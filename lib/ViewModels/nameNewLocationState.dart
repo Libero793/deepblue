@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:deepblue/ViewModels/registerNewLocationState.dart';
 import 'package:deepblue/Views/nameNewLocationView.dart';
 import 'package:deepblue/models/CoreFunctionsModel.dart';
-import 'package:deepblue/models/RegisterLocationStyleModel.dart';
+import 'package:deepblue/models/RegisterNewLocationStyleModel.dart';
 import 'package:deepblue/models/RegisterNewLocationModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating/flutter_rating.dart';
@@ -30,6 +30,7 @@ abstract class NameNewLocationState extends State<NameNewLocation>{
   bool hochdruckReiniger = false;
 
   Map <String,RegisterLocationBoxStyle> boxStyleMap;
+  List <String> boxStyleEntrys = new List();
 
   
   
@@ -45,11 +46,25 @@ abstract class NameNewLocationState extends State<NameNewLocation>{
     super.initState();
     focusTextWidget.addListener(_onFocusChange);
 
+    boxStyleMap = new Map();
+    boxStyleEntrys.add("Hochdruckreiniger");
+    boxStyleEntrys.add("Schaumbürste");
+    boxStyleEntrys.add("Schaumpistole");
+    boxStyleEntrys.add("Wasser");
+    boxStyleEntrys.add("Motor Wäsche");
+
+    for(var i=0;i<boxStyleEntrys.length;i++){
+      boxStyleMap["${boxStyleEntrys[i]}"]=new RegisterLocationBoxStyle();
+      boxStyleMap["${boxStyleEntrys[i]}"].option=boxStyleEntrys[i];
+    }
+
+    /*
     boxStyleMap["Hochdruckreiniger"] = new RegisterLocationBoxStyle();
-    boxStyleMap[0].option="Hochdruckreiniger";
+    boxStyleMap["Hochdruckreiniger"].option="Hochdruckreiniger";
+    
     boxStyleMap["test"] = new RegisterLocationBoxStyle();
     boxStyleMap[1].option="test";
-
+    */
 
   }
 
@@ -85,10 +100,10 @@ abstract class NameNewLocationState extends State<NameNewLocation>{
     );
   }
 
-    void toggleSwitch(bool e){
+    void toggleSwitch(bool e, RegisterLocationBoxStyle styleObject){
     if (this.mounted){
       setState((){
-
+            styleObject.switchState(widget.coreClass.getHighlightColor());
            // print(style.switchState());
             
       });

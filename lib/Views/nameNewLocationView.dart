@@ -1,6 +1,6 @@
 import 'package:deepblue/ViewModels/nameNewLocationState.dart';
 import 'package:flutter/material.dart';
-import 'package:deepblue/models/RegisterLocationStyleModel.dart';
+import 'package:deepblue/models/RegisterNewLocationStyleModel.dart';
 
 class NameNewLocationView extends NameNewLocationState{
     
@@ -10,27 +10,13 @@ class NameNewLocationView extends NameNewLocationState{
     print("location: $widget.pushedLocation");
     final theme = Theme.of(context);
 
-    String addLocationTypeName;
-    String addLocationTypeShortName;
-
-    if(widget.registerLocationClass.getLocationType() == "washbox"){
-      addLocationTypeName = "deiner Waschbox";
-      addLocationTypeShortName = "Waschbox";
-    }else if(widget.registerLocationClass.getLocationType() == "shooting"){
-      addLocationTypeName = "deinem Foto Spot";
-      addLocationTypeShortName = "Foto Spot";
-    }else if(widget.registerLocationClass.getLocationType() == "event"){
-      addLocationTypeName = "deinem Event";
-      addLocationTypeShortName = "Event";
-    }
-
     
 
     return Scaffold(
 
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("Location hinzufügen", style: TextStyle(color: Colors.black),),
+        title: Text("", style: TextStyle(color: Colors.black),),
         centerTitle: true,
         backgroundColor: Colors.white,
         elevation: 0.0,
@@ -42,6 +28,8 @@ class NameNewLocationView extends NameNewLocationState{
       body: new Center(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
 
             Row(
@@ -50,7 +38,7 @@ class NameNewLocationView extends NameNewLocationState{
               children: <Widget>[
 
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 0, vertical: 20),
+                  padding: EdgeInsets.only(bottom: 20),
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(75)),
@@ -85,9 +73,8 @@ class NameNewLocationView extends NameNewLocationState{
                       ),
             ),
             
-
-            new Expanded(
-              child: new Row(
+            
+            new Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
@@ -97,13 +84,13 @@ class NameNewLocationView extends NameNewLocationState{
                         navigatorPushRegisterNewLocation();
                       },
                       child: new Container(
-                        color: Colors.white,
+                        color: widget.coreClass.getHighlightColor(),
                         height: 60.0,
                         child: new Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
-                          Text("Weiter",style: TextStyle(color: widget.coreClass.getHighlightColor(), fontSize: 16.0, fontWeight: FontWeight.bold)),
+                          Text("Speichern",style: TextStyle(color: Colors.white, fontSize: 16.0, fontWeight: FontWeight.bold)),
                          
                         ],
                         ),
@@ -112,8 +99,6 @@ class NameNewLocationView extends NameNewLocationState{
                   )
                 ],
               )
-            )
-            
 
           ],
         ),
@@ -123,7 +108,7 @@ class NameNewLocationView extends NameNewLocationState{
 
   Widget  getInputLineWidget(theme){
     return  Padding(
-              padding: EdgeInsets.symmetric(horizontal: 30,vertical: 15),
+              padding: EdgeInsets.fromLTRB(35, 10, 35, 30),
               child:  Container(
                 
                 decoration: BoxDecoration(
@@ -138,7 +123,7 @@ class NameNewLocationView extends NameNewLocationState{
 
                     Padding(
                       padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
-                      child:Icon(Icons.my_location,color: locationNameIconColor,),
+                      child:Icon(widget.registerLocationClass.getIcon(),color: locationNameIconColor,),
                     ),
                     
 
@@ -168,18 +153,20 @@ class NameNewLocationView extends NameNewLocationState{
   }
 
   Widget getCheckboxWidget(position){
+    
+    String entryOptionName = boxStyleEntrys[position];
 
     return 
     Padding(
       padding:EdgeInsets.symmetric(horizontal: 30, vertical: 5),
       child: Container(
         decoration:  new BoxDecoration(
-          border: new Border.all(color: Colors.grey[300]),
+          border: new Border.all(color: boxStyleMap["$entryOptionName"].textColor),
           borderRadius: BorderRadius.all(Radius.circular(10)),
-          color: boxStyleMap[position].backgroundColor,
+          color: boxStyleMap["$entryOptionName"].backgroundColor,
         ),
         child:  Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10.0,vertical: 2.0),
+          padding: const EdgeInsets.symmetric(horizontal: 10.0,vertical: 0),
           child:    Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -188,7 +175,7 @@ class NameNewLocationView extends NameNewLocationState{
         
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: new Text(boxStyleMap[position].option, style: TextStyle(fontWeight: FontWeight.normal,fontSize: 16.0, color: boxStyleMap[position].textColor),)    
+                child: new Text(boxStyleMap["$entryOptionName"].option, style: TextStyle(fontWeight: FontWeight.normal,fontSize: 16.0, color: boxStyleMap["$entryOptionName"].textColor),)    
               ),
         
               Padding(
@@ -199,8 +186,8 @@ class NameNewLocationView extends NameNewLocationState{
                     unselectedWidgetColor: Colors.grey,
                   ),
                   child: Checkbox(                                          
-                    value: boxStyleMap[position].state,
-                    onChanged: (bool e) => toggleSwitch(e),
+                    value: boxStyleMap["$entryOptionName"].state,
+                    onChanged: (bool e) => toggleSwitch(e,boxStyleMap["$entryOptionName"]),
                     activeColor: widget.coreClass.getHighlightColor(),
                   ),
                 ),                                            
