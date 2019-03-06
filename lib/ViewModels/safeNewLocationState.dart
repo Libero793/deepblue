@@ -61,6 +61,9 @@ abstract class SafeNewLocationState extends State<SafeNewLocation>{
     }else{
       base64Image ="empty";
     }
+
+    print("LocationType: ${widget.registerLocationClass.locationType}");
+    print("image: $base64Image");
   
 
     print(widget.registerLocationClass.getLocation()['latitude'].toString());
@@ -73,7 +76,7 @@ abstract class SafeNewLocationState extends State<SafeNewLocation>{
     print(widget.registerLocationClass.getLocationName().toString());
     print(finudid.toString());
 
-    http.post(url, body: {"registerNewWashingLocation":"true",
+    http.post(url, body: {"registerNewLocation":"true",
                           "key": "0", 
                           "locationType" : widget.registerLocationClass.locationType,
                           "latitude": widget.registerLocationClass.getLocation()['latitude'].toString(), 

@@ -33,6 +33,7 @@ abstract class MapScreenState extends State<MapScreen>{
   bool addMode = false;
   bool addModeTapped = false;
   bool chooseLocationTapped = false;
+  bool boxInfoToggled = false;
   String addLocationType;
   String headlineText = "Kartenübersicht";
   double containerFloatingActionButtonHeight = 65.0;
@@ -40,6 +41,7 @@ abstract class MapScreenState extends State<MapScreen>{
 
   Timer _reloadTimer;
   Color actionButtonColor;
+  Color actionButtonIconColor = Colors.white;
 
   Map<String, double> registerLocation;
   List<LatLng> tappedPoints = [];
@@ -123,10 +125,7 @@ abstract class MapScreenState extends State<MapScreen>{
                                         width: 60.0,
                                         height: 60.0,
                                             
-                                            child: new Image.asset(
-                                                'assets/images/locationWashbox.png',
-                                                fit: BoxFit.cover,    
-                                                ),
+                                            child: Icon(Icons.place, color: widget.coreClass.getWashboxColor(), size: 60,),
                                           ),                                                          
                                       ]
                             ),
@@ -178,31 +177,33 @@ abstract class MapScreenState extends State<MapScreen>{
 
   }
 
-  actionButtonPressed(){
-    if(showBoxInfo){
+
+
+  void actionButtonToggle(){
+    if(boxInfoToggled){
       toggleBoxInfo("hide", null);
+      boxInfoToggled = false;
     }else{
-      toggleEditMode();
-    }
-  }
+      if(!chooseLocationTapped){
+        setState(() {
+                chooseLocationTapped = true;
+                containerFloatingActionButtonHeight=260;
+                actionButtonColor = Colors.red;
+                actionButtonIcon = Icons.close;
+                actionButtonIconColor = Colors.white;
+        });
+      }else{
+        setState(() {
+          chooseLocationTapped = false;
+          containerFloatingActionButtonHeight = 65;
+          actionButtonColor = widget.coreClass.getHighlightColor();
+          actionButtonIcon = Icons.add;
+          actionButtonIconColor = Colors.white;
+        });
 
-  void chooseLocationToggle(){
-    if(!chooseLocationTapped){
-      setState(() {
-              chooseLocationTapped = true;
-              containerFloatingActionButtonHeight=260;
-              actionButtonColor = Colors.red;
-              actionButtonIcon = Icons.close;
-      });
-    }else{
-      setState(() {
-        chooseLocationTapped = false;
-        containerFloatingActionButtonHeight = 65;
-        actionButtonColor = widget.coreClass.getHighlightColor();
-        actionButtonIcon = Icons.add;
-      });
-
+      }
     }
+    
   }
 
   void setAddLocationType(var type){
@@ -421,12 +422,17 @@ abstract class MapScreenState extends State<MapScreen>{
    void toggleBoxInfo(action,washboxInfo){
         ScaffoldState state = scaffoldKey.currentState;
         
+        
+        
         if(action == "show"){
             print(washboxInfo);
             if(this.mounted){
               setState(() {
                 actionButtonColor=Colors.white;
+                actionButtonIcon = Icons.close;
+                actionButtonIconColor = Colors.black;
                 showBoxInfo=true;
+                boxInfoToggled = true;
               });
             }
           controller = state.showBottomSheet<Null>((BuildContext context) {
@@ -633,7 +639,7 @@ abstract class MapScreenState extends State<MapScreen>{
                                                             mainAxisAlignment: MainAxisAlignment.center,
                                                             crossAxisAlignment: CrossAxisAlignment.center,
                                                             children: <Widget>[
-                                                              Text("Navigation starten",style: TextStyle(color: Colors.blue[800], fontSize: 16.0, fontWeight: FontWeight.bold))
+                                                              Text("Navigation starten",style: TextStyle(color: Colors.black, fontSize: 16.0, fontWeight: FontWeight.bold))
                                                             ],
                                                             ),
                                                           )
@@ -655,6 +661,12 @@ abstract class MapScreenState extends State<MapScreen>{
               controller.close();
               showBoxInfo=false;
               actionButtonColor=widget.coreClass.getHighlightColor();
+              boxInfoToggled = true;
+              containerFloatingActionButtonHeight = 65;
+              actionButtonColor = widget.coreClass.getHighlightColor();
+              actionButtonIcon = Icons.add;
+              actionButtonIconColor = Colors.white;
+              
             });
           }
         }

@@ -179,7 +179,7 @@ class MapScreenView extends MapScreenState{
                       children: <Widget>[
                         
                         GestureDetector(
-                          onTap: chooseLocationToggle,
+                          onTap: actionButtonToggle,
                           child: Padding(
                               padding: EdgeInsets.only(bottom: 10),
                               child: Container(
@@ -191,7 +191,7 @@ class MapScreenView extends MapScreenState{
                                 ),
                                 child: Icon(
                                   actionButtonIcon,
-                                  color: Colors.white,
+                                  color: actionButtonIconColor,
                                   size: 30,
                                 ),
                               ),
