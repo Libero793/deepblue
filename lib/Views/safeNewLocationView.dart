@@ -1,12 +1,12 @@
+import 'package:deepblue/ViewModels/safeNewLocationState.dart';
 import 'package:flutter/material.dart';
-import 'package:deepblue/ViewModels/confirmLocationRegistrationState.dart';
 
-class ConfirmLocationRegistrationView extends ConfirmLocationRegistrationState{
-
+class SafeNewLocationView extends SafeNewLocationState{
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-  
+    print(widget.registerLocationClass.toString());
+    print("uid: $finudid");
     return Scaffold(
       backgroundColor: widget.coreClass.getHighlightColor(),
       appBar: AppBar(
@@ -14,17 +14,13 @@ class ConfirmLocationRegistrationView extends ConfirmLocationRegistrationState{
         centerTitle: true,
         backgroundColor: widget.coreClass.getHighlightColor(),
         elevation: 0.0,
-        automaticallyImplyLeading: false,
       ),
 
       body: new Center(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-
-            Row(),
-            
+           
             Padding(
               padding: const EdgeInsets.fromLTRB(24.0, 100.0, 24.0, 0.0),
               child: Column(
@@ -74,9 +70,11 @@ class ConfirmLocationRegistrationView extends ConfirmLocationRegistrationState{
               )
             )
 
+           
           ],
         ),
       ),
     );
   }
+
 }

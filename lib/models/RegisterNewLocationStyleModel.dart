@@ -5,6 +5,7 @@ class RegisterLocationBoxStyle {
   Color textColor = Colors.grey[400];
   bool state = false;
   String option;
+  String dataValue;
 
   
   switchState(Color color){

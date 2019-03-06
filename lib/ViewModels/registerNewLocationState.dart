@@ -1,18 +1,19 @@
 import 'dart:async';
-import 'package:deepblue/ViewModels/confirmLocationRegistrationState.dart';
-import 'package:deepblue/models/CoreFunctionsModel.dart';
-import 'package:deepblue/models/RegisterNewLocationModel.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_udid/flutter_udid.dart';
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'dart:io';
+import 'package:deepblue/ViewModels/safeNewLocationState.dart';
 import 'package:deepblue/Views/registerNewLocationView.dart';
-
+import 'package:deepblue/models/CoreFunctionsModel.dart';
+import 'package:deepblue/models/RegisterNewLocationStyleModel.dart';
+import 'package:deepblue/models/RegisterNewLocationModel.dart';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class RegisterNewLocation extends StatefulWidget{
 
-  CoreFunctionsModel coreClass;
   RegisterNewLocationModel registerLocationClass;
+  CoreFunctionsModel coreClass;
+
   RegisterNewLocation(this.registerLocationClass, this.coreClass);
 
   @override
@@ -22,145 +23,146 @@ class RegisterNewLocation extends StatefulWidget{
 
 abstract class RegisterNewLocationState extends State<RegisterNewLocation>{
 
+
   Color menuBackgroundColor = Colors.blue[900];
+  Color locationNameUnderlineColor = Colors.grey[300];
+  Color locationNameIconColor = Colors.grey[300];
+  bool locationNameFocused = false;
 
-  Future httpReturn;
-  String test;
+  bool hideSafeButton = false;
+  bool imageSelected = false;
 
-  bool hochdruckReiniger = false;
-  bool schaumBuerste = false;
-  bool schaumPistole = false;
-  bool fliessendWasser = false;
-  bool motorWaesche = false;
+
+  Map <String,RegisterLocationBoxStyle> boxStyleMap;
+  List <String> boxStyleEntrys = new List();
+
+  List<int> imageBytes;
+  String base64image;
+  File locationImage;
   
-  String finudid;
   
 
-
-   void initState() {
-    super.initState();
-    initPlatformState();
-  }
-
-  Future<void> initPlatformState() async {
-    String udid;
-    try {
-      udid = await FlutterUdid.consistentUdid;
-    } on PlatformException {
-      udid = 'Failed to get UDID.';
+  Future getImage(source) async {
+    var image;
+    if(source == "gallery"){
+      image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    }else{
+      image = await ImagePicker.pickImage(source: ImageSource.camera);
     }
 
-    if (!mounted) return;
+    imageBytes = image.readAsBytesSync();
+    print(imageBytes);
+    base64image = base64Encode(imageBytes);
 
     setState(() {
-      finudid = udid;
+      locationImage = image;
+      imageSelected = true;
+      Navigator.pop(context);
     });
+
   }
 
+  
+  
+  //_RegisterLocationScreen(this.pushedLocation);
+  
+  FocusNode focusTextWidget = new FocusNode();
+  final textFieldController = TextEditingController();
+  
 
-  void toggleSwitch(bool e, String val){
+
+  @override
+  void initState() {
+    super.initState();
+    focusTextWidget.addListener(_onFocusChange);
+    locationImage = null;
+
+    boxStyleMap = new Map();
+    boxStyleEntrys.add("Hochdruckreiniger");
+    boxStyleEntrys.add("Schaumbürste");
+    boxStyleEntrys.add("Schaumpistole");
+    boxStyleEntrys.add("Wasser");
+    boxStyleEntrys.add("Motor Wäsche");
+
+    for(var i=0;i<boxStyleEntrys.length;i++){
+      boxStyleMap["${boxStyleEntrys[i]}"]=new RegisterLocationBoxStyle();
+      boxStyleMap["${boxStyleEntrys[i]}"].option=boxStyleEntrys[i];
+    }
+
+  }
+
+  void _onFocusChange(){
+    debugPrint("Focus: "+focusTextWidget.hasFocus.toString());
+    if(!locationNameFocused){
+      setState(() {
+      locationNameUnderlineColor = widget.coreClass.getHighlightColor();
+      locationNameIconColor = widget.coreClass.getHighlightColor();
+      locationNameFocused = true;
+      hideSafeButton = true;
+      });
+    }else{
+      setState(() {
+        locationNameUnderlineColor = Colors.grey[300];
+        locationNameIconColor = Colors.grey[300];
+        locationNameFocused = false;
+        hideSafeButton = false;
+      });
+    }
+
+  }
+
+  @override
+  void dispose(){
+    textFieldController.dispose();
+    super.dispose();
+  }
+
+  void navigatorPushRegisterNewLocation(){
+    widget.registerLocationClass.setLocationName(textFieldController.text);
+    safeSelectedOptions();
+    Navigator.push(
+      context, 
+      MaterialPageRoute(builder: (context) => SafeNewLocation(widget.registerLocationClass,widget.coreClass)),
+    );
+  }
+
+  void safeSelectedOptions(){
+
+    widget.registerLocationClass.locationBase64Image = base64image;
+    for(int i=0;i<boxStyleEntrys.length;i++){
+      switch (boxStyleMap["${boxStyleEntrys[i]}"].option) {
+        case "Hochdruckreiniger": 
+          widget.registerLocationClass.hochdruckReiniger=boxStyleMap["${boxStyleEntrys[i]}"].state;
+          break;
+        case "Schaumbürste":
+          widget.registerLocationClass.schaumBuerste=boxStyleMap["${boxStyleEntrys[i]}"].state;
+          break;
+        case "Schaumpistole":
+          widget.registerLocationClass.schaumPistole=boxStyleMap["${boxStyleEntrys[i]}"].state;
+          break;
+        case "Wasser":
+          widget.registerLocationClass.fliessendWasser=boxStyleMap["${boxStyleEntrys[i]}"].state;
+          break;
+        case "Motor Wäsche":
+          widget.registerLocationClass.motorWaesche=boxStyleMap["${boxStyleEntrys[i]}"].state;
+          break;
+        default:
+      }
+      
+    }
+  }
+
+  void toggleSwitch(bool e, RegisterLocationBoxStyle styleObject){
     if (this.mounted){
       setState((){
-            if(val=="hochdruckReiniger"){
-              if(e){
-                hochdruckReiniger=true;
-              }else{
-                hochdruckReiniger=false;
-              }
-
-              widget.registerLocationClass.setHochdruckReiniger(hochdruckReiniger);
-
-            }else if(val == "schaumBuerste"){
-              if(e){
-                schaumBuerste=true;
-              }else{
-                schaumBuerste=false;
-              }
-
-              widget.registerLocationClass.setSchaumBuerste(schaumBuerste);
-
-            }else if(val == "schaumPistole"){
-              if(e){
-                schaumPistole=true;
-              }else{
-                schaumPistole=false;
-              }
-
-              widget.registerLocationClass.setSchaumPistole(schaumPistole);
-
-            }else if(val == "fliessendWasser"){
-              if(e){
-                fliessendWasser=true;
-              }else{
-                fliessendWasser=false;
-              }
-
-              widget.registerLocationClass.setFliessendWasser(fliessendWasser);
-
-            }else if(val == "motorWaesche"){
-              if(e){
-                motorWaesche=true;
-              }else{
-                motorWaesche=false;
-              }
-
-              widget.registerLocationClass.setMotorWaesche(motorWaesche);
-
-            }
-        
+            styleObject.switchState(widget.coreClass.getHighlightColor());
+           // print(style.switchState());
+            
       });
     }
   }
 
-  /*void setBackgroundColorMenu(Color backgroundColor){
-    this.menuBackgroundColor = backgroundColor;
-  }*/
-  
-   void httpRequest()async {
-
-    var url = "http://www.nell.science/deepblue/index.php";
-
-    print(widget.registerLocationClass.getLocation()['latitude'].toString());
-    print(widget.registerLocationClass.getLocation()['longitude'].toString());
-    print(widget.registerLocationClass.getHochdruckReiniger().toString());
-    print(widget.registerLocationClass.getSchaumBuerste().toString());
-    print(widget.registerLocationClass.getSchaumPistole().toString());
-    print(widget.registerLocationClass.getFliessendWasser().toString());
-    print(widget.registerLocationClass.getMotorWaesche().toString());
-    print(widget.registerLocationClass.getLocationName().toString());
-    print(finudid.toString());
-
-    http.post(url, body: {"registerNewWashingLocation":"true",
-                          "key": "0", 
-                          "latitude": widget.registerLocationClass.getLocation()['latitude'].toString(), 
-                          "longitude": widget.registerLocationClass.getLocation()['longitude'].toString(),
-                          "hochdruckReiniger": widget.registerLocationClass.getHochdruckReiniger().toString(), 
-                          "schaumBuerste": widget.registerLocationClass.getSchaumBuerste().toString(),
-                          "schaumPistole": widget.registerLocationClass.getSchaumPistole().toString(),
-                          "fliessendWasser": widget.registerLocationClass.getFliessendWasser().toString(),
-                          "motorWaesche": widget.registerLocationClass.getMotorWaesche().toString(),
-                          "nameWaschbox": widget.registerLocationClass.getLocationName().toString(),
-                          "udid": finudid.toString(),
-                          
-                          })
-        .then((response) {
-      print("register Response status: ${response.statusCode}");   
-      print("Response body: ${response.body}");
-      print("httpreq");
-
-      if(response.statusCode == 200){
-        Navigator.pop(context);
-        Navigator.push(
-                          context, 
-                          MaterialPageRoute(builder: (context) => ConfirmLocationRegistration(widget.coreClass)),
-                        );
-      }else{
-        print("location registration failed");
-      }
-
-    });
-    
-  }
+ 
 
 
 }

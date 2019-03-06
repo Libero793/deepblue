@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:deepblue/ViewModels/homeScreenState.dart';
-import 'package:deepblue/ViewModels/nameNewLocationState.dart';
+import 'package:deepblue/ViewModels/registerNewLocationState.dart';
 import 'package:deepblue/Views/mapScreenView.dart';
 import 'package:deepblue/models/CoreFunctionsModel.dart';
 import 'package:deepblue/models/RegisterNewLocationModel.dart';
@@ -400,7 +400,7 @@ abstract class MapScreenState extends State<MapScreen>{
                                                   padding: EdgeInsets.symmetric(vertical: 10.0,horizontal: 30.0),
                                                   onPressed: () {
                                                     // Perform some action
-                                                    Navigator.push(context,MaterialPageRoute(builder: (context) => NameNewLocation(registerLocationClass,widget.coreClass)));
+                                                    Navigator.push(context,MaterialPageRoute(builder: (context) => RegisterNewLocation(registerLocationClass,widget.coreClass)));
                                                   },
                                                 ),
                                               ]
