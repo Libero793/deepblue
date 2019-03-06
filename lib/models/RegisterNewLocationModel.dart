@@ -6,15 +6,13 @@ class RegisterNewLocationModel{
   Map<String,double> location;
   String locationName;
   String locationType;
-  String locationBase64Image;
+  String locationBase64Image = null;
 
   bool hochdruckReiniger=false;
   bool schaumBuerste=false;
   bool schaumPistole=false;
   bool fliessendWasser=false;
   bool motorWaesche=false;
-
-  List<bool> selectedOptions = new List();
 
   IconData icon;
 
@@ -62,9 +60,6 @@ class RegisterNewLocationModel{
     return locationName;
   }
 
-  String addLocationOption(option){
-    selectedOptions.add(option);
-  }
 
 
 

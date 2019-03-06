@@ -24,15 +24,7 @@ abstract class SafeNewLocationState extends State<SafeNewLocation>{
 
   Color menuBackgroundColor = Colors.blue[900];
 
-  Future httpReturn;
-  String test;
-
-  bool hochdruckReiniger = false;
-  bool schaumBuerste = false;
-  bool schaumPistole = false;
-  bool fliessendWasser = false;
-  bool motorWaesche = false;
-  
+  Future httpReturn;  
   String finudid;
   
 
@@ -58,68 +50,17 @@ abstract class SafeNewLocationState extends State<SafeNewLocation>{
     });
   }
 
-  /*
-  void toggleSwitch(bool e, String val){
-    if (this.mounted){
-      setState((){
-            if(val=="hochdruckReiniger"){
-              if(e){
-                hochdruckReiniger=true;
-              }else{
-                hochdruckReiniger=false;
-              }
-
-              widget.registerLocationClass.setHochdruckReiniger(hochdruckReiniger);
-
-            }else if(val == "schaumBuerste"){
-              if(e){
-                schaumBuerste=true;
-              }else{
-                schaumBuerste=false;
-              }
-
-              widget.registerLocationClass.setSchaumBuerste(schaumBuerste);
-
-            }else if(val == "schaumPistole"){
-              if(e){
-                schaumPistole=true;
-              }else{
-                schaumPistole=false;
-              }
-
-              widget.registerLocationClass.setSchaumPistole(schaumPistole);
-
-            }else if(val == "fliessendWasser"){
-              if(e){
-                fliessendWasser=true;
-              }else{
-                fliessendWasser=false;
-              }
-
-              widget.registerLocationClass.setFliessendWasser(fliessendWasser);
-
-            }else if(val == "motorWaesche"){
-              if(e){
-                motorWaesche=true;
-              }else{
-                motorWaesche=false;
-              }
-
-              widget.registerLocationClass.setMotorWaesche(motorWaesche);
-
-            }
-        
-      });
-    }
-  }*/
-
-  /*void setBackgroundColorMenu(Color backgroundColor){
-    this.menuBackgroundColor = backgroundColor;
-  }*/
   
    void httpRequest()async {
 
     var url = "http://www.nell.science/deepblue/index.php";
+    String base64Image;
+
+    if(widget.registerLocationClass.locationBase64Image != null){
+      base64Image = widget.registerLocationClass.locationBase64Image;
+    }else{
+      base64Image ="empty";
+    }
   
 
     print(widget.registerLocationClass.getLocation()['latitude'].toString());
@@ -134,8 +75,10 @@ abstract class SafeNewLocationState extends State<SafeNewLocation>{
 
     http.post(url, body: {"registerNewWashingLocation":"true",
                           "key": "0", 
+                          "locationType" : widget.registerLocationClass.locationType,
                           "latitude": widget.registerLocationClass.getLocation()['latitude'].toString(), 
                           "longitude": widget.registerLocationClass.getLocation()['longitude'].toString(),
+                          "base64Image" : base64Image,
                           "hochdruckReiniger": widget.registerLocationClass.hochdruckReiniger.toString(), 
                           "schaumBuerste": widget.registerLocationClass.schaumBuerste.toString(),
                           "schaumPistole": widget.registerLocationClass.schaumPistole.toString(),
