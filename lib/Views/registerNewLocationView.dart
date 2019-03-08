@@ -1,6 +1,8 @@
 import 'package:deepblue/ViewModels/registerNewLocationState.dart';
 import 'package:flutter/material.dart';
 import 'package:deepblue/models/RegisterNewLocationStyleModel.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+  
 
 class RegisterNewLocationView extends RegisterNewLocationState{
     
@@ -64,10 +66,10 @@ class RegisterNewLocationView extends RegisterNewLocationState{
               ],
             ),   
             
+
             getInputLineWidget(theme),
             
-            
-
+            //washbox Layout
             new Expanded(
               child:  ListView.builder(
                         physics: AlwaysScrollableScrollPhysics(),
@@ -75,9 +77,34 @@ class RegisterNewLocationView extends RegisterNewLocationState{
                         controller: ScrollController(),
                         scrollDirection: Axis.vertical,
                         itemBuilder: (context, position) {
-                          return getCheckboxWidget(position);
+
+                          if(locationType == "washbox"){
+                            return getCheckboxWidget(position);
+                          } 
+
                         },
                       ),
+            ),
+
+            //Event Layout 
+            new Expanded(
+              child: OutlineButton(
+                onPressed: () {
+                    DatePicker.showDateTimePicker(context,
+                      showTitleActions: true,
+                      onChanged: (dateTime){
+                        print('datetime: $dateTime');
+                      },
+                      locale: LocaleType.en,
+                      currentTime: DateTime.now(),
+                    );
+                },
+                  
+                child: Text(
+                    'show date time picker (Chinese)',
+                    style: TextStyle(color: Colors.blue),
+                ),
+              ),
             ),
             
             Offstage(
@@ -149,7 +176,7 @@ class RegisterNewLocationView extends RegisterNewLocationState{
                             keyboardType: TextInputType.text,
                             style: TextStyle(fontWeight: FontWeight.normal, color: Colors.black, fontSize: 20.0, ),
                             decoration: new InputDecoration(
-                              hintText: "Location Name",
+                              hintText: hintTextName,
                               hintStyle: TextStyle(color: Colors.grey[500], fontSize: 20.0,fontWeight: FontWeight.normal)
                             ),
                           ),

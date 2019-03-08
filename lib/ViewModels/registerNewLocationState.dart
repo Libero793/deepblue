@@ -8,6 +8,7 @@ import 'package:deepblue/models/RegisterNewLocationStyleModel.dart';
 import 'package:deepblue/models/RegisterNewLocationModel.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 
 class RegisterNewLocation extends StatefulWidget{
 
@@ -39,28 +40,14 @@ abstract class RegisterNewLocationState extends State<RegisterNewLocation>{
   List<int> imageBytes;
   String base64image;
   File locationImage;
+
+  String hintTextName;
+  String locationType;
+
+
   
   
 
-  Future getImage(source) async {
-    var image;
-    if(source == "gallery"){
-      image = await ImagePicker.pickImage(source: ImageSource.gallery);
-    }else{
-      image = await ImagePicker.pickImage(source: ImageSource.camera);
-    }
-
-    imageBytes = image.readAsBytesSync();
-    print(imageBytes);
-    base64image = base64Encode(imageBytes);
-
-    setState(() {
-      locationImage = image;
-      imageSelected = true;
-      Navigator.pop(context);
-    });
-
-  }
 
   
   
@@ -77,16 +64,42 @@ abstract class RegisterNewLocationState extends State<RegisterNewLocation>{
     focusTextWidget.addListener(_onFocusChange);
     locationImage = null;
 
+    locationType = widget.registerLocationClass.locationType;
     boxStyleMap = new Map();
-    boxStyleEntrys.add("Hochdruckreiniger");
-    boxStyleEntrys.add("Schaumbürste");
-    boxStyleEntrys.add("Schaumpistole");
-    boxStyleEntrys.add("Wasser");
-    boxStyleEntrys.add("Motor Wäsche");
 
-    for(var i=0;i<boxStyleEntrys.length;i++){
-      boxStyleMap["${boxStyleEntrys[i]}"]=new RegisterLocationBoxStyle();
-      boxStyleMap["${boxStyleEntrys[i]}"].option=boxStyleEntrys[i];
+    switch (locationType) {
+      case "event" :{
+
+        hintTextName = "Event Name";
+
+      }        
+      break;
+
+      case "washbox":{
+
+        hintTextName = "Location Name";
+        boxStyleEntrys.add("Hochdruckreiniger");
+        boxStyleEntrys.add("Schaumbürste");
+        boxStyleEntrys.add("Schaumpistole");
+        boxStyleEntrys.add("Wasser");
+        boxStyleEntrys.add("Motor Wäsche");
+
+        for(var i=0;i<boxStyleEntrys.length;i++){
+          boxStyleMap["${boxStyleEntrys[i]}"]=new RegisterLocationBoxStyle();
+          boxStyleMap["${boxStyleEntrys[i]}"].option=boxStyleEntrys[i];
+        }
+
+      }
+      break;
+
+      case "shooting":{
+
+        hintTextName = "Location Name";
+
+      }
+      break;
+
+      default:
     }
 
   }
@@ -116,6 +129,28 @@ abstract class RegisterNewLocationState extends State<RegisterNewLocation>{
     textFieldController.dispose();
     super.dispose();
   }
+
+
+  Future getImage(source) async {
+    var image;
+    if(source == "gallery"){
+      image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    }else{
+      image = await ImagePicker.pickImage(source: ImageSource.camera);
+    }
+
+    imageBytes = image.readAsBytesSync();
+    print(imageBytes);
+    base64image = base64Encode(imageBytes);
+
+    setState(() {
+      locationImage = image;
+      imageSelected = true;
+      Navigator.pop(context);
+    });
+
+  }
+
 
   void navigatorPushRegisterNewLocation(){
     widget.registerLocationClass.setLocationName(textFieldController.text);
@@ -161,6 +196,9 @@ abstract class RegisterNewLocationState extends State<RegisterNewLocation>{
       });
     }
   }
+
+
+
 
  
 
