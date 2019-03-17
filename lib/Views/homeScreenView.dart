@@ -12,10 +12,7 @@ class HomeScreenView extends HomeScreenState {
     print("full$test");
     test++;
     //print("location${widget._currentLocation}");
-    if(!httpRequestExecuted){
-      httpRequestLocations(widget.coreClass.getSelectedLocation());
-      httpRequestExecuted=true;
-    }
+
     
     return new Scaffold(
 
@@ -139,11 +136,10 @@ class HomeScreenView extends HomeScreenState {
           ),
       
           Text(welcomeText, style: TextStyle(color: Colors.white)),
-          Offstage(
-            offstage: extendSpaceForScroll,
-            child:Container(
-              height: 270.0,
-            )
+          AnimatedContainer(
+              height: scrollSpacer,
+              duration: new Duration(milliseconds: 300),
+              color: Colors.transparent,
           )
         ],
       ),
@@ -225,7 +221,7 @@ class HomeScreenView extends HomeScreenState {
                               onTap: (){
                                 setState(() {
                                   currentCard="event";
-                                  scrollControllerHorizontal.animateTo(getScrollToPosition(MediaQuery.of(context).size.width,"event",0), duration: Duration(milliseconds: 200), curve: Curves.fastOutSlowIn);
+                                  scrollControllerHorizontal.animateTo(getScrollToPosition(MediaQuery.of(context).size.width,"event",0), duration: Duration(milliseconds: 400), curve: Curves.fastOutSlowIn);
                                 });
                               },
                               child: Container(
@@ -256,7 +252,7 @@ class HomeScreenView extends HomeScreenState {
                               onTap: (){
                                 setState(() {
                                   currentCard="washbox";
-                                  scrollControllerHorizontal.animateTo(getScrollToPosition(MediaQuery.of(context).size.width,"washbox",1), duration: Duration(milliseconds: 200), curve: Curves.fastOutSlowIn);
+                                  scrollControllerHorizontal.animateTo(getScrollToPosition(MediaQuery.of(context).size.width,"washbox",1), duration: Duration(milliseconds: 400), curve: Curves.fastOutSlowIn);
                                 });
                               },
                               child: Container(
@@ -283,7 +279,7 @@ class HomeScreenView extends HomeScreenState {
                               onTap: (){
                                 setState(() {
                                   currentCard="shootingspot";
-                                  scrollControllerHorizontal.animateTo(getScrollToPosition(MediaQuery.of(context).size.width,"shootingspot",2), duration: Duration(milliseconds: 200), curve: Curves.fastOutSlowIn);
+                                  scrollControllerHorizontal.animateTo(getScrollToPosition(MediaQuery.of(context).size.width,"shootingspot",2), duration: Duration(milliseconds: 400), curve: Curves.fastOutSlowIn);
                                 });
                               },
                               child: Container(
@@ -320,43 +316,9 @@ class HomeScreenView extends HomeScreenState {
             );
   }
 
-  /*
-  Widget navIcon(locationType,index){
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 5.0),
-      child: GestureDetector(
-
-        onTap: (){
-          setState(() {
-            currentCard=locationType;
-            scrollControllerHorizontal.animateTo(getScrollToPosition(MediaQuery.of(context).size.width,locationType,index), duration: Duration(milliseconds: 200), curve: Curves.fastOutSlowIn);
-          });
-        },
-
-        child: Card(
-          child: Container(
-            width: getNavIconBoxSize(locationType),
-            height: getNavIconBoxSize(locationType),
-            child: Icon(
-              getNavIcon(locationType),
-              color: getNavIconColor(locationType),
-              size: getNavIconSize(locationType),
-            ),
-          ),
-          
-          color: getNavIconBoxColor(locationType),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0)
-          ),
-        ),
-      ),
-    );    
-  }
-  */
 
   Widget itemList(listPosition){
-    print(execution);
-    execution++;
+
     return Container(
       width: (MediaQuery.of(context).size.width),
       color: Colors.transparent,
@@ -389,14 +351,16 @@ class HomeScreenView extends HomeScreenState {
 
 Widget createListItem(listPosition, itemPosition){
 
-  
-   var locationsJson = nearLocations.getNearLocations(1);
-   var locations;
+   
+   var locations = nearLocations.getNearLocations(1);
+   var locationImageExists = true;
+
    //print("testlocationscount: ${locationsJson}");
    
-   if(locationsJson != "null"){
-      locations = json.decode(locationsJson);
-   
+   if(locations != null){
+        if(locations[itemPosition].containsKey("image")){
+          locationImageExists = false;
+        }
           return Padding(
                   padding: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 5.0),
                   child: Card(
@@ -416,18 +380,9 @@ Widget createListItem(listPosition, itemPosition){
                           Padding(
                             padding: EdgeInsets.all(5),
                             child: Container(
-                              decoration: new BoxDecoration(
-                                color: Colors.grey[300],
-                                /*
-                                borderRadius: new BorderRadius.only(
-                                  topLeft: const Radius.circular(10.0),
-                                  bottomLeft: const Radius.circular(10.0)
-                                )*/
-                                borderRadius: BorderRadius.all(Radius.circular(10)),
-                              ),
+                              decoration: getLocationImageDecoration(locations[itemPosition]["image"]),
                               height: 115.0,
-                              width: 115.0,
-                              
+                              width: 115.0,                            
                             ),
                           ),
 
@@ -543,53 +498,28 @@ Widget createListItem(listPosition, itemPosition){
      return Container();                                    //insert Loading Icon here
    }
 }
-/*
-  Widget locationList(position){
-    return Card(
-                                child: Container(
-                                  width: 250.0,
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: <Widget>[
-                                            Icon(cardsList[position].icon, color: Colors.blue[900],),
-                                            Icon(Icons.more_vert, color: Colors.grey,),
-                                          ],
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            Padding(
-                                              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-                                              child: Text("${cardsList[position].distance}", style: TextStyle(color: Colors.grey),),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-                                              child: Text("${cardsList[position].cardTitle}", style: TextStyle(fontSize: 28.0),),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.all(8.0),
-                                              child: LinearProgressIndicator(value: cardsList[position].taskCompletion,),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10.0)
-                                ),
-                              );
 
-  }*/
+ getLocationImageDecoration(imageBase64){
+
+
+    if((imageBase64.toString()).length > 10){
+
+       
+      return BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(5)),
+        color: Colors.grey[300],
+        image: new DecorationImage(
+          image: new MemoryImage(base64toBytes(imageBase64)),
+          fit: BoxFit.cover
+        ),              
+      );      
+    }else{
+       return BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(5)),
+        color: Colors.grey[300],        
+      );         
+    }
+    
+  }
 
 }

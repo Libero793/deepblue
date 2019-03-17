@@ -26,8 +26,8 @@ abstract class RegisterNewLocationState extends State<RegisterNewLocation>{
 
 
   Color menuBackgroundColor = Colors.blue[900];
-  Color locationNameUnderlineColor = Colors.grey[300];
-  Color locationNameIconColor = Colors.grey[300];
+  Color locationNameUnderlineColor = Colors.grey[400];
+  Color locationNameIconColor = Colors.grey[400];
   bool locationNameFocused = false;
 
   bool hideSafeButton = false;
@@ -108,15 +108,15 @@ abstract class RegisterNewLocationState extends State<RegisterNewLocation>{
     debugPrint("Focus: "+focusTextWidget.hasFocus.toString());
     if(!locationNameFocused){
       setState(() {
-      locationNameUnderlineColor = widget.coreClass.getHighlightColor();
-      locationNameIconColor = widget.coreClass.getHighlightColor();
+      locationNameUnderlineColor = widget.coreClass.getColorSheme(locationType);
+      locationNameIconColor = widget.coreClass.getColorSheme(locationType);
       locationNameFocused = true;
       hideSafeButton = true;
       });
     }else{
       setState(() {
-        locationNameUnderlineColor = Colors.grey[300];
-        locationNameIconColor = Colors.grey[300];
+        locationNameUnderlineColor = Colors.grey[400];
+        locationNameIconColor = Colors.grey[400];
         locationNameFocused = false;
         hideSafeButton = false;
       });
@@ -190,7 +190,7 @@ abstract class RegisterNewLocationState extends State<RegisterNewLocation>{
   void toggleSwitch(bool e, RegisterLocationBoxStyle styleObject){
     if (this.mounted){
       setState((){
-            styleObject.switchState(widget.coreClass.getHighlightColor());
+            styleObject.switchState(widget.coreClass.getColorSheme(locationType));
            // print(style.switchState());
             
       });

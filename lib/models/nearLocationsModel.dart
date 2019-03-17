@@ -1,5 +1,5 @@
 class NearLocations {
-  var washboxen = "null";
+  List<dynamic> washboxen = null;
   var washboxenCount = 0;
   bool washboxesInit = false;
 
@@ -7,7 +7,7 @@ class NearLocations {
     washboxen = locations;
   }
 
-  String getNearLocations(int i){
+  getNearLocations(int i){
     //if(i == 1){
       return washboxen;
     //}
@@ -18,7 +18,7 @@ class NearLocations {
     if(listPosition == 1){
       return washboxenCount;
     }else{
-      return 3;
+      return 5;
     }
       
   }

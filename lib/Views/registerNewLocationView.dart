@@ -87,6 +87,7 @@ class RegisterNewLocationView extends RegisterNewLocationState{
             ),
 
             //Event Layout 
+            /*
             new Expanded(
               child: OutlineButton(
                 onPressed: () {
@@ -106,7 +107,7 @@ class RegisterNewLocationView extends RegisterNewLocationState{
                 ),
               ),
             ),
-            
+            */
             Offstage(
               offstage: hideSafeButton,
               child: new Row(
@@ -119,7 +120,7 @@ class RegisterNewLocationView extends RegisterNewLocationState{
                         navigatorPushRegisterNewLocation();
                       },
                       child: new Container(
-                        color: widget.coreClass.getHighlightColor(),
+                        color: widget.coreClass.getColorSheme(locationType),
                         height: 60.0,
                         child: new Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -177,7 +178,7 @@ class RegisterNewLocationView extends RegisterNewLocationState{
                             style: TextStyle(fontWeight: FontWeight.normal, color: Colors.black, fontSize: 20.0, ),
                             decoration: new InputDecoration(
                               hintText: hintTextName,
-                              hintStyle: TextStyle(color: Colors.grey[500], fontSize: 20.0,fontWeight: FontWeight.normal)
+                              hintStyle: TextStyle(color: Colors.grey[400], fontSize: 20.0,fontWeight: FontWeight.normal)
                             ),
                           ),
                         ),
@@ -219,13 +220,13 @@ class RegisterNewLocationView extends RegisterNewLocationState{
                 padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical:0.0),
                 child: Theme(
                   data: ThemeData(
-                    disabledColor: Colors.grey,
-                    unselectedWidgetColor: Colors.grey,
+                    disabledColor: Colors.grey[400],
+                    unselectedWidgetColor: Colors.grey[400],
                   ),
                   child: Checkbox(                                          
                     value: boxStyleMap["$entryOptionName"].state,
                     onChanged: (bool e) => toggleSwitch(e,boxStyleMap["$entryOptionName"]),
-                    activeColor: widget.coreClass.getHighlightColor(),
+                    activeColor: widget.coreClass.getColorSheme(locationType),
                   ),
                 ),                                            
               ),

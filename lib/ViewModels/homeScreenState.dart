@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:typed_data';
 import 'package:deepblue/Views/homeScreenView.dart';
 import 'package:deepblue/ViewModels/mapScreenState.dart';
 import 'package:deepblue/models/CoreFunctionsModel.dart';
@@ -36,6 +37,8 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
   var cardsList = [];
                   
   var cardColors = [];
+
+  var scrollSpacer = 270.0;
   
 
   AnimationController animationController;
@@ -75,6 +78,12 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
 
   @override
   void initState() {
+    
+    if(!httpRequestExecuted){
+      httpRequestLocations(widget.coreClass.getSelectedLocation());
+      httpRequestExecuted=true;
+    }
+
     extendSpaceForScroll = false;
     scrollControllerHorizontal = new ScrollController();     
     nearLocations = new NearLocations();
@@ -103,24 +112,21 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
 
   _verticalListener(){
     ScrollController verticalScroll = verticalScrolls[pagination];
-    print(verticalScroll.offset);
-
-    if(!extendSpaceForScroll){
-      if(verticalScroll.offset>10){
-        setState(() {
-          extendSpaceForScroll=true;   
-          firstCardOffset=50.0;    
-        });
-        
+      if(verticalScroll.offset>0){
+        if(scrollSpacer != 0){
+          setState(() {
+            scrollSpacer = 0;
+            firstCardOffset=50.0;    
+          });
+        }
+      }else{
+        if(scrollSpacer != 270){
+          setState(() {
+            scrollSpacer = 270;
+            firstCardOffset= 30.0;  
+          });
+        }
       }
-    }else{
-      if(verticalScroll.offset<=10){
-        setState(() {
-          extendSpaceForScroll=false;    
-          firstCardOffset= 30.0;  
-        });
-      }
-    }
   }
 
   @override
@@ -200,11 +206,6 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
         welcomeTextHeadline= "Das wird kalt!";
         welcomeText = "Aktuell ist es draußen ziemlich kalt, kein gutes Wetter um dein Auto zu waschen. Warte lieber noch bis das Wetter wieder besser wird.";
       }
-
-      if(nearLocationsCount < 1){
-        welcomeTextHeadline= "Sorry!";
-        welcomeText = "Leider haben wir keine Waschboxen in deiner Nähe gefunden. Wechsel in die Karte um alle Waschboxen zu sehen oder neue hinzuzufügen";
-      }
       
       setState(() {
               temp = weather["currently"]["temperature"].toStringAsFixed(0);
@@ -253,7 +254,7 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
 
           setState((){
 
-                  nearLocations.setNearWashboxes(response.body.toString());
+                  nearLocations.setNearWashboxes(nearestLocation);
                   nearLocations.setCount(json.decode(response.body.toString()).length);
                   washboxesLoaded=true;
               });
@@ -272,7 +273,6 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
 
   Color getNavCardColor(navSelected){
    if(navSelected == currentCard){
-     print("color $navSelected");
      switch (navSelected) {
        case "event":
           return widget.coreClass.eventColor;
@@ -365,7 +365,7 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
 
   void setupHorizontal(context){
     if(!horizontalScrollSetup){
-      scrollControllerHorizontal.animateTo(MediaQuery.of(context).size.width, duration: Duration(milliseconds: 200), curve: Curves.fastOutSlowIn);
+      scrollControllerHorizontal.animateTo(MediaQuery.of(context).size.width, duration: Duration(milliseconds: 400), curve: Curves.fastOutSlowIn);
       horizontalScrollSetup=true;
     }
   }
@@ -411,6 +411,13 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
       throw 'Could not launch url';
     }
 
+  }
+
+  Uint8List base64toBytes(imageString){
+    if(imageString != null){
+      Uint8List bytes = base64Decode(imageString);
+      return bytes;
+    }
   }
 
 

@@ -16,7 +16,7 @@ class RegisterLocationBoxStyle {
         textColor=Colors.white;
       }else{
         backgroundColor=Colors.white;
-        textColor=Colors.grey;
+        textColor=Colors.grey[400];
       }
       
       return state;
