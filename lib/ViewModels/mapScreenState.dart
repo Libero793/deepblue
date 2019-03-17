@@ -378,8 +378,8 @@ abstract class MapScreenState extends State<MapScreen>{
                                               children: <Widget>[
                                                 new OutlineButton(
                                                   child: const Text('Abbrechen'),
-                                                  color: Colors.grey,
-                                                  textColor: Colors.grey,
+                                                  textColor: Colors.grey[300],
+                                                  highlightedBorderColor: Colors.grey,
                                                   onPressed: () {
                                                     // Perform some action
                                                     toggleEditMode();

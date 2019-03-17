@@ -44,6 +44,12 @@ abstract class RegisterNewLocationState extends State<RegisterNewLocation>{
   String hintTextName;
   String locationType;
 
+  bool hideDateWidget;
+  bool hideCheckboxWidget;
+
+  var startTime="2019-04-20 16:20";
+  var endTime="2019-04-20 16:20";
+
 
   
   
@@ -71,11 +77,16 @@ abstract class RegisterNewLocationState extends State<RegisterNewLocation>{
       case "event" :{
 
         hintTextName = "Event Name";
+        hideDateWidget = false;
+        hideCheckboxWidget = true;
 
       }        
       break;
 
       case "washbox":{
+
+        hideDateWidget=true;
+        hideCheckboxWidget = false;
 
         hintTextName = "Location Name";
         boxStyleEntrys.add("Hochdruckreiniger");
@@ -83,6 +94,7 @@ abstract class RegisterNewLocationState extends State<RegisterNewLocation>{
         boxStyleEntrys.add("Schaumpistole");
         boxStyleEntrys.add("Wasser");
         boxStyleEntrys.add("Motor Wäsche");
+        
 
         for(var i=0;i<boxStyleEntrys.length;i++){
           boxStyleMap["${boxStyleEntrys[i]}"]=new RegisterLocationBoxStyle();
@@ -93,7 +105,8 @@ abstract class RegisterNewLocationState extends State<RegisterNewLocation>{
       break;
 
       case "shooting":{
-
+        hideDateWidget=true;
+        hideCheckboxWidget = true;
         hintTextName = "Location Name";
 
       }

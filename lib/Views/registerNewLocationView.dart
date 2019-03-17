@@ -70,44 +70,14 @@ class RegisterNewLocationView extends RegisterNewLocationState{
             getInputLineWidget(theme),
             
             //washbox Layout
-            new Expanded(
-              child:  ListView.builder(
-                        physics: AlwaysScrollableScrollPhysics(),
-                        itemCount: boxStyleMap.length,
-                        controller: ScrollController(),
-                        scrollDirection: Axis.vertical,
-                        itemBuilder: (context, position) {
 
-                          if(locationType == "washbox"){
-                            return getCheckboxWidget(position);
-                          } 
-
-                        },
-                      ),
-            ),
-
+            getCheckboxWrapperWidget(),
+                   
             //Event Layout 
-            /*
-            new Expanded(
-              child: OutlineButton(
-                onPressed: () {
-                    DatePicker.showDateTimePicker(context,
-                      showTitleActions: true,
-                      onChanged: (dateTime){
-                        print('datetime: $dateTime');
-                      },
-                      locale: LocaleType.en,
-                      currentTime: DateTime.now(),
-                    );
-                },
-                  
-                child: Text(
-                    'show date time picker (Chinese)',
-                    style: TextStyle(color: Colors.blue),
-                ),
-              ),
-            ),
-            */
+
+            getDateWidgetWrapper(),
+            
+            
             Offstage(
               offstage: hideSafeButton,
               child: new Row(
@@ -190,6 +160,29 @@ class RegisterNewLocationView extends RegisterNewLocationState{
             );
   }
 
+  Widget getCheckboxWrapperWidget(){
+    if(!hideCheckboxWidget){
+      return new Expanded(
+                    child:  ListView.builder(
+                      physics: AlwaysScrollableScrollPhysics(),
+                      itemCount: boxStyleMap.length,
+                      controller: ScrollController(),
+                      scrollDirection: Axis.vertical,
+                      itemBuilder: (context, position) {
+
+                        if(locationType == "washbox"){
+                          return getCheckboxWidget(position);
+                        } 
+
+                      },
+                    ),
+                  );
+    }else{
+      return Container();
+    }
+  }
+
+
   Widget getCheckboxWidget(position){
     
     String entryOptionName = boxStyleEntrys[position];
@@ -236,6 +229,121 @@ class RegisterNewLocationView extends RegisterNewLocationState{
         ),
       ),  
     );
+  }
+
+  Widget getDateWidgetWrapper(){
+    if(!hideDateWidget){
+      return new Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.max,
+                  children: <Widget>[
+                    
+                    getDateWidget("Startzeit"),
+                    getDateWidget("Endzeit"),
+
+
+                         
+
+                     
+                  ],
+                ),
+              );
+    }else{
+      return Container();
+    }
+    
+                
+                
+                /*OutlineButton(
+                onPressed: () {
+                  
+                },
+                    
+                child: Text(
+                 'show date time picker (Chinese)',
+                  style: TextStyle(color: Colors.blue),
+                ),
+                ),*/
+  }
+
+  Widget getDateWidget(timeType){
+    var tempTime;
+    
+    if(timeType == "Startzeit"){
+      tempTime=startTime;
+    }else{
+      tempTime=endTime;
+    }
+    return                
+                    Padding(
+                      padding:EdgeInsets.symmetric(horizontal: 30, vertical: 5),
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            child:GestureDetector(
+                              onTap: (){
+
+                                DatePicker.showDateTimePicker(context,
+                                  showTitleActions: true,
+                                 
+                                  onChanged: (dateTime){
+                                    print('datetime: $dateTime');
+                                    if(timeType == "Startzeit"){
+                                      setState(() {
+                                        startTime=dateTime.toString();
+                                      });
+                                    }else if(timeType == "Endzeit"){
+                                      setState(() {
+                                        endTime=dateTime.toString();
+                                      });
+                                    }
+                                  },
+                                  locale: LocaleType.en,
+                                  currentTime: DateTime.now(),
+                                );
+
+                              },
+                              child: Container(
+                                decoration:  new BoxDecoration(
+                                  border: new Border.all(color: Colors.grey),
+                                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                                  color: Colors.transparent,
+                                ),
+                                height: 40.0,
+                               
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.only(topLeft: Radius.circular(8), bottomLeft: Radius.circular(8)),
+                                          color: Colors.grey,
+                                        ),
+                                        height: 45.0,
+                                        width: 120.0,
+                                        
+                                        child: Padding(
+                                          padding: EdgeInsets.fromLTRB(15, 8, 25, 0),
+                                          child: Text(timeType,style: TextStyle(fontWeight: FontWeight.normal,fontSize: 18.0, color: Colors.white)),
+                                        )
+                                      ),
+                                    
+                                      Padding(
+                                        padding: EdgeInsets.fromLTRB(0, 0, 25, 0),
+                                        child: Text(tempTime.substring(0,16),style: TextStyle(fontWeight: FontWeight.normal,fontSize: 16.0, color: Colors.grey[400])),
+                                      )
+
+                                  ],
+                                )
+                              ),
+                            )
+                          )
+                        ],
+                      )
+                    );
+
   }
 
   Future<void> _optionsDialogBox() {
