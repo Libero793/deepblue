@@ -10,10 +10,10 @@ class CoreFunctionsModel{
   Map <String,double> selectedLocation;
   bool setAsHomeLocation = false;
   bool manualMapHintStatus;
-  static Color highlightColor = Color(0xff2980b9);
-  Color eventColor = Colors.yellow;
-  Color washboxColor = highlightColor;
-  Color shootingColor = Colors.green;
+  static Color highlightColor = Color(0xfff6aa1c);
+  Color eventColor = Color(0xffdb1529);
+  Color washboxColor = Color(0xff308dcc);
+  Color shootingColor = Color(0xff00af5a);
 
   getSetupFile(){
     return setupFile;
@@ -61,6 +61,21 @@ class CoreFunctionsModel{
 
   Color getEventColor(){
     return eventColor;
+  }
+
+  Color getColorSheme(selected){
+    switch (selected) {
+      case "event":
+          return eventColor;
+        break;
+      case "shooting":
+          return shootingColor;
+        break;
+      case "washbox":
+          return washboxColor;
+        break;
+      default:
+    }
   }
 
 

@@ -83,6 +83,7 @@ class LocatingScreenView extends LocatingScreenState {
                                     ),
                                     child: LinearProgressIndicator(
                                       valueColor: AlwaysStoppedAnimation(Colors.white),
+                                      backgroundColor: Color(0xffc68100),
                                     ),
                                   )                       
 

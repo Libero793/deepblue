@@ -150,7 +150,7 @@ abstract class ManualLocationMapState extends State<ManualLocationMap>{
                       ),
                       child: Column(
                         children: <Widget>[
-                          Icon(Icons.my_location,color: Colors.blue[900],size: 60.0,),
+                          Icon(Icons.my_location,color: widget.coreClass.getHighlightColor(),size: 60.0,),
                         ]
                       )
                       

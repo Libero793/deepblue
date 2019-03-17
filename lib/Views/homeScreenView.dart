@@ -64,7 +64,7 @@ class HomeScreenView extends HomeScreenState {
               centerTitle: true,
               elevation: 0.0,
               leading: new IconButton(
-              icon: new Icon(Icons.menu),
+              icon: new Icon(Icons.menu,color: Colors.transparent,),
                 onPressed: () {
                             
                 },
@@ -224,13 +224,13 @@ class HomeScreenView extends HomeScreenState {
                             child: GestureDetector(
                               onTap: (){
                                 setState(() {
-                                  currentCard="gasstation";
-                                  scrollControllerHorizontal.animateTo(getScrollToPosition(MediaQuery.of(context).size.width,"gasstation",0), duration: Duration(milliseconds: 200), curve: Curves.fastOutSlowIn);
+                                  currentCard="event";
+                                  scrollControllerHorizontal.animateTo(getScrollToPosition(MediaQuery.of(context).size.width,"event",0), duration: Duration(milliseconds: 200), curve: Curves.fastOutSlowIn);
                                 });
                               },
                               child: Container(
                                 decoration: BoxDecoration(
-                                  color: getNavCardColor("gasstation"),
+                                  color: getNavCardColor("event"),
                                   borderRadius: BorderRadius.only(
                                     topLeft: const Radius.circular(10.0),
                                     bottomLeft: const Radius.circular(10.0),
@@ -241,9 +241,9 @@ class HomeScreenView extends HomeScreenState {
                                   crossAxisAlignment: CrossAxisAlignment.stretch,
                                   children: <Widget>[
                                     Icon(
-                                      Icons.local_gas_station,
+                                      Icons.star,
                                       size: 28.0,
-                                      color: getNavIconColor("gasstation"),
+                                      color: getNavIconColor("event"),
                                     )
                                   ],
                                 ),
@@ -494,12 +494,24 @@ Widget createListItem(listPosition, itemPosition){
                                             mainAxisAlignment: MainAxisAlignment.end,
                                             mainAxisSize: MainAxisSize.max,
                                             children: <Widget>[
-
-                                              Padding(
-                                                padding:EdgeInsets.only(right: 5),
-                                                child: Icon(Icons.near_me,size: 40, color: Colors.blue),
-                                              )
                                               
+                                              GestureDetector(
+                                                onTap: (){
+                                                  launchMaps("${locations[itemPosition]["latitude"]}", "${locations[itemPosition]["longitude"]}");
+                                                },
+                                                child:  Padding(
+                                                  padding:EdgeInsets.only(right: 5),
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                      borderRadius: BorderRadius.circular(30),
+                                                      border: Border.all(color: getNavCardColor(currentCard), width: 2.0)
+                                                    ),
+                                                    width: 40,
+                                                    height: 40,
+                                                    child: Icon(Icons.near_me,size: 25, color: getNavCardColor(currentCard)),
+                                                  ),
+                                                )
+                                              ),
                                             ],
                                           ),
                                         )

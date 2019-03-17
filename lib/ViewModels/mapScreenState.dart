@@ -41,7 +41,7 @@ abstract class MapScreenState extends State<MapScreen>{
 
   Timer _reloadTimer;
   Color actionButtonColor;
-  Color actionButtonIconColor = Colors.white;
+  Color actionButtonIconColor = Colors.black;
 
   Map<String, double> registerLocation;
   List<LatLng> tappedPoints = [];
@@ -60,7 +60,7 @@ abstract class MapScreenState extends State<MapScreen>{
 
   
   void initState(){
-    actionButtonColor = widget.coreClass.getHighlightColor();
+    actionButtonColor = Colors.white;
     actionButtonIcon = Icons.add;
     requestWashboxMap(widget.coreClass.getSelectedLocation());
   }
@@ -188,17 +188,17 @@ abstract class MapScreenState extends State<MapScreen>{
         setState(() {
                 chooseLocationTapped = true;
                 containerFloatingActionButtonHeight=260;
-                actionButtonColor = Colors.red;
+                actionButtonColor = Colors.white;
                 actionButtonIcon = Icons.close;
-                actionButtonIconColor = Colors.white;
+                actionButtonIconColor = Colors.black;
         });
       }else{
         setState(() {
           chooseLocationTapped = false;
           containerFloatingActionButtonHeight = 65;
-          actionButtonColor = widget.coreClass.getHighlightColor();
+          actionButtonColor = Colors.white;
           actionButtonIcon = Icons.add;
-          actionButtonIconColor = Colors.white;
+          actionButtonIconColor = Colors.black;
         });
 
       }
@@ -278,7 +278,7 @@ abstract class MapScreenState extends State<MapScreen>{
                       ),
                       child: Column(
                         children: <Widget>[
-                          Icon(Icons.my_location,color: widget.coreClass.getHighlightColor(),size: 60.0,),
+                          Icon(Icons.my_location,color: widget.coreClass.getColorSheme(addLocationType),size: 60.0,),
                         ]
                       )
                       
@@ -353,7 +353,7 @@ abstract class MapScreenState extends State<MapScreen>{
                                       ),
                                       child:new Container (
                                         decoration: new BoxDecoration(
-                                          color: widget.coreClass.getHighlightColor(),
+                                          color: Colors.white,
                                           borderRadius: new BorderRadius.only(
                                               topLeft: const Radius.circular(10.0),
                                               topRight: const Radius.circular(10.0),
@@ -369,7 +369,7 @@ abstract class MapScreenState extends State<MapScreen>{
                                                 child: new Text(
                                                           'Klick auf die Map '
                                                           'um $addLocationTypeName hinzuzufügen',
-                                                          textAlign: TextAlign.center,style: TextStyle(fontSize: 18.0, color: Colors.white, fontWeight: FontWeight.w400)
+                                                          textAlign: TextAlign.center,style: TextStyle(fontSize: 18.0, color: Colors.black, fontWeight: FontWeight.w400)
                                                         )
                                             ),
                                             new Row(
@@ -378,10 +378,8 @@ abstract class MapScreenState extends State<MapScreen>{
                                               children: <Widget>[
                                                 new OutlineButton(
                                                   child: const Text('Abbrechen'),
-                                                  color: widget.coreClass.getHighlightColor(),
-                                                  highlightColor: Colors.green,
-                                                  textColor: Colors.white,
-                                                  splashColor: widget.coreClass.getHighlightColor(),
+                                                  color: Colors.grey,
+                                                  textColor: Colors.grey,
                                                   onPressed: () {
                                                     // Perform some action
                                                     toggleEditMode();
@@ -395,9 +393,8 @@ abstract class MapScreenState extends State<MapScreen>{
                                                 new RaisedButton(
                                               
                                                   child: const Text('Weiter'),
-                                                  color: Colors.white,
-                                                  textColor: widget.coreClass.getHighlightColor(),
-                                                  splashColor: widget.coreClass.getHighlightColor(),
+                                                  color: widget.coreClass.getColorSheme(getAddLocationType()),
+                                                  textColor: Colors.white,
                                                   padding: EdgeInsets.symmetric(vertical: 10.0,horizontal: 30.0),
                                                   onPressed: () {
                                                     // Perform some action
@@ -428,9 +425,9 @@ abstract class MapScreenState extends State<MapScreen>{
             print(washboxInfo);
             if(this.mounted){
               setState(() {
-                actionButtonColor=Colors.white;
+                actionButtonColor=widget.coreClass.washboxColor;
                 actionButtonIcon = Icons.close;
-                actionButtonIconColor = Colors.black;
+                actionButtonIconColor = Colors.white;
                 showBoxInfo=true;
                 boxInfoToggled = true;
               });
@@ -445,7 +442,7 @@ abstract class MapScreenState extends State<MapScreen>{
                                       ),
                                       child: new Container (
                                         decoration: new BoxDecoration(
-                                          color: widget.coreClass.getHighlightColor(),
+                                          color: Colors.white,
                                           borderRadius: new BorderRadius.only(
                                               topLeft: const Radius.circular(10.0),
                                               topRight: const Radius.circular(10.0),
@@ -468,7 +465,7 @@ abstract class MapScreenState extends State<MapScreen>{
                                                     children: <Widget>[
                                                       new Padding(
                                                         padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 16.0),
-                                                        child: new Text(washboxInfo["name"],textAlign: TextAlign.left,style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600, color: Colors.white))
+                                                        child: new Text(washboxInfo["name"],textAlign: TextAlign.left,style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600, color: Colors.black))
                                                       ),
                                                     ]
                                                   ),
@@ -480,11 +477,11 @@ abstract class MapScreenState extends State<MapScreen>{
                                                       children: <Widget>[
                                                         new Padding(
                                                           padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 8.0),
-                                                          child: Icon(Icons.check, color: Colors.white),
+                                                          child: Icon(Icons.check, color: Colors.black),
                                                         ),
                                                         new Padding(
                                                           padding: const EdgeInsets.fromLTRB(10.0, 2.0, 0.0, 8.0),
-                                                          child: new Text("Hochdruckreiniger",textAlign: TextAlign.left,style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w400, color: Colors.white))
+                                                          child: new Text("Hochdruckreiniger",textAlign: TextAlign.left,style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w400, color: Colors.black))
                                                         ),
 
                                                         
@@ -499,11 +496,11 @@ abstract class MapScreenState extends State<MapScreen>{
                                                       children: <Widget>[
                                                         new Padding(
                                                           padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 8.0),
-                                                          child: Icon(Icons.check, color: Colors.white),
+                                                          child: Icon(Icons.check, color: Colors.black),
                                                         ),
                                                         new Padding(
                                                           padding: const EdgeInsets.fromLTRB(10.0, 2.0, 0.0, 8.0),
-                                                          child: new Text("Schaumbürste",textAlign: TextAlign.left,style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w400, color: Colors.white))
+                                                          child: new Text("Schaumbürste",textAlign: TextAlign.left,style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w400, color: Colors.black))
                                                         ),
 
                                                         
@@ -519,11 +516,11 @@ abstract class MapScreenState extends State<MapScreen>{
                                                       children: <Widget>[
                                                         new Padding(
                                                           padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 8.0),
-                                                          child: Icon(Icons.check, color: Colors.white),
+                                                          child: Icon(Icons.check, color: Colors.black),
                                                         ),
                                                         new Padding(
                                                           padding: const EdgeInsets.fromLTRB(10.0, 2.0, 0.0, 8.0),
-                                                          child: new Text("Schaumpistole",textAlign: TextAlign.left,style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w400, color: Colors.white))
+                                                          child: new Text("Schaumpistole",textAlign: TextAlign.left,style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w400, color: Colors.black))
                                                         ),
 
                                                         
@@ -539,11 +536,11 @@ abstract class MapScreenState extends State<MapScreen>{
                                                       children: <Widget>[
                                                         new Padding(
                                                           padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 8.0),
-                                                          child: Icon(Icons.check, color: Colors.white),
+                                                          child: Icon(Icons.check, color: Colors.black),
                                                         ),
                                                         new Padding(
                                                           padding: const EdgeInsets.fromLTRB(10.0, 2.0, 0.0, 8.0),
-                                                          child: new Text("fließend Wasser",textAlign: TextAlign.left,style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w400, color: Colors.white))
+                                                          child: new Text("fließend Wasser",textAlign: TextAlign.left,style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w400, color: Colors.black))
                                                         ),
 
                                                         
@@ -559,11 +556,11 @@ abstract class MapScreenState extends State<MapScreen>{
                                                       children: <Widget>[
                                                         new Padding(
                                                           padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 8.0),
-                                                          child: Icon(Icons.check, color: Colors.white),
+                                                          child: Icon(Icons.check, color: Colors.black),
                                                         ),
                                                         new Padding(
                                                           padding: const EdgeInsets.fromLTRB(10.0, 2.0, 0.0, 8.0),
-                                                          child: new Text("Motorwäsche",textAlign: TextAlign.left,style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w400, color: Colors.white))
+                                                          child: new Text("Motorwäsche",textAlign: TextAlign.left,style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w400, color: Colors.black))
                                                         ),
 
                                                         
@@ -574,7 +571,7 @@ abstract class MapScreenState extends State<MapScreen>{
                                                   
                                                   new Padding(
                                                     padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
-                                                    child:new Row(
+                                                    child:new Column(
                                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                     mainAxisSize: MainAxisSize.max,
                                                     children: <Widget>[
@@ -585,26 +582,26 @@ abstract class MapScreenState extends State<MapScreen>{
                                                                 children: <Widget>[
                                                                   new Padding(
                                                                     padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 8.0),
-                                                                    child: Icon(Icons.hourglass_empty, color: Colors.white),
+                                                                    child: Icon(Icons.hourglass_empty, color: Colors.black),
                                                                   ),
                                                                   new Padding(
                                                                     padding: const EdgeInsets.fromLTRB(10.0, 2.0, 0.0, 8.0),
-                                                                    child: new Text("Fahrtzeit: ${washboxInfo["durationText"]}",textAlign: TextAlign.left,style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w400, color: Colors.white))
+                                                                    child: new Text("Fahrtzeit: ${washboxInfo["durationText"]}",textAlign: TextAlign.left,style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w400, color: Colors.black))
                                                                   ),
                                                                 ],
                                                               ),
 
                                                               Row(
-                                                                mainAxisAlignment: MainAxisAlignment.end,
+                                                                mainAxisAlignment: MainAxisAlignment.start,
                                                                 mainAxisSize: MainAxisSize.max,
                                                                 children: <Widget>[
                                                                   new Padding(
                                                                     padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 8.0),
-                                                                    child: Icon(Icons.golf_course, color: Colors.white),
+                                                                    child: Icon(Icons.golf_course, color: Colors.black),
                                                                   ),
                                                                   new Padding(
                                                                     padding: const EdgeInsets.fromLTRB(10.0, 2.0, 0.0, 8.0),
-                                                                    child: new Text("Entfernung: ${washboxInfo["distanceText"]}",textAlign: TextAlign.left,style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w400, color: Colors.white))
+                                                                    child: new Text("Entfernung: ${washboxInfo["distanceText"]}",textAlign: TextAlign.left,style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w400, color: Colors.black))
                                                                   ),
                                                                 ],
                                                               )
@@ -629,7 +626,7 @@ abstract class MapScreenState extends State<MapScreen>{
                                                             
                                                             height: 60.0,
                                                             decoration: new BoxDecoration(
-                                                              color: Colors.white,
+                                                              color: widget.coreClass.washboxColor,
                                                               borderRadius: new BorderRadius.only(                                                                  
                                                                   bottomLeft: const Radius.circular(10.0),
                                                                   bottomRight: const Radius.circular(10.0),
@@ -639,7 +636,7 @@ abstract class MapScreenState extends State<MapScreen>{
                                                             mainAxisAlignment: MainAxisAlignment.center,
                                                             crossAxisAlignment: CrossAxisAlignment.center,
                                                             children: <Widget>[
-                                                              Text("Navigation starten",style: TextStyle(color: Colors.black, fontSize: 16.0, fontWeight: FontWeight.bold))
+                                                              Text("Navigation starten",style: TextStyle(color: Colors.white, fontSize: 16.0, fontWeight: FontWeight.bold))
                                                             ],
                                                             ),
                                                           )
@@ -660,12 +657,11 @@ abstract class MapScreenState extends State<MapScreen>{
             setState(() {
               controller.close();
               showBoxInfo=false;
-              actionButtonColor=widget.coreClass.getHighlightColor();
               boxInfoToggled = true;
               containerFloatingActionButtonHeight = 65;
-              actionButtonColor = widget.coreClass.getHighlightColor();
+              actionButtonColor = Colors.white;
               actionButtonIcon = Icons.add;
-              actionButtonIconColor = Colors.white;
+              actionButtonIconColor = Colors.black;
               
             });
           }

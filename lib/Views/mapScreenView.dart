@@ -21,11 +21,11 @@ class MapScreenView extends MapScreenState{
         key: scaffoldKey,
         backgroundColor: widget.coreClass.getHighlightColor(),
         appBar: new AppBar(
-          title: new Text(headlineText, style: TextStyle(fontSize: 16.0),),
-          backgroundColor: widget.coreClass.getHighlightColor(),
+          title: new Text(headlineText, style: TextStyle(fontSize: 16.0, color: Colors.black),),
+          backgroundColor: Colors.white,
           centerTitle: true,
           leading: new IconButton(
-            icon: new Icon(Icons.arrow_back),
+            icon: new Icon(Icons.arrow_back, color: Colors.black),
             onPressed: () {
               navigatorPushToHomeScreen();              
             },
@@ -181,7 +181,7 @@ class MapScreenView extends MapScreenState{
                         GestureDetector(
                           onTap: actionButtonToggle,
                           child: Padding(
-                              padding: EdgeInsets.only(bottom: 10),
+                              padding: EdgeInsets.only(bottom: 0),
                               child: Container(
                                 width: 55,
                                 height: 55,

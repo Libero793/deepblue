@@ -53,7 +53,7 @@ abstract class SafeNewLocationState extends State<SafeNewLocation>{
   
    void httpRequest()async {
 
-    var url = "http://www.nell.science/deepblue/index.php";
+    var url = "https://www.nell.science/deepblue/index.php";
     String base64Image;
 
     if(widget.registerLocationClass.locationBase64Image != null){

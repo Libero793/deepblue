@@ -8,6 +8,7 @@ import 'package:deepblue/models/setupFile.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 
 class HomeScreen extends StatefulWidget {
@@ -139,21 +140,21 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
         case "cloudy": 
           assetName = 'assets/images/Cloud.svg';
           welcomeTextHeadline = "Gute Nachrichten";
-          welcomeText = "Aktuell sind nur ein paar Wolken am Himmel - gutes Timing um dein Auto zu waschen! Dazu haben wir $nearLocationsCount Waschboxen in deiner Nähe gefunden.";
+          welcomeText = "Aktuell sind nur ein paar Wolken am Himmel - gutes Timing um dein Auto zu waschen!";
 
          break;
 
         case "clear-day": 
           assetName = 'assets/images/Sun.svg';
           welcomeTextHeadline = "Perfekt!";
-          welcomeText ="Schnapp dir dein Auto - es ist perfektes Wetter um es zu waschen! Dazu haben wir $nearLocationsCount Waschboxen in deiner Nähe gefunden.";
+          welcomeText ="Schnapp dir dein Auto - es ist perfektes Wetter um es zu waschen!";
 
          break;
 
         case "clear-night": 
           assetName = 'assets/images/Moon.svg';
           welcomeTextHeadline = "Perfekt!";
-          welcomeText ="Wenn es dir nicht zu spät ist, ist das die perfekte Nacht um dein Auto zu waschen! Dazu haben wir $nearLocationsCount Waschboxen in deiner Nähe gefunden.";
+          welcomeText ="Wenn es dir nicht zu spät ist, ist das die perfekte Nacht um dein Auto zu waschen!";
 
          break;
 
@@ -174,7 +175,7 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
         case "wind": 
           assetName = 'assets/images/Wind.svg';
           welcomeTextHeadline = "Achtung Windig!";
-          welcomeText ="Aktuell ist es etwas windig draußen, aber das ist für dich natürlich kein Grund dein Auto nicht zu waschen! Dazu haben wir $nearLocationsCount Waschboxen in deiner Nähe gefunden.";
+          welcomeText ="Aktuell ist es etwas windig draußen, aber das ist für dich natürlich kein Grund dein Auto nicht zu waschen!";
 
 
          break;
@@ -182,14 +183,14 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
         case "partly-cloudy-day": 
           assetName = 'assets/images/Cloud.svg';
           welcomeTextHeadline = "Gute Nachrichten";
-          welcomeText ="Schnapp dir dein Auto - es sind nur wenige Wolken am Himmel! Dazu haben wir $nearLocationsCount Waschboxen in deiner Nähe gefunden.";
+          welcomeText ="Schnapp dir dein Auto - es sind nur wenige Wolken am Himmel!";
 
          break;
 
         case "partly-cloudy-night": 
           assetName = 'assets/images/Cloud-Moon.svg';
           welcomeTextHeadline = "Gute Nachrichten";
-          welcomeText ="Schnapp dir dein Auto - es sind nur wenige Wolken am Himmel! Dazu haben wir $nearLocationsCount Waschboxen in deiner Nähe gefunden.";
+          welcomeText ="Schnapp dir dein Auto - es sind nur wenige Wolken am Himmel!";
 
          break;
 
@@ -271,7 +272,18 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
 
   Color getNavCardColor(navSelected){
    if(navSelected == currentCard){
-     return widget.coreClass.getHighlightColor();
+     print("color $navSelected");
+     switch (navSelected) {
+       case "event":
+          return widget.coreClass.eventColor;
+         break;
+       case "washbox":
+          return widget.coreClass.washboxColor;
+         break;
+       case "shootingspot":
+          return widget.coreClass.shootingColor;
+       default:
+     }
    }else{
      return Colors.white;
    }
@@ -281,8 +293,8 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
     if(locationType == "washbox"){
       return Icons.local_car_wash;
     }
-    if(locationType == "gasstation"){
-      return Icons.local_gas_station;
+    if(locationType == "event"){
+      return Icons.star;
     }
     if(locationType == "shootingspot"){
       return Icons.linked_camera;
@@ -332,7 +344,7 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
       if(navSelected == "washbox"){
         return screenWidth*1;
       }
-      if(navSelected == "gasstation"){
+      if(navSelected == "event"){
         return screenWidth*0;
       }
       if(navSelected == "shootingspot"){
@@ -363,6 +375,42 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
       context,
       MaterialPageRoute(builder: (context) => MapScreen(widget.coreClass)),
     );
+  }
+
+  launchMaps(lat,lng) async {
+
+    print("launchMaps");
+    String googleMapsAndroidUrl ='google.navigation:q=${lat},${lng}';
+    String googleMapsIosUrl ='comgooglemaps://?q=<$lat>,<$lng>';
+    String appleUrl = 'https://maps.apple.com/?sll=${lat},${lng}';
+
+   
+    /// Documentation :
+    /// Google Maps in a browser: "http://maps.google.com/?q=<lat>,<lng>"
+    /// Google Maps app on an iOS mobile device : "comgooglemaps://?q=<lat>,<lng>"
+    /// Google Maps app on Android : "geo:<lat>,<lng>?z=<zoom>"
+    /// You can also use "google.navigation:q=latitude,longitude"
+    /// z is the zoom level (1-21) , q is the search query
+    /// t is the map type ("m" map, "k" satellite, "h" hybrid, "p" terrain, "e" GoogleEarth)
+    if (await canLaunch(googleMapsAndroidUrl)) {
+
+      print('launching google Maps Android Navigation');
+      await launch(googleMapsAndroidUrl);
+
+    } else if (await canLaunch(googleMapsIosUrl)) {
+
+      print('launching google Maps Ios Navigation');
+      await launch(googleMapsIosUrl);
+
+    } else if (await canLaunch(appleUrl)) {
+
+      print('launching apple url');
+      await launch(appleUrl);
+
+    } else {
+      throw 'Could not launch url';
+    }
+
   }
 
 
