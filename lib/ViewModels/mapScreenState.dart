@@ -421,10 +421,11 @@ abstract class MapScreenState extends State<MapScreen>{
         
         
         
-        if(action == "show"){
+        if(action == "show" && !addMode){
             print(washboxInfo);
             if(this.mounted){
               setState(() {
+                actionButtonToggle();
                 actionButtonColor=widget.coreClass.washboxColor;
                 actionButtonIcon = Icons.close;
                 actionButtonIconColor = Colors.white;
