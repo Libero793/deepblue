@@ -44,6 +44,7 @@ abstract class MapScreenState extends State<MapScreen>{
   Timer _reloadTimer;
   Color actionButtonColor;
   Color actionButtonIconColor = Colors.black;
+  bool actionButtonToggled = false;
 
   Map<String, double> registerLocation;
   List<LatLng> tappedPoints = [];
@@ -94,7 +95,7 @@ abstract class MapScreenState extends State<MapScreen>{
                           child: new GestureDetector(
                             onTap: (){
                                 //_launchMaps("51.3703207","12.3652444");
-                                toggleBoxInfo("show",map[i]);
+                                toggleBoxInfo("show",map[i],type,iconColor);
                             },
                             child: new Stack(
                             alignment: Alignment.topCenter,
@@ -161,7 +162,7 @@ abstract class MapScreenState extends State<MapScreen>{
 
   void actionButtonToggle(){
     if(boxInfoToggled){
-      toggleBoxInfo("hide", null);
+      toggleBoxInfo("hide",null, null, Colors.transparent);
       boxInfoToggled = false;
     }else{
       if(!chooseLocationTapped){
@@ -171,6 +172,7 @@ abstract class MapScreenState extends State<MapScreen>{
                 actionButtonColor = Colors.white;
                 actionButtonIcon = Icons.close;
                 actionButtonIconColor = Colors.black;
+                actionButtonToggled = true;
         });
       }else{
         setState(() {
@@ -179,6 +181,7 @@ abstract class MapScreenState extends State<MapScreen>{
           actionButtonColor = Colors.white;
           actionButtonIcon = Icons.add;
           actionButtonIconColor = Colors.black;
+          actionButtonToggled = false;
         });
 
       }
@@ -396,17 +399,20 @@ abstract class MapScreenState extends State<MapScreen>{
         }
    } 
 
-   void toggleBoxInfo(action,washboxInfo){
+   void toggleBoxInfo(action,data,type,backgroundColor){
         ScaffoldState state = scaffoldKey.currentState;
         
         
         
+        
         if(action == "show" && !addMode){
-            print(washboxInfo);
+            print(data);
             if(this.mounted){
               setState(() {
-                actionButtonToggle();
-                actionButtonColor=widget.coreClass.washboxColor;
+                if(actionButtonToggled){
+                  actionButtonToggle();
+                }
+                actionButtonColor=backgroundColor;
                 actionButtonIcon = Icons.close;
                 actionButtonIconColor = Colors.white;
                 showBoxInfo=true;
@@ -446,13 +452,14 @@ abstract class MapScreenState extends State<MapScreen>{
                                                     children: <Widget>[
                                                       new Padding(
                                                         padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 16.0),
-                                                        child: new Text(washboxInfo["name"],textAlign: TextAlign.left,style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600, color: Colors.black))
+                                                        child: new Text(data["name"],textAlign: TextAlign.left,style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600, color: Colors.black))
                                                       ),
                                                     ]
                                                   ),
-                                                  
+
+                                                   
                                                   Offstage(
-                                                    offstage: !(washboxInfo["hochdruckReiniger"] == "1"),
+                                                    offstage: !(data["hochdruckReiniger"] == "1"),
                                                     child:new Row(
                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                       children: <Widget>[
@@ -471,7 +478,7 @@ abstract class MapScreenState extends State<MapScreen>{
                                                   ),
 
                                                   Offstage(
-                                                    offstage: !(washboxInfo["schaumBuerste"] == "1"),
+                                                    offstage: !(data["schaumBuerste"] == "1"),
                                                     child:new Row(
                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                       children: <Widget>[
@@ -491,7 +498,7 @@ abstract class MapScreenState extends State<MapScreen>{
 
                                                   
                                                   Offstage(
-                                                    offstage: !(washboxInfo["schaumPistole"] == "1"),
+                                                    offstage: !(data["schaumPistole"] == "1"),
                                                     child:new Row(
                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                       children: <Widget>[
@@ -511,7 +518,7 @@ abstract class MapScreenState extends State<MapScreen>{
 
                                                   
                                                   Offstage(
-                                                    offstage: !(washboxInfo["fliessend Wasser"] == "1"),
+                                                    offstage: !(data["fliessend Wasser"] == "1"),
                                                     child:new Row(
                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                       children: <Widget>[
@@ -531,7 +538,7 @@ abstract class MapScreenState extends State<MapScreen>{
 
                                                   
                                                   Offstage(
-                                                    offstage: !(washboxInfo["motorWaesche"] == "1"),
+                                                    offstage: !(data["motorWaesche"] == "1"),
                                                     child:new Row(
                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                       children: <Widget>[
@@ -556,6 +563,44 @@ abstract class MapScreenState extends State<MapScreen>{
                                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                     mainAxisSize: MainAxisSize.max,
                                                     children: <Widget>[
+                                                    
+                                                              Offstage(
+                                                                offstage: (data["startTime"]==null),
+                                                                child:
+                                                                Row(
+                                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                                  mainAxisSize: MainAxisSize.max,
+                                                                  children: <Widget>[
+                                                                    new Padding(
+                                                                      padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 8.0),
+                                                                      child: Icon(Icons.alarm_on, color: Colors.black),
+                                                                    ),
+                                                                    new Padding(
+                                                                      padding: const EdgeInsets.fromLTRB(10.0, 2.0, 0.0, 8.0),
+                                                                      child: new Text("Beginn: ${data["startTime"]}",textAlign: TextAlign.left,style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w400, color: Colors.black))
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+
+                                                              Offstage(
+                                                                offstage: (data["endTime"]==null),
+                                                                child:
+                                                                Row(
+                                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                                  mainAxisSize: MainAxisSize.max,
+                                                                  children: <Widget>[
+                                                                    new Padding(
+                                                                      padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 8.0),
+                                                                      child: Icon(Icons.alarm_off, color: Colors.black),
+                                                                    ),
+                                                                    new Padding(
+                                                                      padding: const EdgeInsets.fromLTRB(10.0, 2.0, 0.0, 8.0),
+                                                                      child: new Text("Ende: ${data["endTime"]}",textAlign: TextAlign.left,style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w400, color: Colors.black))
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
 
                                                               Row(
                                                                 mainAxisAlignment: MainAxisAlignment.start,
@@ -567,7 +612,7 @@ abstract class MapScreenState extends State<MapScreen>{
                                                                   ),
                                                                   new Padding(
                                                                     padding: const EdgeInsets.fromLTRB(10.0, 2.0, 0.0, 8.0),
-                                                                    child: new Text("Fahrtzeit: ${washboxInfo["durationText"]}",textAlign: TextAlign.left,style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w400, color: Colors.black))
+                                                                    child: new Text("Fahrtzeit: ${data["durationText"]}",textAlign: TextAlign.left,style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w400, color: Colors.black))
                                                                   ),
                                                                 ],
                                                               ),
@@ -582,7 +627,7 @@ abstract class MapScreenState extends State<MapScreen>{
                                                                   ),
                                                                   new Padding(
                                                                     padding: const EdgeInsets.fromLTRB(10.0, 2.0, 0.0, 8.0),
-                                                                    child: new Text("Entfernung: ${washboxInfo["distanceText"]}",textAlign: TextAlign.left,style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w400, color: Colors.black))
+                                                                    child: new Text("Entfernung: ${data["distanceText"]}",textAlign: TextAlign.left,style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w400, color: Colors.black))
                                                                   ),
                                                                 ],
                                                               )
@@ -601,13 +646,13 @@ abstract class MapScreenState extends State<MapScreen>{
                                                       new Expanded(
                                                         child: new GestureDetector(
                                                           onTap:(){
-                                                            _launchMaps(washboxInfo["latitude"], washboxInfo["longitude"]);                                                          
+                                                            _launchMaps(data["latitude"], data["longitude"]);                                                          
                                                           },
                                                           child: new Container(
                                                             
                                                             height: 60.0,
                                                             decoration: new BoxDecoration(
-                                                              color: widget.coreClass.washboxColor,
+                                                              color: backgroundColor,
                                                               borderRadius: new BorderRadius.only(                                                                  
                                                                   bottomLeft: const Radius.circular(10.0),
                                                                   bottomRight: const Radius.circular(10.0),
