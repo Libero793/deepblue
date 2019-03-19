@@ -17,6 +17,7 @@ class LocatingScreenView extends LocatingScreenState {
     return Scaffold(
       backgroundColor: widget.coreClass.getHighlightColor(),
       appBar: AppBar(
+        leading: Container(),
         title: Text(""),
         centerTitle: true,
         backgroundColor: widget.coreClass.getHighlightColor(),
@@ -275,7 +276,7 @@ class LocatingScreenView extends LocatingScreenState {
                 ),
                 
                 Padding(
-                  padding: EdgeInsets.only(left: 20),
+                  padding: EdgeInsets.only(left: 50),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
@@ -283,7 +284,7 @@ class LocatingScreenView extends LocatingScreenState {
                         
                       
                       Padding(
-                          padding: const EdgeInsets.fromLTRB(40.0,0.0,0.0,0.0),
+                          padding: const EdgeInsets.fromLTRB(10.0,0.0,0.0,0.0),
                           child: Text("Neuer Heimat Standort", 
                             style: TextStyle(fontSize: 18.0, color: Colors.white, fontWeight: FontWeight.normal),
                             textAlign: TextAlign.left,

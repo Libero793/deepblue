@@ -50,7 +50,6 @@ flutter:
   #  - images/a_dot_burr.jpeg
   #  - images/a_dot_ham.jpeg
   assets:
-    - assets/images/locationWashbox.png
     - assets/images/Cloud.svg
     - assets/images/Cloud-Sun.svg
     - assets/images/Cloud-Rain.svg
@@ -59,9 +58,7 @@ flutter:
     - assets/images/Moon.svg
     - assets/images/Sun.svg
     - assets/images/Wind.svg
-    - assets/images/backgroundImageTest.jpg
     - assets/images/startScreenBackgroundImage.jpg
-    - assets/images/startScreenBackgroundImage2.jpg
     - assets/images/logo_final.svg
     - assets/images/image3.jpg
 
