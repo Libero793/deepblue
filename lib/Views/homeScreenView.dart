@@ -402,14 +402,8 @@ Widget createListItem(listPosition, itemPosition){
                         mainAxisSize: MainAxisSize.max,
                         children: <Widget>[
 
-                          Padding(
-                            padding: EdgeInsets.all(5),
-                            child: Container(
-                              decoration: getLocationImageDecoration(locations[itemPosition]["image"]),
-                              height: 115.0,
-                              width: 115.0,                            
-                            ),
-                          ),
+                          getLocationImageWidget(locations[itemPosition]["image"]),
+                         
 
                           Expanded(
                             
@@ -524,25 +518,42 @@ Widget createListItem(listPosition, itemPosition){
    }
 }
 
- getLocationImageDecoration(imageBase64){
+ getLocationImageWidget(imageBase64){
 
 
     if((imageBase64.toString()).length > 10){
 
-       
-      return BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(5)),
-        color: Colors.grey[300],
-        image: new DecorationImage(
-          image: new MemoryImage(base64toBytes(imageBase64)),
-          fit: BoxFit.cover
-        ),              
-      );      
+      return  Padding(
+                padding: EdgeInsets.all(5),
+                child: Container(
+                  decoration:  BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(5)),
+                  color: Colors.grey[300],
+                  image: new DecorationImage(
+                    image: new MemoryImage(base64toBytes(imageBase64)),
+                      fit: BoxFit.cover
+                    ),              
+                  ),      
+                  height: 115.0,
+                  width: 115.0,                            
+                ),
+              );
+      
+     
     }else{
-       return BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(5)),
-        color: Colors.grey[300],        
-      );         
+      return  Padding(
+                padding: EdgeInsets.all(5),
+                child: Container(
+                  decoration:  BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(5)),
+                    color: Colors.grey[300],
+
+                  ),      
+                  height: 115.0,
+                  width: 115.0,       
+                  child: Icon(Icons.star,color: Colors.grey,size: 80),                     
+                ),
+              );        
     }
     
   }

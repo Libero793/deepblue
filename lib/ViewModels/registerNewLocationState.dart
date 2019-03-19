@@ -161,12 +161,25 @@ abstract class RegisterNewLocationState extends State<RegisterNewLocation>{
 
 
   void navigatorPushRegisterNewLocation(){
-    widget.registerLocationClass.setLocationName(textFieldController.text);
-    safeSelectedOptions();
-    Navigator.push(
-      context, 
-      MaterialPageRoute(builder: (context) => SafeNewLocation(widget.registerLocationClass,widget.coreClass)),
-    );
+    var tempLocationName = textFieldController.text;
+    if(tempLocationName.length > 30){
+      tempLocationName = tempLocationName.substring(0,30);
+    }
+
+    if(tempLocationName.length >= 3){
+      
+      widget.registerLocationClass.locationName=tempLocationName;
+      safeSelectedOptions();
+
+      Navigator.push(
+        context, 
+        MaterialPageRoute(builder: (context) => SafeNewLocation(widget.registerLocationClass,widget.coreClass)),
+      );
+
+    }else{
+      alertDialog("Location Name ungütlig", "Bitte gib deiner Location einen Namen, damit wir diese speichern können. Der Name muss mindestens aus 3 Buchstaben bestehen");
+    }
+   
   }
 
   void safeSelectedOptions(){
@@ -203,6 +216,28 @@ abstract class RegisterNewLocationState extends State<RegisterNewLocation>{
             
       });
     }
+  }
+
+  void alertDialog(title,text){
+     showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text(title),
+          content: new Text(text),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: new Text("schließen"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
 
