@@ -75,7 +75,7 @@ class LocatingScreenView extends LocatingScreenState {
                               children: <Widget>[
 
                                 new Padding(
-                                  padding: EdgeInsets.fromLTRB(40, 14, 40, 8),
+                                  padding: EdgeInsets.fromLTRB(60, 14, 60, 8),
                                   child:  Theme(
                                     data: new ThemeData(
                                       highlightColor: Colors.white,
@@ -250,7 +250,7 @@ class LocatingScreenView extends LocatingScreenState {
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 40.0),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
 
@@ -274,23 +274,26 @@ class LocatingScreenView extends LocatingScreenState {
                     ),          
                 ),
                 
-                Row(
-                  children: <Widget>[
-                    Icon(Icons.home, color: Colors.white),
+                Padding(
+                  padding: EdgeInsets.only(left: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Icon(Icons.home, color: Colors.white),
+                        
                       
-                    
-                    Padding(
-                        padding: const EdgeInsets.fromLTRB(10.0,0.0,0.0,0.0),
-                        child: Text("Neuer Heimat Standort", 
-                          style: TextStyle(fontSize: 18.0, color: Colors.white, fontWeight: FontWeight.normal),
-                          textAlign: TextAlign.left,
+                      Padding(
+                          padding: const EdgeInsets.fromLTRB(40.0,0.0,0.0,0.0),
+                          child: Text("Neuer Heimat Standort", 
+                            style: TextStyle(fontSize: 18.0, color: Colors.white, fontWeight: FontWeight.normal),
+                            textAlign: TextAlign.left,
+                          ),
                         ),
-                      ),
-                    
-                  ],
-                )
-                
-              
+                      
+                    ],
+                  )
+                ),
+                              
               ]
             )
           )
