@@ -2,6 +2,7 @@ import 'package:deepblue/ViewModels/registerNewLocationState.dart';
 import 'package:flutter/material.dart';
 import 'package:deepblue/models/RegisterNewLocationStyleModel.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:flutter_xlider/flutter_xlider.dart';
   
 
 class RegisterNewLocationView extends RegisterNewLocationState{
@@ -76,7 +77,10 @@ class RegisterNewLocationView extends RegisterNewLocationState{
             //Event Layout 
 
             getDateWidgetWrapper(),
-            
+
+
+           
+                        
             
             Offstage(
               offstage: hideSafeButton,
@@ -238,12 +242,13 @@ class RegisterNewLocationView extends RegisterNewLocationState{
                   mainAxisAlignment: MainAxisAlignment.start,
                   mainAxisSize: MainAxisSize.max,
                   children: <Widget>[
+
                     
                     getDateWidget("Startzeit"),
                     getDateWidget("Endzeit"),
 
-
-                         
+                    
+                    //getPriceSliderWidget(),
 
                      
                   ],
@@ -271,9 +276,9 @@ class RegisterNewLocationView extends RegisterNewLocationState{
     var tempTime;
     
     if(timeType == "Startzeit"){
-      tempTime=startTime;
+      tempTime=widget.registerLocationClass.startTime;
     }else{
-      tempTime=endTime;
+      tempTime=widget.registerLocationClass.endTime;
     }
     return                
                     Padding(
@@ -291,11 +296,11 @@ class RegisterNewLocationView extends RegisterNewLocationState{
                                     print('datetime: $dateTime');
                                     if(timeType == "Startzeit"){
                                       setState(() {
-                                        startTime=dateTime.toString();
+                                        widget.registerLocationClass.startTime=dateTime.toString();
                                       });
                                     }else if(timeType == "Endzeit"){
                                       setState(() {
-                                        endTime=dateTime.toString();
+                                        widget.registerLocationClass.endTime=dateTime.toString();
                                       });
                                     }
                                   },
@@ -344,6 +349,40 @@ class RegisterNewLocationView extends RegisterNewLocationState{
                       )
                     );
 
+  }
+
+  Widget getPriceSliderWidget(){
+    return  
+          Padding(
+            padding:EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+            child: Row(
+              children: <Widget>[
+
+                Expanded(
+                  child: FlutterSlider(
+
+                    trackBar: FlutterSliderTrackBar(
+                      activeTrackBarColor: widget.coreClass.getEventColor(),
+                      activeTrackBarHeight: 5,
+                      leftInactiveTrackBarColor: widget.coreClass.getEventColor(),
+                    ),
+
+                    handler: FlutterSliderHandler(
+                      icon:Icon(Icons.monetization_on, color: Colors.transparent,)
+                    ),
+                    values: [50],
+                    max: 50,
+                    min: 0,
+                    onDragging: (handlerIndex, lowerValue, upperValue) {
+                      lowerSlideValue = lowerValue;
+                      upperSlideValue = upperValue;
+                      setState(() {});
+                    },
+                  ),
+                ),
+              ]
+            ),
+          );
   }
 
   Future<void> _optionsDialogBox() {

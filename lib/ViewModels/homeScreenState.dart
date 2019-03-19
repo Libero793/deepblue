@@ -48,6 +48,9 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
   int nearLocationsCount = 0;
 
   bool washboxesLoaded=false;
+  bool eventsLoaded=false;
+  bool shootingsLoaded=false;
+
 
   bool currentWidget = true;
   Image image1;
@@ -80,7 +83,9 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
   void initState() {
     
     if(!httpRequestExecuted){
-      httpRequestLocations(widget.coreClass.getSelectedLocation());
+      httpRequestLocations(widget.coreClass.getSelectedLocation(),"Waschboxen");
+      httpRequestLocations(widget.coreClass.getSelectedLocation(),"Events");
+      httpRequestLocations(widget.coreClass.getSelectedLocation(),"Shootings");
       httpRequestExecuted=true;
     }
 
@@ -223,12 +228,12 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
     return res;
   }
 
-  void httpRequestLocations(var location)async {
+  void httpRequestLocations(var location, var type)async {
     print("httploc ${location}");
 
     var url = "http://www.nell.science/deepblue/index.php";
 
-    http.post(url, body: {"getWashboxesHomescreen":"true","key": "0", "latitude": location['latitude'].toString(), "longitude": location['longitude'].toString(), "limit":"5"})
+    http.post(url, body: {"getLocations":"true","key": "0", "latitude": location['latitude'].toString(), "longitude": location['longitude'].toString(), "type":type.toString()})
         .then((response) {
       print("Response status: ${response.statusCode}");   
       print("Response body: ${response.body}");
@@ -236,32 +241,35 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
       if (this.mounted){
         if(response.body != "null"){
 
-          
-
           var nearestLocation;
           var nearestLocationsJson = "";
-          var distanceIndicator;
-          var biggestDistance;
 
           nearestLocationsJson = response.body.toString();
           nearestLocation=json.decode(nearestLocationsJson);
           nearLocationsCount=json.decode(nearestLocationsJson).length;
-          biggestDistance=nearestLocation[nearLocationsCount-1]["distanceValue"];
-
-
-
-          print("biggestDistance$biggestDistance");
 
           setState((){
 
-                  nearLocations.setNearWashboxes(nearestLocation);
-                  nearLocations.setCount(json.decode(response.body.toString()).length);
-                  washboxesLoaded=true;
+                  if(type=="Waschboxen"){
+                    nearLocations.washboxen=nearestLocation;
+                    nearLocations.washboxenCount=json.decode(response.body.toString()).length;
+                    washboxesLoaded=true;
+                  }else if (type=="Events"){
+                    nearLocations.events=nearestLocation;
+                    nearLocations.eventsCount=json.decode(response.body.toString()).length;
+                    eventsLoaded=true;
+                  }else if(type=="Shootings"){
+                    nearLocations.shootings=nearestLocation;
+                    nearLocations.shootingsCount=json.decode(response.body.toString()).length;
+                    shootingsLoaded=true;
+                  }
+                  
               });
+
         }else{
           print("reload 3000ms");
           _reloadTimer = new Timer(const Duration(milliseconds: 3000), () {
-            httpRequestLocations(location);
+            httpRequestLocations(location,type);
           });  
         }
        
@@ -373,7 +381,7 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
   void navigatorPushToMap(){
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => MapScreen(widget.coreClass)),
+      MaterialPageRoute(builder: (context) => MapScreen(widget.coreClass,nearLocations)),
     );
   }
 

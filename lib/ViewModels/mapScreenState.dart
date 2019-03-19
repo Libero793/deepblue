@@ -6,6 +6,7 @@ import 'package:deepblue/ViewModels/registerNewLocationState.dart';
 import 'package:deepblue/Views/mapScreenView.dart';
 import 'package:deepblue/models/CoreFunctionsModel.dart';
 import 'package:deepblue/models/RegisterNewLocationModel.dart';
+import 'package:deepblue/models/nearLocationsModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -19,7 +20,8 @@ class MapScreen extends StatefulWidget {
   @override
 
   CoreFunctionsModel coreClass;
-  MapScreen(this.coreClass);
+  NearLocations nearLocations;
+  MapScreen(this.coreClass, this.nearLocations);
 
   MapScreenView createState() => new MapScreenView();
   
@@ -62,7 +64,9 @@ abstract class MapScreenState extends State<MapScreen>{
   void initState(){
     actionButtonColor = Colors.white;
     actionButtonIcon = Icons.add;
-    requestWashboxMap(widget.coreClass.getSelectedLocation());
+    printOnMap(widget.nearLocations.washboxen, "Waschboxen", widget.coreClass.washboxColor);
+    printOnMap(widget.nearLocations.events, "Events", widget.coreClass.eventColor);
+    printOnMap(widget.nearLocations.shootings, "Shootings", widget.coreClass.shootingColor);
   }
 
   void navigatorPushToHomeScreen(){
@@ -70,40 +74,16 @@ abstract class MapScreenState extends State<MapScreen>{
     Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen(widget.coreClass)));
   }
 
-  void requestWashboxMap(var location)async {
-    //print("httploc ${location}");
+  
 
-    var url = "http://www.nell.science/deepblue/index.php";
-
-    http.post(url, body: {"getWashboxMap":"true","key": "0", "latitude": location['latitude'].toString(), "longitude": location['longitude'].toString()})
-        .then((response) {
-      print("Response status: ${response.statusCode}");   
-      print("Response body: ${response.body}");
-
-      if (this.mounted){
-        if(response.body != "null"){
-          washboxMap=json.decode(response.body.toString());
-          printWashboxesOnMap(washboxMap);
-        }else{
-          _reloadTimer = new Timer(const Duration(milliseconds: 3000), () {
-            requestWashboxMap(location);
-          });  
-        }
-       
-      }
-
-    });
-    
-  }
-
-  void printWashboxesOnMap(var washboxMap){
+  void printOnMap(var map,String type, Color iconColor){
     //print("${washboxMap[1]["latitude"]}");
     
     if(this.mounted){
       setState(() {
-        for(int i=0;i<washboxMap.length;i++){
+        for(int i=0;i<map.length;i++){
           print("$i");
-          LatLng washbox = new LatLng(double.parse(washboxMap[i]["latitude"]),double.parse(washboxMap[i]["longitude"]));
+          LatLng washbox = new LatLng(double.parse(map[i]["latitude"]),double.parse(map[i]["longitude"]));
           markers.add(
                 new Marker(
                       width: 60.0,
@@ -114,7 +94,7 @@ abstract class MapScreenState extends State<MapScreen>{
                           child: new GestureDetector(
                             onTap: (){
                                 //_launchMaps("51.3703207","12.3652444");
-                                toggleBoxInfo("show",washboxMap[i]);
+                                toggleBoxInfo("show",map[i]);
                             },
                             child: new Stack(
                             alignment: Alignment.topCenter,
@@ -125,7 +105,7 @@ abstract class MapScreenState extends State<MapScreen>{
                                         width: 60.0,
                                         height: 60.0,
                                             
-                                            child: Icon(Icons.place, color: widget.coreClass.getWashboxColor(), size: 60,),
+                                            child: Icon(Icons.place, color: iconColor, size: 60,),
                                           ),                                                          
                                       ]
                             ),

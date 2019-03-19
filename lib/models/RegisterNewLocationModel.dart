@@ -14,6 +14,9 @@ class RegisterNewLocationModel{
   bool fliessendWasser=false;
   bool motorWaesche=false;
 
+  var startTime="2019-04-20 16:20";
+  var endTime="2019-04-20 16:20";
+
   IconData icon;
 
 

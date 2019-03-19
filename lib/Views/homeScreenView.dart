@@ -319,6 +319,19 @@ class HomeScreenView extends HomeScreenState {
 
   Widget itemList(listPosition){
 
+    var itemCount;
+    switch (listPosition) {
+      case 0:
+          itemCount=nearLocations.eventsCount;
+        break;
+      case 1 : 
+          itemCount=nearLocations.washboxenCount;
+        break;
+      case 2 :
+          itemCount=nearLocations.shootingsCount;
+        break;
+      default:
+    }
     return Container(
       width: (MediaQuery.of(context).size.width),
       color: Colors.transparent,
@@ -331,7 +344,7 @@ class HomeScreenView extends HomeScreenState {
                   Expanded(
                       child: ListView.builder(
                         physics: AlwaysScrollableScrollPhysics(),
-                        itemCount: nearLocations.getCount(listPosition),
+                        itemCount: itemCount,
                         shrinkWrap: true,
                         controller: verticalScrolls[listPosition],
                         scrollDirection: Axis.vertical,
@@ -351,9 +364,21 @@ class HomeScreenView extends HomeScreenState {
 
 Widget createListItem(listPosition, itemPosition){
 
+    var locations;
+    var locationImageExists = true;
+    switch (listPosition) {
+      case 0:
+        locations=nearLocations.events;
+        break;
+      case 1:
+        locations=nearLocations.washboxen;
+        break;
+      case 2:
+        locations=nearLocations.shootings;
+        break;
+     default:
+   }
    
-   var locations = nearLocations.getNearLocations(1);
-   var locationImageExists = true;
 
    //print("testlocationscount: ${locationsJson}");
    

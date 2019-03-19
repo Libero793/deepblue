@@ -47,13 +47,8 @@ abstract class RegisterNewLocationState extends State<RegisterNewLocation>{
   bool hideDateWidget;
   bool hideCheckboxWidget;
 
-  var startTime="2019-04-20 16:20";
-  var endTime="2019-04-20 16:20";
-
-
-  
-  
-
+  double lowerSlideValue = 0;
+  double upperSlideValue = 50;
 
   
   

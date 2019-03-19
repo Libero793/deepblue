@@ -74,8 +74,29 @@ abstract class SafeNewLocationState extends State<SafeNewLocation>{
     print(widget.registerLocationClass.fliessendWasser.toString());
     print(widget.registerLocationClass.motorWaesche.toString());
     print(widget.registerLocationClass.getLocationName().toString());
+
     print(finudid.toString());
 
+    if(widget.registerLocationClass.getLocationType() == "washbox"){
+      pushWashboxToDb(url,base64Image);
+    }else if(widget.registerLocationClass.getLocationType() == "event"){
+      pushEventToDb(url, base64Image);
+    }else if(widget.registerLocationClass.getLocationType() == "shooting"){
+      pushShootingToDb(url,base64Image);
+    }
+    
+  }
+
+  void navigatorPushToHomeScreen(){
+                            Navigator.pop(context);
+                         Navigator.push(
+                          context, 
+                          MaterialPageRoute(builder: (context) => HomeScreen(widget.coreClass)),
+                        );
+  }
+
+  void pushWashboxToDb(url,base64Image){
+    
     http.post(url, body: {"registerNewLocation":"true",
                           "key": "0", 
                           "locationType" : widget.registerLocationClass.locationType,
@@ -103,15 +124,62 @@ abstract class SafeNewLocationState extends State<SafeNewLocation>{
       }
 
     });
-    
   }
 
-  void navigatorPushToHomeScreen(){
-                            Navigator.pop(context);
-                         Navigator.push(
-                          context, 
-                          MaterialPageRoute(builder: (context) => HomeScreen(widget.coreClass)),
-                        );
+  void pushEventToDb(url,base64Image){
+    
+    http.post(url, body: {"registerNewLocation":"true",
+                          "key": "0", 
+                          "locationType" : widget.registerLocationClass.locationType,
+                          "latitude": widget.registerLocationClass.getLocation()['latitude'].toString(), 
+                          "longitude": widget.registerLocationClass.getLocation()['longitude'].toString(),
+                          "base64Image" : base64Image,
+                          "startzeit": widget.registerLocationClass.startTime, 
+                          "endzeit": widget.registerLocationClass.endTime, 
+                          "udid": finudid.toString(),
+                          "name": widget.registerLocationClass.getLocationName().toString(),
+                          
+                          })
+        .then((response) {
+      print("register Response status: ${response.statusCode}");   
+      print("Response body: ${response.body}");
+      print("httpreq");
+      
+      if(response.statusCode == 200){
+       
+      }else{
+        print("location registration failed");
+      }
+
+    });
+  }
+
+    void pushShootingToDb(url,base64Image){
+    
+    http.post(url, body: {"registerNewLocation":"true",
+                          "key": "0", 
+                          "locationType" : widget.registerLocationClass.locationType,
+                          "latitude": widget.registerLocationClass.getLocation()['latitude'].toString(), 
+                          "longitude": widget.registerLocationClass.getLocation()['longitude'].toString(),
+                          "base64Image" : base64Image,
+                          "startzeit": widget.registerLocationClass.startTime, 
+                          "endzeit": widget.registerLocationClass.endTime, 
+                          "udid": finudid.toString(),
+                          "name": widget.registerLocationClass.getLocationName().toString(),
+                          
+                          })
+        .then((response) {
+      print("register Response status: ${response.statusCode}");   
+      print("Response body: ${response.body}");
+      print("httpreq");
+      
+      if(response.statusCode == 200){
+       
+      }else{
+        print("location registration failed");
+      }
+
+    });
   }
 
 
