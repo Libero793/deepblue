@@ -32,6 +32,8 @@ class HomeScreenView extends HomeScreenState {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(48.0, 70.0, 48.0, 16.0),
                   child: Container(
+                    height: 240,
+                    color: Colors.transparent,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
@@ -43,6 +45,8 @@ class HomeScreenView extends HomeScreenState {
                     ),
                   ),
                 ),
+
+                spacerWidget(),
 
                 loadingAnimationWidget(),
 
@@ -136,14 +140,27 @@ class HomeScreenView extends HomeScreenState {
           ),
       
           Text(welcomeText, style: TextStyle(color: Colors.white)),
-          AnimatedContainer(
-              height: scrollSpacer,
-              duration: new Duration(milliseconds: 300),
-              color: Colors.transparent,
-          )
+
         ],
       ),
     );
+  }
+
+  Widget spacerWidget(){
+    print("height: ${MediaQuery.of(context).size.height}");
+
+    if(initScrollSpacerHeight == -1){
+      initScrollSpacerHeight = (((MediaQuery.of(context).size.height-510)).round()).toDouble();
+      scrollSpacer=initScrollSpacerHeight;
+    }
+
+
+    
+    return  AnimatedContainer(
+              height: scrollSpacer,
+              duration: new Duration(milliseconds: 300),
+              color: Colors.transparent,
+          );
   }
 
   Widget loadingAnimationWidget(){
@@ -551,7 +568,29 @@ Widget createListItem(listPosition, itemPosition){
                   ),      
                   height: 115.0,
                   width: 115.0,       
-                  child: Icon(Icons.star,color: Colors.grey,size: 80),                     
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Stack(
+                        children: <Widget>[
+
+                          Container(
+                            width: 100,
+                            height: 100,
+                            padding:EdgeInsets.all(25),
+                            child: Icon(Icons.camera_alt,color: Colors.grey,size: 50,),   
+                          ),
+                           
+                          Icon(Icons.not_interested, color: Colors.grey, size:100),
+                        ],
+                      )
+                  
+                    ],
+                  )
+                  
+                  
+                                    
                 ),
               );        
     }

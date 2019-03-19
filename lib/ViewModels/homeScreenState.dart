@@ -38,7 +38,9 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
                   
   var cardColors = [];
 
-  var scrollSpacer = 270.0;
+  double scrollSpacer;
+  double initScrollSpacerHeight;
+  
   
 
   AnimationController animationController;
@@ -81,6 +83,7 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
 
   @override
   void initState() {
+    initScrollSpacerHeight = -1; 
     
     if(!httpRequestExecuted){
       httpRequestLocations(widget.coreClass.getSelectedLocation(),"Waschboxen");
@@ -125,9 +128,9 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
           });
         }
       }else{
-        if(scrollSpacer != 270){
+        if(scrollSpacer != initScrollSpacerHeight){
           setState(() {
-            scrollSpacer = 270;
+            scrollSpacer = initScrollSpacerHeight;
             firstCardOffset= 30.0;  
           });
         }

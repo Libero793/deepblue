@@ -43,7 +43,7 @@ class StartScreenView extends StartScreenState {
                                         Container(
                                           width: double.infinity,
                                           height: 90.0,
-                                          child: SvgPicture.asset("assets/images/logo_3blau.svg"),
+                                          child: SvgPicture.asset("assets/images/logo_final.svg"),
                                         ),
 
                                         Container(
