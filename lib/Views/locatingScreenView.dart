@@ -76,7 +76,7 @@ class LocatingScreenView extends LocatingScreenState {
                               children: <Widget>[
 
                                 new Padding(
-                                  padding: EdgeInsets.fromLTRB(60, 14, 60, 8),
+                                  padding: EdgeInsets.fromLTRB(40, 14, 40, 8),
                                   child:  Theme(
                                     data: new ThemeData(
                                       highlightColor: Colors.white,
@@ -251,7 +251,7 @@ class LocatingScreenView extends LocatingScreenState {
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 40.0),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
 
@@ -276,7 +276,7 @@ class LocatingScreenView extends LocatingScreenState {
                 ),
                 
                 Padding(
-                  padding: EdgeInsets.only(left: 50),
+                  padding: EdgeInsets.only(left: 0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[

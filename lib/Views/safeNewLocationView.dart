@@ -22,34 +22,8 @@ class SafeNewLocationView extends SafeNewLocationState{
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
 
-           Expanded(
-             child: Column(
-               mainAxisAlignment: MainAxisAlignment.center,
-               children: <Widget>[
-
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(24.0, 0, 24.0, 0.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Icon(Icons.beenhere, color: Colors.white,size: 150.0,),
-                    ],
-                  )
-                ),
-
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(24.0, 20.0, 24.0, 100.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Text("Gespeichert!", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 26.0,), textAlign: TextAlign.center,),
-                    ],
-                  )
-                ),
-
-               ],
-             ),
-           ),
+           getStatusWidget(),
+           
             
 
              new Row(
@@ -85,6 +59,110 @@ class SafeNewLocationView extends SafeNewLocationState{
         ),
       ),
     );
+  }
+
+  Widget getStatusWidget(){
+    if(showLoadingAnimation){
+      return Expanded(
+             child: Column(
+               mainAxisAlignment: MainAxisAlignment.center,
+               children: <Widget>[
+
+                 Padding(
+                  padding: const EdgeInsets.fromLTRB(24.0, 0, 24.0, 30.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                     SizedBox(
+                    child: new CircularProgressIndicator(backgroundColor: Colors.white,valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),),
+                    height: 75.0,
+                    width: 75.0
+                  ),    
+
+                    ],
+                  )
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(24.0, 20.0, 24.0, 100.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Text("übertrage Daten ...", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 26.0,), textAlign: TextAlign.center,),
+                    ],
+                  )
+                ),
+                
+                
+               ],
+             ),
+           );
+
+    }else{
+      return showStatusWidget();
+    }
+  }
+
+  Widget showStatusWidget(){
+    if(locationRegistrationStatus){
+      return Expanded(
+             child: Column(
+               mainAxisAlignment: MainAxisAlignment.center,
+               children: <Widget>[
+
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(24.0, 0, 24.0, 0.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Icon(Icons.beenhere, color: Colors.white,size: 150.0,),
+                    ],
+                  )
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(24.0, 20.0, 24.0, 100.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Text("Gespeichert!", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 26.0,), textAlign: TextAlign.center,),
+                    ],
+                  )
+                ),
+
+               ],
+             ),
+           );
+    }else{
+      return Expanded(
+             child: Column(
+               mainAxisAlignment: MainAxisAlignment.center,
+               children: <Widget>[
+
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(24.0, 0, 24.0, 0.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Icon(Icons.mood_bad, color: Colors.white,size: 150.0,),
+                    ],
+                  )
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(24.0, 20.0, 24.0, 100.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Text("Fehler, übertragung gescheitert", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 26.0,), textAlign: TextAlign.center,),
+                    ],
+                  )
+                ),
+
+               ],
+             ),
+           );
+    }
   }
 
 }

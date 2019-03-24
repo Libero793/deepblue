@@ -236,7 +236,7 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
 
     var url = "http://www.nell.science/deepblue/index.php";
 
-    http.post(url, body: {"getLocations":"true","key": "0", "latitude": location['latitude'].toString(), "longitude": location['longitude'].toString(), "type":type.toString()})
+    http.post(url, body: {"getLocations":"true","key": "0", "latitude": location['latitude'].toString(), "longitude": location['longitude'].toString(), "type":type.toString(), })
         .then((response) {
       print("Response status: ${response.statusCode}");   
       print("Response body: ${response.body}");

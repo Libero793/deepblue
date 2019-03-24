@@ -8,7 +8,9 @@ import 'package:deepblue/models/RegisterNewLocationStyleModel.dart';
 import 'package:deepblue/models/RegisterNewLocationModel.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:intl/intl.dart';
+
 
 class RegisterNewLocation extends StatefulWidget{
 
@@ -46,6 +48,7 @@ abstract class RegisterNewLocationState extends State<RegisterNewLocation>{
 
   bool hideDateWidget;
   bool hideCheckboxWidget;
+  bool hideSpacerWidget;
 
   double lowerSlideValue = 0;
   double upperSlideValue = 50;
@@ -74,6 +77,7 @@ abstract class RegisterNewLocationState extends State<RegisterNewLocation>{
         hintTextName = "Event Name";
         hideDateWidget = false;
         hideCheckboxWidget = true;
+        hideSpacerWidget = true;
 
       }        
       break;
@@ -82,6 +86,7 @@ abstract class RegisterNewLocationState extends State<RegisterNewLocation>{
 
         hideDateWidget=true;
         hideCheckboxWidget = false;
+        hideSpacerWidget = true;
 
         hintTextName = "Location Name";
         boxStyleEntrys.add("Hochdruckreiniger");
@@ -102,6 +107,7 @@ abstract class RegisterNewLocationState extends State<RegisterNewLocation>{
       case "shooting":{
         hideDateWidget=true;
         hideCheckboxWidget = true;
+        hideSpacerWidget = false;
         hintTextName = "Location Name";
 
       }
@@ -120,6 +126,7 @@ abstract class RegisterNewLocationState extends State<RegisterNewLocation>{
       locationNameIconColor = widget.coreClass.getColorSheme(locationType);
       locationNameFocused = true;
       hideSafeButton = true;
+      
       });
     }else{
       setState(() {
@@ -127,6 +134,7 @@ abstract class RegisterNewLocationState extends State<RegisterNewLocation>{
         locationNameIconColor = Colors.grey[400];
         locationNameFocused = false;
         hideSafeButton = false;
+        FocusScope.of(context).requestFocus(new FocusNode());
       });
     }
 
@@ -141,13 +149,17 @@ abstract class RegisterNewLocationState extends State<RegisterNewLocation>{
 
   Future getImage(source) async {
     var image;
+    List <int> compressedImage;
     if(source == "gallery"){
       image = await ImagePicker.pickImage(source: ImageSource.gallery);
+      compressedImage = await testCompressFile(image); 
+
     }else{
       image = await ImagePicker.pickImage(source: ImageSource.camera);
+      compressedImage = await testCompressFile(image);
     }
 
-    imageBytes = image.readAsBytesSync();
+    imageBytes = compressedImage;
     print(imageBytes);
     base64image = base64Encode(imageBytes);
 
@@ -157,6 +169,19 @@ abstract class RegisterNewLocationState extends State<RegisterNewLocation>{
       Navigator.pop(context);
     });
 
+  }
+
+   Future<List<int>> testCompressFile(File file) async {
+    var result = await FlutterImageCompress.compressWithFile(
+      file.absolute.path,
+      minWidth: 600,
+      minHeight: 400,
+      quality: 94,
+      rotate: 90,
+    );
+    print(file.lengthSync());
+    print(result.length);
+    return result;
   }
 
 
@@ -210,8 +235,12 @@ abstract class RegisterNewLocationState extends State<RegisterNewLocation>{
 
   void toggleSwitch(bool e, RegisterLocationBoxStyle styleObject){
     if (this.mounted){
+
+      
       setState((){
             styleObject.switchState(widget.coreClass.getColorSheme(locationType));
+
+        FocusScope.of(context).requestFocus(new FocusNode());
            // print(style.switchState());
             
       });

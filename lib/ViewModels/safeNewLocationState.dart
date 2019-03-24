@@ -26,28 +26,36 @@ abstract class SafeNewLocationState extends State<SafeNewLocation>{
 
   Future httpReturn;  
   String finudid;
+  bool locationRegistrationStatus;
+  bool showLoadingAnimation = true;
+  int requestCounter = 0;
   
 
 
    void initState() {
     super.initState();
     initPlatformState();
-    httpRequest();
   }
 
   Future<void> initPlatformState() async {
     String udid;
     try {
-      udid = await FlutterUdid.consistentUdid;
+      udid = await FlutterUdid.consistentUdid.then((response){
+        finudid = response;
+        if(response != null){
+          print("finudid: $finudid");
+          httpRequest();
+        }else{
+          initPlatformState();
+        }
+      });
     } on PlatformException {
       udid = 'Failed to get UDID.';
     }
 
     if (!mounted) return;
 
-    setState(() {
-      finudid = udid;
-    });
+
   }
 
   
@@ -75,7 +83,7 @@ abstract class SafeNewLocationState extends State<SafeNewLocation>{
     print(widget.registerLocationClass.motorWaesche.toString());
     print(widget.registerLocationClass.getLocationName().toString());
 
-    print(finudid.toString());
+    print("udid${finudid.toString()}");
 
     if(widget.registerLocationClass.getLocationType() == "washbox"){
       pushWashboxToDb(url,base64Image);
@@ -88,11 +96,16 @@ abstract class SafeNewLocationState extends State<SafeNewLocation>{
   }
 
   void navigatorPushToHomeScreen(){
-                            Navigator.pop(context);
+    if(!showLoadingAnimation){
+
+       Navigator.pop(context);
                          Navigator.push(
                           context, 
                           MaterialPageRoute(builder: (context) => HomeScreen(widget.coreClass)),
                         );
+
+    }
+                       
   }
 
   void pushWashboxToDb(url,base64Image){
@@ -115,12 +128,18 @@ abstract class SafeNewLocationState extends State<SafeNewLocation>{
         .then((response) {
       print("register Response status: ${response.statusCode}");   
       print("Response body: ${response.body}");
-      print("httpreq");
       
       if(response.statusCode == 200){
+        registrationState(true);
        
       }else{
-        print("location registration failed");
+        print("location registration failed");       
+        requestCounter++;
+        if(requestCounter>3){
+          registrationState(false);
+        }else{
+          pushWashboxToDb(url,base64Image);
+        }
       }
 
     });
@@ -143,12 +162,19 @@ abstract class SafeNewLocationState extends State<SafeNewLocation>{
         .then((response) {
       print("register Response status: ${response.statusCode}");   
       print("Response body: ${response.body}");
-      print("httpreq");
       
       if(response.statusCode == 200){
+        registrationState(true);
        
       }else{
         print("location registration failed");
+        requestCounter++;
+        if(requestCounter>3){
+          registrationState(false);
+        }else{
+          pushEventToDb(url,base64Image);
+        }
+        
       }
 
     });
@@ -171,14 +197,27 @@ abstract class SafeNewLocationState extends State<SafeNewLocation>{
         .then((response) {
       print("register Response status: ${response.statusCode}");   
       print("Response body: ${response.body}");
-      print("httpreq");
       
-      if(response.statusCode == 200){
+       if(response.statusCode == 200){
+        registrationState(true);
        
       }else{
         print("location registration failed");
+        requestCounter++;
+        if(requestCounter>3){
+          registrationState(false);
+        }else{
+          pushShootingToDb(url,base64Image);
+        }
       }
 
+    });
+  }
+
+  registrationState(value){
+    setState(() {
+     locationRegistrationStatus = value;
+     showLoadingAnimation = false; 
     });
   }
 

@@ -78,6 +78,8 @@ class RegisterNewLocationView extends RegisterNewLocationState{
 
             getDateWidgetWrapper(),
 
+            getSpacerWidget(),
+
 
            
                         
@@ -383,6 +385,16 @@ class RegisterNewLocationView extends RegisterNewLocationState{
               ]
             ),
           );
+  }
+
+  Widget getSpacerWidget(){
+    if(!hideSpacerWidget){
+      return new Expanded(
+        child: Container(),
+      );
+    }else{
+      return Container();
+    }
   }
 
   Future<void> _optionsDialogBox() {

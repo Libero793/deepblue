@@ -76,7 +76,9 @@ class HomeScreenView extends HomeScreenState {
                   child: new IconButton(
                     icon: new Icon(Icons.map),
                       onPressed: () {
-                        navigatorPushToMap();
+                        if(washboxesLoaded && shootingsLoaded && eventsLoaded){
+                          navigatorPushToMap();
+                        }
                       },
                   )
                 ),
