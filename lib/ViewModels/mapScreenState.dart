@@ -41,6 +41,9 @@ abstract class MapScreenState extends State<MapScreen>{
   double containerFloatingActionButtonHeight = 65.0;
   var markers = <Marker>[];
 
+  LatLng mapCenter;
+  LatLng tapHandler;
+
   Timer _reloadTimer;
   Color actionButtonColor;
   Color actionButtonIconColor = Colors.black;
@@ -53,6 +56,9 @@ abstract class MapScreenState extends State<MapScreen>{
   bool showBoxInfo=false;
 
   IconData actionButtonIcon;
+
+  final addressInputController = TextEditingController();
+  FocusNode addressInputFocusNode = new FocusNode();
   
   RegisterNewLocationModel registerLocationClass = new RegisterNewLocationModel();
 
@@ -63,11 +69,19 @@ abstract class MapScreenState extends State<MapScreen>{
 
   
   void initState(){
+    mapCenter =new LatLng (widget.coreClass.getSelectedLocation()["latitude"], widget.coreClass.getSelectedLocation()["longitude"]);
     actionButtonColor = Colors.white;
     actionButtonIcon = Icons.add;
     printOnMap(widget.nearLocations.washboxen, "Waschboxen", widget.coreClass.washboxColor);
     printOnMap(widget.nearLocations.events, "Events", widget.coreClass.eventColor);
     printOnMap(widget.nearLocations.shootings, "Shootings", widget.coreClass.shootingColor);
+
+    addressInputFocusNode.addListener(() {
+       if (!addressInputFocusNode.hasFocus) {
+          // TextField has lost focus
+          geocodeLocation(addressInputController.text);
+       }
+    });
   }
 
   void navigatorPushToHomeScreen(){
@@ -226,8 +240,8 @@ abstract class MapScreenState extends State<MapScreen>{
               });
       }
       
-      LatLng handler = new LatLng(widget.coreClass.getSelectedLocation()['latitude'], widget.coreClass.getSelectedLocation()['longitude']);
-      addLocation(handler); //initial cal for drawing thecurrent position cross
+      tapHandler = new LatLng(widget.coreClass.getSelectedLocation()['latitude'], widget.coreClass.getSelectedLocation()['longitude']);
+      addLocation(tapHandler); //initial cal for drawing thecurrent position cross
       print("addmode: on");
     }
   }
@@ -330,7 +344,7 @@ abstract class MapScreenState extends State<MapScreen>{
                         return  Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Container ( 
-                                      height: 150.0,
+                                      height: 220.0,
                                       decoration: new BoxDecoration(
                                         color: Colors.transparent,
                                       ),
@@ -347,14 +361,38 @@ abstract class MapScreenState extends State<MapScreen>{
                                         child: new Column(
                                         mainAxisSize: MainAxisSize.min,
                                         children: <Widget>[
-                                            new Padding(
-                                                padding: const EdgeInsets.all(16.0),
+                                            
+                                           
+
+
+                                             new Padding(
+                                                padding: const EdgeInsets.fromLTRB(20, 26, 20, 20),
                                                 child: new Text(
-                                                          'Klick auf die Map '
-                                                          'um $addLocationTypeName hinzuzufügen',
-                                                          textAlign: TextAlign.center,style: TextStyle(fontSize: 18.0, color: Colors.black, fontWeight: FontWeight.w400)
+                                                          'Klick auf die Map oder gib eine Adresse ein, '
+                                                          'um $addLocationTypeName zur Karte hinzuzufügen',
+                                                          textAlign: TextAlign.center,style: TextStyle(fontSize: 15.0, color: Colors.grey, fontWeight: FontWeight.w400, )
                                                         )
                                             ),
+
+                                            new Padding(
+                                                padding: const EdgeInsets.fromLTRB(30, 6, 30, 20),
+                                                child: new TextField(
+                                                  decoration: InputDecoration(
+                                                    hintText: "Adresse suchen",
+                                                    contentPadding: EdgeInsets.fromLTRB(10, 12, 10, 12),
+                                                    border :new OutlineInputBorder(
+                                                              borderSide: new BorderSide(color: Colors.grey,),
+                                                              borderRadius: BorderRadius.all(Radius.circular(10))
+                                                              
+                                                              ),                                
+                                                  ),
+                                                  controller: addressInputController,
+                                                  focusNode: addressInputFocusNode,
+                                                  keyboardType: TextInputType.text,
+
+                                                )
+                                            ),
+
                                             new Row(
                                               mainAxisAlignment: MainAxisAlignment.center,
                                               mainAxisSize: MainAxisSize.min,
@@ -362,7 +400,7 @@ abstract class MapScreenState extends State<MapScreen>{
                                                 new OutlineButton(
                                                   child: const Text('Abbrechen'),
                                                   textColor: Colors.grey[300],
-                                                  highlightedBorderColor: Colors.grey,
+                                                  highlightedBorderColor: Colors.red,
                                                   onPressed: () {
                                                     // Perform some action
                                                     toggleEditMode();
@@ -370,7 +408,7 @@ abstract class MapScreenState extends State<MapScreen>{
                                                 ),
 
                                                 new Padding(
-                                                  padding: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0)
+                                                  padding: EdgeInsets.fromLTRB(40.0, 0.0, 40.0, 0.0)
                                                 ),
 
                                                 new RaisedButton(
@@ -693,6 +731,40 @@ abstract class MapScreenState extends State<MapScreen>{
           }
         }
    } 
+
+   void geocodeLocation(String input){
+     print("testinput: $input");
+
+     var url = "https://maps.googleapis.com/maps/api/geocode/json?address="+
+                input+"&key=AIzaSyCaFbeUE3tEoZyMf1KiF5RWnVSuvX2FId8";
+
+    http.post(url, body: {})
+        .then((response) {
+          print("google Response ${response.body}");
+
+          if (this.mounted){
+            if(response.body != "null"){
+
+              var nearestLocation;
+              var nearestLocationsJson = "";
+
+              nearestLocationsJson = response.body.toString();
+              nearestLocation=json.decode(nearestLocationsJson);
+              var tmplat = nearestLocation["results"][0]["geometry"]["location"]["lat"];
+              var tmplng = nearestLocation["results"][0]["geometry"]["location"]["lng"];
+
+              setState(() {
+                print("$tmplat $tmplng");
+                mapCenter = LatLng(tmplat, tmplng);
+                addLocation(LatLng(tmplat,tmplng));
+
+              });
+      
+
+            }
+          }
+        });
+   }
 
   
   

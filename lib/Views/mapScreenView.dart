@@ -34,7 +34,7 @@ class MapScreenView extends MapScreenState{
 
         body: new FlutterMap(
           options: new MapOptions(
-            center: new LatLng(widget.coreClass.getSelectedLocation()["latitude"], widget.coreClass.getSelectedLocation()["longitude"]),
+            center: mapCenter,
             zoom: 13.0,
             onTap: _handleTap,
           ),
