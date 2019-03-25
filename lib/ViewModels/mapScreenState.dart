@@ -41,7 +41,6 @@ abstract class MapScreenState extends State<MapScreen>{
   double containerFloatingActionButtonHeight = 65.0;
   var markers = <Marker>[];
 
-  LatLng mapCenter;
   LatLng tapHandler;
 
   Timer _reloadTimer;
@@ -54,11 +53,14 @@ abstract class MapScreenState extends State<MapScreen>{
 
   var washboxMap = null;
   bool showBoxInfo=false;
+  bool registerLocationButtonAvailable = true;
 
   IconData actionButtonIcon;
 
   final addressInputController = TextEditingController();
   FocusNode addressInputFocusNode = new FocusNode();
+
+  var flutterMapController = new MapController();
   
   RegisterNewLocationModel registerLocationClass = new RegisterNewLocationModel();
 
@@ -67,9 +69,8 @@ abstract class MapScreenState extends State<MapScreen>{
 
     PersistentBottomSheetController controller;
 
-  
+  @override
   void initState(){
-    mapCenter =new LatLng (widget.coreClass.getSelectedLocation()["latitude"], widget.coreClass.getSelectedLocation()["longitude"]);
     actionButtonColor = Colors.white;
     actionButtonIcon = Icons.add;
     printOnMap(widget.nearLocations.washboxen, "Waschboxen", widget.coreClass.washboxColor);
@@ -78,10 +79,15 @@ abstract class MapScreenState extends State<MapScreen>{
 
     addressInputFocusNode.addListener(() {
        if (!addressInputFocusNode.hasFocus) {
+         
           // TextField has lost focus
           geocodeLocation(addressInputController.text);
+          registerLocationButtonAvailable = true;
+       }else{
+         registerLocationButtonAvailable = false;
        }
     });
+    super.initState();
   }
 
   void navigatorPushToHomeScreen(){
@@ -419,7 +425,12 @@ abstract class MapScreenState extends State<MapScreen>{
                                                   padding: EdgeInsets.symmetric(vertical: 10.0,horizontal: 30.0),
                                                   onPressed: () {
                                                     // Perform some action
-                                                    Navigator.push(context,MaterialPageRoute(builder: (context) => RegisterNewLocation(registerLocationClass,widget.coreClass)));
+                                                    if(registerLocationButtonAvailable){
+                                                      Navigator.push(context,MaterialPageRoute(builder: (context) => RegisterNewLocation(registerLocationClass,widget.coreClass)));
+                                                    }else{
+                                                      addressInputFocusNode.unfocus();
+                                                    }
+                                                    
                                                   },
                                                 ),
                                               ]
@@ -755,8 +766,8 @@ abstract class MapScreenState extends State<MapScreen>{
 
               setState(() {
                 print("$tmplat $tmplng");
-                mapCenter = LatLng(tmplat, tmplng);
                 addLocation(LatLng(tmplat,tmplng));
+                flutterMapController.move(LatLng(tmplat, tmplng), 13);
 
               });
       
