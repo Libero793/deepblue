@@ -46,55 +46,68 @@ abstract class LocatingScreenState extends State<LocatingScreen>{
     super.dispose();
   }
 
-  getPosition() async {
-
-          print("getposition");
-          
-
-          gps.Position position = await gps.Geolocator().getCurrentPosition(desiredAccuracy: gps.LocationAccuracy.high);
-          gpsTimer.cancel();
-          print("gpsPosition:$position");
-          if(!pushedToHomeScreen && position != null){
-            print("got${position.toString()}");
-            var positionMap = new Map<String,double>();
-            positionMap["latitude"] = position.latitude;
-            positionMap["longitude"] = position.longitude;
-
-            widget.coreClass.setSelectedLocation(positionMap);
-        
-            if(!pushedToHomeScreen){
-              Navigator.pop(context);
-              Navigator.push(context,MaterialPageRoute(builder: (context) => HomeScreen(widget.coreClass)));
-              setState(() {
-                              pushedToHomeScreen=true;
-                            });
-              
-              
-            }
-          }
-          
-    
-  }
-
-
-
+ 
    initPlatformState() async {
     locationPackage.LocationData currentLocation;
 
     var location = new locationPackage.Location();
+    
 
     // Platform messages may fail, so we use a try/catch PlatformException.
     try {
-      currentLocation = await location.getLocation();
+      
+      if(await location.requestPermission()){
+        if(await location.requestService()){
+          print("run location Lstener");
+          
+          runLocationListener();
+        }else{
+          initPlatformState();
+        }
+      }else{
+        initPlatformState();
+      }
+      //currentLocation = await location.getLocation();
     } on PlatformException catch (e) {
       if (e.code == 'PERMISSION_DENIED') {
         error = 'Permission denied';
       } 
-      currentLocation = null;
+      initPlatformState();
     }
 
+  }
 
+  void runLocationListener(){
+      var locationEvent;
 
+      locationEvent= _location.onLocationChanged().listen((locationPackage.LocationData result) {
+        
+          
+                  print(result.latitude);
+
+                  if(!pushedToHomeScreen && result.latitude != null && result.longitude != null){
+                    
+                    var positionMap = new Map<String,double>();
+                    positionMap["latitude"] = result.latitude;
+                    positionMap["longitude"] = result.longitude;
+
+                    widget.coreClass.setSelectedLocation(positionMap);
+                
+                    if(!pushedToHomeScreen){
+                      locationEvent.cancel();
+                      Navigator.pop(context);
+                      Navigator.push(context,MaterialPageRoute(builder: (context) => HomeScreen(widget.coreClass)));
+                      setState(() {
+                                      pushedToHomeScreen=true;
+                                    });
+                      
+                      
+                    }
+                  }
+              
+              
+      });
+      
   }
 
   void toggleHomeLocationBox(bool e){
@@ -127,46 +140,8 @@ abstract class LocatingScreenState extends State<LocatingScreen>{
   void initState() {
     super.initState();
 
-    /*
-      if(!timerRunning){
-          setState(() { timerRunning=true;  });
-          const oneSec = const Duration(seconds:33);
-          gpsTimer = new Timer.periodic(oneSec, (Timer t) => getLocation());
-  }*/
+    initPlatformState();   
 
-
-    initPlatformState();
-    var locationEvent;
-    
-    if (this.mounted){
-     locationEvent= _location.onLocationChanged().listen((locationPackage.LocationData result) {
-      
-        
-                print(result.latitude);
-
-                if(!pushedToHomeScreen && result.latitude != null && result.longitude != null){
-                  
-                  var positionMap = new Map<String,double>();
-                  positionMap["latitude"] = result.latitude;
-                  positionMap["longitude"] = result.longitude;
-
-                  widget.coreClass.setSelectedLocation(positionMap);
-              
-                  if(!pushedToHomeScreen){
-                    locationEvent.cancel();
-                    Navigator.pop(context);
-                    Navigator.push(context,MaterialPageRoute(builder: (context) => HomeScreen(widget.coreClass)));
-                    setState(() {
-                                    pushedToHomeScreen=true;
-                                  });
-                    
-                    
-                  }
-                }
-            
-            
-    });
-    }
   }
 
 
