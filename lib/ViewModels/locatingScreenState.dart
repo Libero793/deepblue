@@ -6,8 +6,7 @@ import 'package:deepblue/models/CoreFunctionsModel.dart';
 import 'package:deepblue/models/setupFile.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart' as gps;
-import 'package:geolocation/geolocation.dart' ;
-import 'package:location/location.dart' as location;
+import 'package:location/location.dart' as locationPackage;
 import 'package:flutter/services.dart';
 
 
@@ -21,13 +20,13 @@ class LocatingScreen extends StatefulWidget{
 
 abstract class LocatingScreenState extends State<LocatingScreen>{
 
-  Map<String, double> _startLocation;
-  Map<String, double> _currentLocation;
+  locationPackage.LocationData _startLocation;
+  locationPackage.LocationData _currentLocation;
   SetupFile fileHandler = new SetupFile();
 
   StreamSubscription<Map<String, double>> _locationSubscription;
 
-  location.Location _location = new location.Location();
+  var _location = new locationPackage.Location();
   bool _permission = false;
   String error;
 
@@ -45,7 +44,6 @@ abstract class LocatingScreenState extends State<LocatingScreen>{
   @override
   void dispose() {
     super.dispose();
-    gpsTimer.cancel();
   }
 
   getPosition() async {
@@ -78,54 +76,24 @@ abstract class LocatingScreenState extends State<LocatingScreen>{
     
   }
 
-  getLocation() async{
 
-      print("trytogetlocation");
-
-      final GeolocationResult result = await Geolocation.isLocationOperational();
-      if(result.isSuccessful) {
-        // location service is enabled, and location permission is granted
-        print("gps enabled");
-        getPosition();
-      } else {
-        // location service is not enabled, restricted, or location permission is denied
-        print("gps disabled");
-    
-        //Settings.openGPSSettings();
-
-        //Navigator.pop(context);
-        //Navigator.push(context,MaterialPageRoute(builder: (context) => LocatingScreen()));
-      }
-  
-    
-
-  }
 
    initPlatformState() async {
-    Map<String, double> location;
+    locationPackage.LocationData currentLocation;
+
+    var location = new locationPackage.Location();
+
     // Platform messages may fail, so we use a try/catch PlatformException.
-
     try {
-      _permission = await _location.hasPermission();
-      location = await _location.getLocation();
-
-
-      error = null;
+      currentLocation = await location.getLocation();
     } on PlatformException catch (e) {
       if (e.code == 'PERMISSION_DENIED') {
         error = 'Permission denied';
-      } else if (e.code == 'PERMISSION_DENIED_NEVER_ASK') {
-        error = 'Permission denied - please ask the user to enable it from the app settings';
-      }
-
-      location = null;
+      } 
+      currentLocation = null;
     }
 
-    if (this.mounted){
-      setState(() {
-          _startLocation = location;
-      });
-    }
+
 
   }
 
@@ -159,23 +127,46 @@ abstract class LocatingScreenState extends State<LocatingScreen>{
   void initState() {
     super.initState();
 
+    /*
       if(!timerRunning){
           setState(() { timerRunning=true;  });
           const oneSec = const Duration(seconds:33);
           gpsTimer = new Timer.periodic(oneSec, (Timer t) => getLocation());
-  }
+  }*/
+
 
     initPlatformState();
+    var locationEvent;
+    
+    if (this.mounted){
+     locationEvent= _location.onLocationChanged().listen((locationPackage.LocationData result) {
+      
+        
+                print(result.latitude);
 
-    _locationSubscription =
-        _location.onLocationChanged().listen((Map<String,double> result) {
-            if (this.mounted){
-              setState(() {
-                _currentLocation = result;
-              });
-            }
-          //print("currentloc$_currentLocation");
-        });
+                if(!pushedToHomeScreen && result.latitude != null && result.longitude != null){
+                  
+                  var positionMap = new Map<String,double>();
+                  positionMap["latitude"] = result.latitude;
+                  positionMap["longitude"] = result.longitude;
+
+                  widget.coreClass.setSelectedLocation(positionMap);
+              
+                  if(!pushedToHomeScreen){
+                    locationEvent.cancel();
+                    Navigator.pop(context);
+                    Navigator.push(context,MaterialPageRoute(builder: (context) => HomeScreen(widget.coreClass)));
+                    setState(() {
+                                    pushedToHomeScreen=true;
+                                  });
+                    
+                    
+                  }
+                }
+            
+            
+    });
+    }
   }
 
 

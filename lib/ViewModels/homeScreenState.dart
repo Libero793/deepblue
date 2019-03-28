@@ -173,6 +173,12 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
 
          break;
 
+        case "fog": 
+          welcomeTextHeadline = "Ganz Gut!";
+          welcomeText ="Aktuell ist es etwas nebelig draußen, aber wen hält das schon auf sein Auto zu waschen ?!";
+
+         break;
+
         case "rain": 
           assetName = 'assets/images/Cloud-Rain.svg';
           welcomeTextHeadline = "Lieber abwarten!";
