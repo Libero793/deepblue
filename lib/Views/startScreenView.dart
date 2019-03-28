@@ -59,7 +59,7 @@ class StartScreenView extends StartScreenState {
 
                                         Padding(
                                           padding: EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
-                                          child:  Text("Beta Version 0.2", style: TextStyle(fontSize: 12,color: Colors.white, fontWeight: FontWeight.bold,),),
+                                          child:  Text("Beta Version 0.2c", style: TextStyle(fontSize: 12,color: Colors.white, fontWeight: FontWeight.bold,),),
                                         )
                                        
 

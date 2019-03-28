@@ -29,7 +29,7 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
   ScrollController scrollControllerHorizontal;
 
   List verticalScrolls = [];
-  int pagination = 1;
+  int pagination = 0;
   int execution = 0;
   int test = 0;
 
@@ -98,7 +98,7 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
 
     setupWeatherContext(widget.coreClass.getSelectedLocation());
 
-    currentCard = "washbox";
+    currentCard = "event";
 
     for(int i=0; i<=2; i++){
       addVerticalScrollController();
@@ -106,6 +106,7 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
 
     if(widget.coreClass.getHomeLocationTrigger()){
       writeHomeLocationToFile(widget.coreClass.getSelectedLocation());
+      widget.coreClass.setAsHomeLocation=false;
     }
     
     super.initState();
@@ -376,7 +377,7 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
 
   void setupHorizontal(context){
     if(!horizontalScrollSetup){
-      scrollControllerHorizontal.animateTo(MediaQuery.of(context).size.width, duration: Duration(milliseconds: 400), curve: Curves.fastOutSlowIn);
+      //scrollControllerHorizontal.animateTo(MediaQuery.of(context).size.width, duration: Duration(milliseconds: 400), curve: Curves.fastOutSlowIn);
       horizontalScrollSetup=true;
     }
   }

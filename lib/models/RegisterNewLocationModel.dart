@@ -15,7 +15,9 @@ class RegisterNewLocationModel{
   bool motorWaesche=false;
 
   var startTime="2019-04-20 16:20";
-  var endTime="2019-04-20 16:20";
+  var endTime="2019-04-20 16:21";
+
+  DateTime startDate;
 
   IconData icon;
 

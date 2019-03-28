@@ -402,9 +402,17 @@ Widget createListItem(listPosition, itemPosition){
    //print("testlocationscount: ${locationsJson}");
    
    if(locations != null){
+        var locationName = locations[itemPosition]["name"];
+
+        if(locationName.length > 21){
+           locationName = locations[itemPosition]["name"].substring(0,22);
+        }
+       
+
         if(locations[itemPosition].containsKey("image")){
           locationImageExists = false;
         }
+        
           return Padding(
                   padding: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 5.0),
                   child: Card(
@@ -432,7 +440,7 @@ Widget createListItem(listPosition, itemPosition){
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-                                    Text("${locations[itemPosition]["name"]}",style: TextStyle(fontSize: 20.0, color: Colors.grey, fontWeight: FontWeight.w400)),
+                                    Text("$locationName",style: TextStyle(fontSize: 18.0, color: Colors.grey, fontWeight: FontWeight.w400)),
 
                                     
                                     Padding(
