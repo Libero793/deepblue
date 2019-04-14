@@ -73,9 +73,9 @@ abstract class MapScreenState extends State<MapScreen>{
   void initState(){
     actionButtonColor = Colors.white;
     actionButtonIcon = Icons.add;
-    printOnMap(widget.nearLocations.washboxen, "Waschboxen", widget.coreClass.washboxColor);
-    printOnMap(widget.nearLocations.events, "Events", widget.coreClass.eventColor);
-    printOnMap(widget.nearLocations.shootings, "Shootings", widget.coreClass.shootingColor);
+    printOnMap(widget.nearLocations.washboxen, widget.coreClass.washboxColor);
+    printOnMap(widget.nearLocations.events, widget.coreClass.eventColor);
+    printOnMap(widget.nearLocations.shootings, widget.coreClass.shootingColor);
 
     addressInputFocusNode.addListener(() {
        if (!addressInputFocusNode.hasFocus) {
@@ -87,7 +87,26 @@ abstract class MapScreenState extends State<MapScreen>{
          registerLocationButtonAvailable = false;
        }
     });
+
+    checkShowLocationCall();
+
     super.initState();
+    
+  }
+
+  void checkShowLocationCall(){
+    if(widget.coreClass.showMapLocation){
+      print(scaffoldKey.currentState.toString());
+      if(scaffoldKey.currentState.toString() != "null"){
+        toggleBoxInfo("show", widget.coreClass.showLocationEntry, widget.coreClass.showLocationIconColor);
+        flutterMapController.move(LatLng(double.parse(widget.coreClass.showLocationEntry["latitude"]), double.parse(widget.coreClass.showLocationEntry["longitude"])), 13);
+        widget.coreClass.showMapLocation=false;
+      }else{
+        Future.delayed(const Duration(milliseconds: 500), () {
+          checkShowLocationCall();
+        });
+      }
+    }
   }
 
   void navigatorPushToHomeScreen(){
@@ -97,7 +116,7 @@ abstract class MapScreenState extends State<MapScreen>{
 
   
 
-  void printOnMap(var map,String type, Color iconColor){
+  void printOnMap(var map, Color iconColor){
     //print("${washboxMap[1]["latitude"]}");
     
     if(this.mounted){
@@ -115,7 +134,7 @@ abstract class MapScreenState extends State<MapScreen>{
                           child: new GestureDetector(
                             onTap: (){
                                 //_launchMaps("51.3703207","12.3652444");
-                                toggleBoxInfo("show",map[i],type,iconColor);
+                                toggleBoxInfo("show",map[i],iconColor);
                             },
                             child: new Stack(
                             alignment: Alignment.topCenter,
@@ -182,7 +201,7 @@ abstract class MapScreenState extends State<MapScreen>{
 
   void actionButtonToggle(){
     if(boxInfoToggled){
-      toggleBoxInfo("hide",null, null, Colors.transparent);
+      toggleBoxInfo("hide",null, Colors.transparent);
       boxInfoToggled = false;
     }else{
       if(!chooseLocationTapped){
@@ -448,11 +467,8 @@ abstract class MapScreenState extends State<MapScreen>{
         }
    } 
 
-   void toggleBoxInfo(action,data,type,backgroundColor){
+   void toggleBoxInfo(action,data,backgroundColor){
         ScaffoldState state = scaffoldKey.currentState;
-        
-        
-        
         
         if(action == "show" && !addMode){
             print(data);
@@ -626,7 +642,7 @@ abstract class MapScreenState extends State<MapScreen>{
                                                                     ),
                                                                     new Padding(
                                                                       padding: const EdgeInsets.fromLTRB(10.0, 2.0, 0.0, 8.0),
-                                                                      child: new Text("Beginn: ${data["startTime"]}",textAlign: TextAlign.left,style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w400, color: Colors.black))
+                                                                      child: new Text("Beginn: ${data["startTime"].substring(0,16)}",textAlign: TextAlign.left,style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w400, color: Colors.black))
                                                                     ),
                                                                   ],
                                                                 ),
@@ -645,7 +661,7 @@ abstract class MapScreenState extends State<MapScreen>{
                                                                     ),
                                                                     new Padding(
                                                                       padding: const EdgeInsets.fromLTRB(10.0, 2.0, 0.0, 8.0),
-                                                                      child: new Text("Ende: ${data["endTime"]}",textAlign: TextAlign.left,style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w400, color: Colors.black))
+                                                                      child: new Text("Ende: ${data["endTime"].substring(0,16)}",textAlign: TextAlign.left,style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w400, color: Colors.black))
                                                                     ),
                                                                   ],
                                                                 ),

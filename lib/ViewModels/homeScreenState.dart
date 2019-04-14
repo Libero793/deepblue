@@ -52,6 +52,7 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
   bool washboxesLoaded=false;
   bool eventsLoaded=false;
   bool shootingsLoaded=false;
+  bool locationsLoaded=false;
 
 
   bool currentWidget = true;
@@ -272,6 +273,10 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
                     nearLocations.shootings=nearestLocation;
                     nearLocations.shootingsCount=json.decode(response.body.toString()).length;
                     shootingsLoaded=true;
+                  }
+
+                  if(washboxesLoaded && eventsLoaded && shootingsLoaded){
+                    locationsLoaded=true;
                   }
                   
               });

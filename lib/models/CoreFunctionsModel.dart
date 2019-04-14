@@ -14,6 +14,10 @@ class CoreFunctionsModel{
   Color eventColor = Color(0xffdb1529);
   Color washboxColor = Color(0xff308dcc);
   Color shootingColor = Color(0xff00af5a);
+  bool showMapLocation = false;
+  var showLocationEntry;
+  var showLocationType;
+  var showLocationIconColor;
 
   getSetupFile(){
     return setupFile;
@@ -76,6 +80,12 @@ class CoreFunctionsModel{
         break;
       default:
     }
+  }
+
+  void callToShowMapLocation(entry,iconColor){
+    showMapLocation = true;
+    showLocationEntry=entry;
+    showLocationIconColor=iconColor;
   }
 
 

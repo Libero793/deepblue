@@ -15,6 +15,8 @@ class MapScreenView extends MapScreenState{
         addLocation(latlng);
         //addMode = true;
       });
+
+
     }
 
     return new Scaffold(
