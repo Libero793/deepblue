@@ -15,6 +15,8 @@ class MapScreenView extends MapScreenState{
         addLocation(latlng);
         //addMode = true;
       });
+
+
     }
 
     return new Scaffold(
@@ -33,8 +35,9 @@ class MapScreenView extends MapScreenState{
         ),
 
         body: new FlutterMap(
+          mapController: flutterMapController,
           options: new MapOptions(
-            center: new LatLng(widget.coreClass.getSelectedLocation()["latitude"], widget.coreClass.getSelectedLocation()["longitude"]),
+            center: LatLng (widget.coreClass.getSelectedLocation()["latitude"], widget.coreClass.getSelectedLocation()["longitude"]),
             zoom: 13.0,
             onTap: _handleTap,
           ),
@@ -49,41 +52,6 @@ class MapScreenView extends MapScreenState{
             ),
             new MarkerLayerOptions(markers: markers),
             
-            /*
-            MarkerLayerOptions(
-              markers: [
-                new Marker(
-                  width: 60.0,
-                  height: 90.0,
-                  point: new LatLng(51.3703207,12.3652444),
-                  builder: (ctx) =>
-                   new Container(
-                      child: new GestureDetector(
-                         onTap: (){
-                            //_launchMaps("51.3703207","12.3652444");
-                            _showDialog(context);
-                        },
-                        child: new Stack(
-                        alignment: Alignment.topCenter,
-                        overflow: Overflow.visible,
-                        children: [
-                                  new Positioned(
-                                    top: 0.0,
-                                    width: 60.0,
-                                    height: 60.0,
-                                        
-                                        child: new Image.asset(
-                                            'assets/images/locationWashbox.png',
-                                            fit: BoxFit.cover,    
-                                            ),
-                                      ),                                                          
-                                  ]
-                        ),
-                      )
-                    ),
-                ),
-              ],
-            ),*/
             
           ],
         ),

@@ -78,6 +78,8 @@ class RegisterNewLocationView extends RegisterNewLocationState{
 
             getDateWidgetWrapper(),
 
+            getSpacerWidget(),
+
 
            
                         
@@ -274,11 +276,14 @@ class RegisterNewLocationView extends RegisterNewLocationState{
 
   Widget getDateWidget(timeType){
     var tempTime;
+    DateTime tempDate;
     
     if(timeType == "Startzeit"){
       tempTime=widget.registerLocationClass.startTime;
+      tempDate = DateTime.now();
     }else{
       tempTime=widget.registerLocationClass.endTime;
+      tempDate=widget.registerLocationClass.startDate;
     }
     return                
                     Padding(
@@ -297,6 +302,8 @@ class RegisterNewLocationView extends RegisterNewLocationState{
                                     if(timeType == "Startzeit"){
                                       setState(() {
                                         widget.registerLocationClass.startTime=dateTime.toString();
+                                        widget.registerLocationClass.startDate=dateTime;
+                                        widget.registerLocationClass.endTime=dateTime.toString();
                                       });
                                     }else if(timeType == "Endzeit"){
                                       setState(() {
@@ -305,7 +312,7 @@ class RegisterNewLocationView extends RegisterNewLocationState{
                                     }
                                   },
                                   locale: LocaleType.en,
-                                  currentTime: DateTime.now(),
+                                  currentTime: tempDate,
                                 );
 
                               },
@@ -383,6 +390,16 @@ class RegisterNewLocationView extends RegisterNewLocationState{
               ]
             ),
           );
+  }
+
+  Widget getSpacerWidget(){
+    if(!hideSpacerWidget){
+      return new Expanded(
+        child: Container(),
+      );
+    }else{
+      return Container();
+    }
   }
 
   Future<void> _optionsDialogBox() {

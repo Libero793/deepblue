@@ -29,7 +29,7 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
   ScrollController scrollControllerHorizontal;
 
   List verticalScrolls = [];
-  int pagination = 1;
+  int pagination = 0;
   int execution = 0;
   int test = 0;
 
@@ -52,6 +52,7 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
   bool washboxesLoaded=false;
   bool eventsLoaded=false;
   bool shootingsLoaded=false;
+  bool locationsLoaded=false;
 
 
   bool currentWidget = true;
@@ -98,7 +99,7 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
 
     setupWeatherContext(widget.coreClass.getSelectedLocation());
 
-    currentCard = "washbox";
+    currentCard = "event";
 
     for(int i=0; i<=2; i++){
       addVerticalScrollController();
@@ -106,6 +107,7 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
 
     if(widget.coreClass.getHomeLocationTrigger()){
       writeHomeLocationToFile(widget.coreClass.getSelectedLocation());
+      widget.coreClass.setAsHomeLocation=false;
     }
     
     super.initState();
@@ -169,6 +171,12 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
           assetName = 'assets/images/Moon.svg';
           welcomeTextHeadline = "Perfekt!";
           welcomeText ="Wenn es dir nicht zu spät ist, ist das die perfekte Nacht um dein Auto zu waschen!";
+
+         break;
+
+        case "fog": 
+          welcomeTextHeadline = "Ganz Gut!";
+          welcomeText ="Aktuell ist es etwas nebelig draußen, aber wen hält das schon auf sein Auto zu waschen ?!";
 
          break;
 
@@ -236,7 +244,7 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
 
     var url = "http://www.nell.science/deepblue/index.php";
 
-    http.post(url, body: {"getLocations":"true","key": "0", "latitude": location['latitude'].toString(), "longitude": location['longitude'].toString(), "type":type.toString()})
+    http.post(url, body: {"getLocations":"true","key": "0", "latitude": location['latitude'].toString(), "longitude": location['longitude'].toString(), "type":type.toString(), })
         .then((response) {
       print("Response status: ${response.statusCode}");   
       print("Response body: ${response.body}");
@@ -265,6 +273,10 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
                     nearLocations.shootings=nearestLocation;
                     nearLocations.shootingsCount=json.decode(response.body.toString()).length;
                     shootingsLoaded=true;
+                  }
+
+                  if(washboxesLoaded && eventsLoaded && shootingsLoaded){
+                    locationsLoaded=true;
                   }
                   
               });
@@ -376,7 +388,7 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
 
   void setupHorizontal(context){
     if(!horizontalScrollSetup){
-      scrollControllerHorizontal.animateTo(MediaQuery.of(context).size.width, duration: Duration(milliseconds: 400), curve: Curves.fastOutSlowIn);
+      //scrollControllerHorizontal.animateTo(MediaQuery.of(context).size.width, duration: Duration(milliseconds: 400), curve: Curves.fastOutSlowIn);
       horizontalScrollSetup=true;
     }
   }
