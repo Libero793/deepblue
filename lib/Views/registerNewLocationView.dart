@@ -301,13 +301,13 @@ class RegisterNewLocationView extends RegisterNewLocationState{
                                     print('datetime: $dateTime');
                                     if(timeType == "Startzeit"){
                                       setState(() {
-                                        widget.registerLocationClass.startTime=dateTime.toString();
+                                        widget.registerLocationClass.startTime=dateTime.toString().substring(0,16);
                                         widget.registerLocationClass.startDate=dateTime;
-                                        widget.registerLocationClass.endTime=dateTime.toString();
+                                        widget.registerLocationClass.endTime=dateTime.toString().substring(0,16);
                                       });
                                     }else if(timeType == "Endzeit"){
                                       setState(() {
-                                        widget.registerLocationClass.endTime=dateTime.toString();
+                                        widget.registerLocationClass.endTime=dateTime.toString().substring(0,16);
                                       });
                                     }
                                   },

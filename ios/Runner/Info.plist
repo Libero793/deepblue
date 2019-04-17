@@ -2,11 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Can I use the PhotoLibrary please?</string><key>NSMicrophoneUsageDescription</key>
-	<string>Can I use the mic please?</string>
-	<key>NSCameraUsageDescription</key>
-	<string>Can I use camera please?</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleExecutable</key>
@@ -25,16 +20,30 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>googlechromes</string>
+		<string>comgooglemaps</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Can I use camera please?</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Reason why app needs location</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Reason why app needs location</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Reason why app needs location</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Can I use the mic please?</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Can I use the PhotoLibrary please?</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>UISupportedInterfaceOrientations</key>
-		
-		<key>NSLocationAlwaysUsageDescription</key>
-		<String></String>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
@@ -49,21 +58,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	
-	<!-- for iOS 11 + -->
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Reason why app needs location</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Reason why app needs location</string>
-	
-	<!-- additionally for iOS 9/10, if you need always permission -->
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Reason why app needs location</string>
-
-	<key>LSApplicationQueriesSchemes</key>
-	<array>
-		<string>googlechromes</string>
-		<string>comgooglemaps</string>
-	</array>
 </dict>
 </plist>

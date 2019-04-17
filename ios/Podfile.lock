@@ -1,3 +1,83 @@
-PODFILE CHECKSUM: c7d03fcac14eed80c06c6d0d8ae8952fc3ce6609
+PODS:
+  - Flutter (1.0.0)
+  - flutter_image_compress (0.0.1):
+    - Flutter
+  - flutter_udid (0.0.1):
+    - Flutter
+    - SAMKeychain
+  - geolocator (3.0.1):
+    - Flutter
+  - google_api_availability (2.0.0):
+    - Flutter
+  - image_picker (0.0.1):
+    - Flutter
+  - location (0.0.1):
+    - Flutter
+  - path_provider (0.0.1):
+    - Flutter
+  - permission_handler (3.0.0):
+    - Flutter
+  - SAMKeychain (1.5.3)
+  - shared_preferences (0.0.1):
+    - Flutter
+  - url_launcher (0.0.1):
+    - Flutter
+
+DEPENDENCIES:
+  - Flutter (from `.symlinks/flutter/ios`)
+  - flutter_image_compress (from `.symlinks/plugins/flutter_image_compress/ios`)
+  - flutter_udid (from `.symlinks/plugins/flutter_udid/ios`)
+  - geolocator (from `.symlinks/plugins/geolocator/ios`)
+  - google_api_availability (from `.symlinks/plugins/google_api_availability/ios`)
+  - image_picker (from `.symlinks/plugins/image_picker/ios`)
+  - location (from `.symlinks/plugins/location/ios`)
+  - path_provider (from `.symlinks/plugins/path_provider/ios`)
+  - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
+  - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
+  - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - SAMKeychain
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: ".symlinks/flutter/ios"
+  flutter_image_compress:
+    :path: ".symlinks/plugins/flutter_image_compress/ios"
+  flutter_udid:
+    :path: ".symlinks/plugins/flutter_udid/ios"
+  geolocator:
+    :path: ".symlinks/plugins/geolocator/ios"
+  google_api_availability:
+    :path: ".symlinks/plugins/google_api_availability/ios"
+  image_picker:
+    :path: ".symlinks/plugins/image_picker/ios"
+  location:
+    :path: ".symlinks/plugins/location/ios"
+  path_provider:
+    :path: ".symlinks/plugins/path_provider/ios"
+  permission_handler:
+    :path: ".symlinks/plugins/permission_handler/ios"
+  shared_preferences:
+    :path: ".symlinks/plugins/shared_preferences/ios"
+  url_launcher:
+    :path: ".symlinks/plugins/url_launcher/ios"
+
+SPEC CHECKSUMS:
+  Flutter: 9d0fac939486c9aba2809b7982dfdbb47a7b0296
+  flutter_image_compress: 386567f3a592e5f52bdf81be7feba627250147f1
+  flutter_udid: 71512cb5e8aa43324d9d471d28ca067d6d18423e
+  geolocator: e054ad14f577d282c418eb5e32c5f0a8a5e6c69d
+  google_api_availability: 80c105ad2c0ed01c18cf779653da2cb939518192
+  image_picker: ee00aab0487cedc80a304085219503cc6d0f2e22
+  location: 26c90953ad5916331d0d1d913898779910416487
+  path_provider: 09407919825bfe3c2deae39453b7a5b44f467873
+  permission_handler: 03dcf3ade9d5f398b8854b366cb9de718d3daa76
+  SAMKeychain: 483e1c9f32984d50ca961e26818a534283b4cd5c
+  shared_preferences: 5a1d487c427ee18fcd3ea1f2a131569481834b53
+  url_launcher: 92b89c1029a0373879933c21642958c874539095
+
+PODFILE CHECKSUM: 8751d20db64a8f2b043856cc4b2b8e15622d5292
 
 COCOAPODS: 1.5.3

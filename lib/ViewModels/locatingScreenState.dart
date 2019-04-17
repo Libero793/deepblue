@@ -31,7 +31,6 @@ abstract class LocatingScreenState extends State<LocatingScreen>{
   String error;
 
   bool currentWidget = true;
-  Timer gpsTimer;
 
   bool pushedToHomeScreen=false;
 
@@ -121,7 +120,6 @@ abstract class LocatingScreenState extends State<LocatingScreen>{
   }
 
   void pushToManualLocationMap(){
-    gpsTimer.cancel();
     Navigator.push(context,MaterialPageRoute(builder: (context) => ManualLocationMap(widget.coreClass)));
   }
 
