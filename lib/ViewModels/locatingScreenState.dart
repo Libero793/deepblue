@@ -36,9 +36,8 @@ abstract class LocatingScreenState extends State<LocatingScreen>{
 
   bool gpsAccessChecked=false;
   bool gpsStatus = true;
-  bool timerRunning=false;
-
   bool setAsHomeLocation = false;
+  Timer startGpsTimer;
 
   @override
   void dispose() {
@@ -47,6 +46,7 @@ abstract class LocatingScreenState extends State<LocatingScreen>{
 
  
    initPlatformState() async {
+     print("iniplatformState");
     locationPackage.LocationData currentLocation;
 
     var location = new locationPackage.Location();
@@ -55,17 +55,18 @@ abstract class LocatingScreenState extends State<LocatingScreen>{
     // Platform messages may fail, so we use a try/catch PlatformException.
     try {
       
-      if(await location.requestPermission()){
-        if(await location.requestService()){
-          print("run location Lstener");
-          
-          runLocationListener();
+      if(await location.hasPermission()){         //prüfe ob berechtigug bereits erteilt
+        runServiceRequest(location);
+      }else{                                      //wenn nciht dann frage berechtigung an
+        if(await location.requestPermission()){
+          print("reqPermission");
+          runServiceRequest(location);
         }else{
+          print("else triggered");
           initPlatformState();
         }
-      }else{
-        initPlatformState();
       }
+      
       //currentLocation = await location.getLocation();
     } on PlatformException catch (e) {
       if (e.code == 'PERMISSION_DENIED') {
@@ -74,6 +75,16 @@ abstract class LocatingScreenState extends State<LocatingScreen>{
       initPlatformState();
     }
 
+  }
+
+  Future runServiceRequest(location) async {
+        if(await location.requestService()){
+          print("run location Lstener");
+          
+          runLocationListener();
+        }else{
+          initPlatformState();
+        }
   }
 
   void runLocationListener(){
@@ -94,12 +105,12 @@ abstract class LocatingScreenState extends State<LocatingScreen>{
                 
                     if(!pushedToHomeScreen){
                       locationEvent.cancel();
+                      startGpsTimer.cancel();
                       Navigator.pop(context);
                       Navigator.push(context,MaterialPageRoute(builder: (context) => HomeScreen(widget.coreClass)));
                       setState(() {
                                       pushedToHomeScreen=true;
                                     });
-                      
                       
                     }
                   }
@@ -138,7 +149,10 @@ abstract class LocatingScreenState extends State<LocatingScreen>{
   void initState() {
     super.initState();
 
-    initPlatformState();   
+    startGpsTimer = new Timer(const Duration(milliseconds: 3000), () {
+      initPlatformState(); 
+    });
+      
 
   }
 

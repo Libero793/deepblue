@@ -142,155 +142,179 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
   @override
   void dispose() {
     super.dispose();
-    _reloadTimer.cancel();
-  }
-
-  Future setupWeatherContext(Map<String,double> location) async {
-    if(httpRequestWeather(location) != "null"){
-      var jsonWeather = await httpRequestWeather(location);
-      var weather = json.decode(jsonWeather);
-      print("jsonWeather $weather");
-
-  
-      switch (weather["currently"]["icon"]){
-        case "cloudy": 
-          assetName = 'assets/images/Cloud.svg';
-          welcomeTextHeadline = "Gute Nachrichten";
-          welcomeText = "Aktuell sind nur ein paar Wolken am Himmel - gutes Timing um dein Auto zu waschen!";
-
-         break;
-
-        case "clear-day": 
-          assetName = 'assets/images/Sun.svg';
-          welcomeTextHeadline = "Perfekt!";
-          welcomeText ="Schnapp dir dein Auto - es ist perfektes Wetter um es zu waschen!";
-
-         break;
-
-        case "clear-night": 
-          assetName = 'assets/images/Moon.svg';
-          welcomeTextHeadline = "Perfekt!";
-          welcomeText ="Wenn es dir nicht zu spät ist, ist das die perfekte Nacht um dein Auto zu waschen!";
-
-         break;
-
-        case "fog": 
-          welcomeTextHeadline = "Ganz Gut!";
-          welcomeText ="Aktuell ist es etwas nebelig draußen, aber wen hält das schon auf sein Auto zu waschen ?!";
-
-         break;
-
-        case "rain": 
-          assetName = 'assets/images/Cloud-Rain.svg';
-          welcomeTextHeadline = "Lieber abwarten!";
-          welcomeText ="Aktuell sieht es am Himmel sehr nach Regen aus, warte lieber noch etwas ab! Warte lieber noch bis das Wetter wieder besser wird.";
-
-         break;
-
-        case "snow": 
-          assetName = 'assets/images/Cloud-Snow.svg';
-          welcomeTextHeadline = "Das wird kalt!";
-          welcomeText ="Aktuell sieht es nach Schnee aus, das ist kein gutes Wetter um dein Auto zu waschen. Warte lieber noch bis das Wetter wieder besser wird.";
-
-         break;
-
-        case "wind": 
-          assetName = 'assets/images/Wind.svg';
-          welcomeTextHeadline = "Achtung Windig!";
-          welcomeText ="Aktuell ist es etwas windig draußen, aber das ist für dich natürlich kein Grund dein Auto nicht zu waschen!";
-
-
-         break;
-
-        case "partly-cloudy-day": 
-          assetName = 'assets/images/Cloud.svg';
-          welcomeTextHeadline = "Gute Nachrichten";
-          welcomeText ="Schnapp dir dein Auto - es sind nur wenige Wolken am Himmel!";
-
-         break;
-
-        case "partly-cloudy-night": 
-          assetName = 'assets/images/Cloud-Moon.svg';
-          welcomeTextHeadline = "Gute Nachrichten";
-          welcomeText ="Schnapp dir dein Auto - es sind nur wenige Wolken am Himmel!";
-
-         break;
-
-      }
-
-      if(weather["currently"]["temperature"] < 6){
-        welcomeTextHeadline= "Das wird kalt!";
-        welcomeText = "Aktuell ist es draußen ziemlich kalt, kein gutes Wetter um dein Auto zu waschen. Warte lieber noch bis das Wetter wieder besser wird.";
-      }
-      
-      setState(() {
-              temp = weather["currently"]["temperature"].toStringAsFixed(0);
-            });
-
+    if(_reloadTimer != null){
+      _reloadTimer.cancel();
     }
   }
 
+  Future setupWeatherContext(Map<String,double> location) async {
+
+    try{
+      if(httpRequestWeather(location) != "null"){
+        var jsonWeather = await httpRequestWeather(location);
+        var weather = json.decode(jsonWeather);
+        //print("jsonWeather $weather");
+
+    
+        switch (weather["currently"]["icon"]){
+          case "cloudy": 
+            assetName = 'assets/images/Cloud.svg';
+            welcomeTextHeadline = "Gute Nachrichten";
+            welcomeText = "Aktuell sind nur ein paar Wolken am Himmel - gutes Timing um dein Auto zu waschen!";
+
+          break;
+
+          case "clear-day": 
+            assetName = 'assets/images/Sun.svg';
+            welcomeTextHeadline = "Perfekt!";
+            welcomeText ="Schnapp dir dein Auto - es ist perfektes Wetter um es zu waschen!";
+
+          break;
+
+          case "clear-night": 
+            assetName = 'assets/images/Moon.svg';
+            welcomeTextHeadline = "Perfekt!";
+            welcomeText ="Wenn es dir nicht zu spät ist, ist das die perfekte Nacht um dein Auto zu waschen!";
+
+          break;
+
+          case "fog": 
+            welcomeTextHeadline = "Ganz Gut!";
+            welcomeText ="Aktuell ist es etwas nebelig draußen, aber wen hält das schon auf sein Auto zu waschen ?!";
+
+          break;
+
+          case "rain": 
+            assetName = 'assets/images/Cloud-Rain.svg';
+            welcomeTextHeadline = "Lieber abwarten!";
+            welcomeText ="Aktuell sieht es am Himmel sehr nach Regen aus, warte lieber noch etwas ab! Warte lieber noch bis das Wetter wieder besser wird.";
+
+          break;
+
+          case "snow": 
+            assetName = 'assets/images/Cloud-Snow.svg';
+            welcomeTextHeadline = "Das wird kalt!";
+            welcomeText ="Aktuell sieht es nach Schnee aus, das ist kein gutes Wetter um dein Auto zu waschen. Warte lieber noch bis das Wetter wieder besser wird.";
+
+          break;
+
+          case "wind": 
+            assetName = 'assets/images/Wind.svg';
+            welcomeTextHeadline = "Achtung Windig!";
+            welcomeText ="Aktuell ist es etwas windig draußen, aber das ist für dich natürlich kein Grund dein Auto nicht zu waschen!";
+
+
+          break;
+
+          case "partly-cloudy-day": 
+            assetName = 'assets/images/Cloud.svg';
+            welcomeTextHeadline = "Gute Nachrichten";
+            welcomeText ="Schnapp dir dein Auto - es sind nur wenige Wolken am Himmel!";
+
+          break;
+
+          case "partly-cloudy-night": 
+            assetName = 'assets/images/Cloud-Moon.svg';
+            welcomeTextHeadline = "Gute Nachrichten";
+            welcomeText ="Schnapp dir dein Auto - es sind nur wenige Wolken am Himmel!";
+
+          break;
+
+        }
+
+        if(weather["currently"]["temperature"] < 6){
+          welcomeTextHeadline= "Das wird kalt!";
+          welcomeText = "Aktuell ist es draußen ziemlich kalt, kein gutes Wetter um dein Auto zu waschen. Warte lieber noch bis das Wetter wieder besser wird.";
+        }
+        
+        setState(() {
+                temp = weather["currently"]["temperature"].toStringAsFixed(0);
+              });
+
+      }
+
+    }catch (e) {
+      print("offline");
+    }
+    
+  }
+
   Future<String> httpRequestWeather(Map<String,double> location)async {
-    var darkSkyUrl="https://api.darksky.net/forecast/97ada79b0fdc34e056d1cdd1f41c6ddf/"
+
+    try{
+      var darkSkyUrl="https://api.darksky.net/forecast/97ada79b0fdc34e056d1cdd1f41c6ddf/"
                    "${location['latitude']},${location['longitude']}"
                    "?units=auto";
 
-    final res = await http.read(darkSkyUrl);
-    return res;
+      final res = await http.read(darkSkyUrl);
+      return res;
+    }catch(e){
+      print("offline");
+    }
+    
   }
 
   void httpRequestLocations(var location, var type)async {
-    print("httploc ${location}");
+    //print("httploc ${location}");
 
     var url = "http://www.nell.science/deepblue/index.php";
 
-    http.post(url, body: {"getLocations":"true","key": "0", "latitude": location['latitude'].toString(), "longitude": location['longitude'].toString(), "type":type.toString(), })
-        .then((response) {
-      print("Response status: ${response.statusCode}");   
-      print("Response body: ${response.body}");
+    try{
+      http.post(url, body: {"getLocations":"true","key": "0", "latitude": location['latitude'].toString(), "longitude": location['longitude'].toString(), "type":type.toString(), })
+          .then((response) {
+        //print("Response status: ${response.statusCode}");   
+        //print("Response body: ${response.body}");
 
-      if (this.mounted){
-        if(response.body != "null"){
+        if (this.mounted){
+          if(response.body != "null"){
 
-          var nearestLocation;
-          var nearestLocationsJson = "";
+            var nearestLocation;
+            var nearestLocationsJson = "";
 
-          nearestLocationsJson = response.body.toString();
-          nearestLocation=json.decode(nearestLocationsJson);
-          nearLocationsCount=json.decode(nearestLocationsJson).length;
+            nearestLocationsJson = response.body.toString();
+            nearestLocation=json.decode(nearestLocationsJson);
+            nearLocationsCount=json.decode(nearestLocationsJson).length;
 
-          setState((){
+            setState((){
 
-                  if(type=="Waschboxen"){
-                    nearLocations.washboxen=nearestLocation;
-                    nearLocations.washboxenCount=json.decode(response.body.toString()).length;
-                    washboxesLoaded=true;
-                  }else if (type=="Events"){
-                    nearLocations.events=nearestLocation;
-                    nearLocations.eventsCount=json.decode(response.body.toString()).length;
-                    eventsLoaded=true;
-                  }else if(type=="Shootings"){
-                    nearLocations.shootings=nearestLocation;
-                    nearLocations.shootingsCount=json.decode(response.body.toString()).length;
-                    shootingsLoaded=true;
-                  }
+                    if(type=="Waschboxen"){
+                      nearLocations.washboxen=nearestLocation;
+                      nearLocations.washboxenCount=json.decode(response.body.toString()).length;
+                      washboxesLoaded=true;
+                    }else if (type=="Events"){
+                      nearLocations.events=nearestLocation;
+                      nearLocations.eventsCount=json.decode(response.body.toString()).length;
+                      eventsLoaded=true;
+                    }else if(type=="Shootings"){
+                      nearLocations.shootings=nearestLocation;
+                      nearLocations.shootingsCount=json.decode(response.body.toString()).length;
+                      shootingsLoaded=true;
+                    }
 
-                  if(washboxesLoaded && eventsLoaded && shootingsLoaded){
-                    locationsLoaded=true;
-                  }
-                  
-              });
+                    if(washboxesLoaded && eventsLoaded && shootingsLoaded){
+                      locationsLoaded=true;
+                    }
+                    
+                });
 
-        }else{
-          print("reload 3000ms");
-          _reloadTimer = new Timer(const Duration(milliseconds: 3000), () {
-            httpRequestLocations(location,type);
-          });  
+          }else{
+            
+          }
+        
         }
-       
-      }
 
-    });
+      });
+
+    }catch(e){
+      print("offline");
+      
+      print("reload 3000ms");
+            _reloadTimer = new Timer(const Duration(milliseconds: 3000), () {
+              httpRequestLocations(location,type);
+              print("starttime");
+            });  
+    }
+
     
   }
 
@@ -394,6 +418,7 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
   }
 
   void navigatorPushToMap(){
+    Navigator.pop(context);
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => MapScreen(widget.coreClass,nearLocations)),
