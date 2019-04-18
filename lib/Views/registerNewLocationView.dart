@@ -240,9 +240,9 @@ class RegisterNewLocationView extends RegisterNewLocationState{
   Widget getDateWidgetWrapper(){
     if(!hideDateWidget){
       return new Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.max,
+                child: ListView(
+                  //mainAxisAlignment: MainAxisAlignment.start,
+                  //mainAxisSize: MainAxisSize.max,
                   children: <Widget>[
 
                     
