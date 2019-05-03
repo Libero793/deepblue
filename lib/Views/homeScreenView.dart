@@ -385,15 +385,19 @@ Widget createListItem(listPosition, itemPosition){
 
     var locations;
     var locationImageExists = true;
+    var locationType;
     switch (listPosition) {
       case 0:
         locations=nearLocations.events;
+        locationType="events";
         break;
       case 1:
         locations=nearLocations.washboxen;
+        locationType="washboxen";
         break;
       case 2:
         locations=nearLocations.shootings;
+        locationType="shootings";
         break;
      default:
    }
@@ -466,18 +470,9 @@ Widget createListItem(listPosition, itemPosition){
                                           Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: <Widget>[
-                                              Padding(
-                                                padding: EdgeInsets.symmetric(horizontal: 0, vertical: 5),
-                                                child: Row(
-                                                  children: <Widget>[
-                                                    Icon(Icons.hourglass_empty, color: Colors.grey[500], size: 18.0,),
-                                                    Padding(
-                                                      padding: EdgeInsets.only( left: 5),
-                                                      child: Text("${locations[itemPosition]["durationText"]}",textAlign: TextAlign.left,style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w400, color: Colors.grey[400]))
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
+
+
+                                              firstEntryListItem(locations[itemPosition],locationType),
                                               
                                               Padding(
                                                 padding: EdgeInsets.symmetric(horizontal: 0, vertical: 5),
@@ -549,6 +544,39 @@ Widget createListItem(listPosition, itemPosition){
    }else{
      return Container();                                    //insert Loading Icon here
    }
+}
+
+Widget firstEntryListItem(location, locationType){
+  print("test $location");
+
+  if(locationType == "events"){
+    return Padding(
+    padding: EdgeInsets.symmetric(horizontal: 0, vertical: 5),
+      child: Row(
+        children: <Widget>[
+          Icon(Icons.alarm_on, color: Colors.grey[500], size: 18.0,),
+          Padding(
+            padding: EdgeInsets.only( left: 5),
+            child: Text(location["startTime"].substring(0,10),textAlign: TextAlign.left,style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w400, color: Colors.grey[400]))
+          ),
+        ],
+      ),
+    );
+  }else{
+    return Padding(
+    padding: EdgeInsets.symmetric(horizontal: 0, vertical: 5),
+      child: Row(
+        children: <Widget>[
+          Icon(Icons.hourglass_empty, color: Colors.grey[500], size: 18.0,),
+          Padding(
+            padding: EdgeInsets.only( left: 5),
+            child: Text("${location["durationText"]}",textAlign: TextAlign.left,style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w400, color: Colors.grey[400]))
+          ),
+        ],
+      ),
+    );
+  }
+  
 }
 
  getLocationImageWidget(imageBase64){

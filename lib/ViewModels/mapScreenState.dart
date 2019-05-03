@@ -642,7 +642,7 @@ abstract class MapScreenState extends State<MapScreen>{
                                                                     ),
                                                                     new Padding(
                                                                       padding: const EdgeInsets.fromLTRB(10.0, 2.0, 0.0, 8.0),
-                                                                      child: new Text("Beginn: ${data["startTime"]}",textAlign: TextAlign.left,style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w400, color: Colors.black))
+                                                                      child: new Text("${data["startTime"]}",textAlign: TextAlign.left,style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w400, color: Colors.black))
                                                                     ),
                                                                   ],
                                                                 ),
@@ -661,7 +661,7 @@ abstract class MapScreenState extends State<MapScreen>{
                                                                     ),
                                                                     new Padding(
                                                                       padding: const EdgeInsets.fromLTRB(10.0, 2.0, 0.0, 8.0),
-                                                                      child: new Text("Ende: ${data["endTime"]}",textAlign: TextAlign.left,style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w400, color: Colors.black))
+                                                                      child: new Text("${data["endTime"]}",textAlign: TextAlign.left,style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w400, color: Colors.black))
                                                                     ),
                                                                   ],
                                                                 ),
@@ -677,7 +677,7 @@ abstract class MapScreenState extends State<MapScreen>{
                                                                   ),
                                                                   new Padding(
                                                                     padding: const EdgeInsets.fromLTRB(10.0, 2.0, 0.0, 8.0),
-                                                                    child: new Text("Fahrtzeit: ${data["durationText"]}",textAlign: TextAlign.left,style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w400, color: Colors.black))
+                                                                    child: new Text("${data["durationText"]}",textAlign: TextAlign.left,style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w400, color: Colors.black))
                                                                   ),
                                                                 ],
                                                               ),
@@ -692,7 +692,7 @@ abstract class MapScreenState extends State<MapScreen>{
                                                                   ),
                                                                   new Padding(
                                                                     padding: const EdgeInsets.fromLTRB(10.0, 2.0, 0.0, 8.0),
-                                                                    child: new Text("Entfernung: ${data["distanceText"]}",textAlign: TextAlign.left,style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w400, color: Colors.black))
+                                                                    child: new Text("${data["distanceText"]}",textAlign: TextAlign.left,style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w400, color: Colors.black))
                                                                   ),
                                                                 ],
                                                               )
