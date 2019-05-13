@@ -547,7 +547,7 @@ Widget createListItem(listPosition, itemPosition){
 }
 
 Widget firstEntryListItem(location, locationType){
-  print("test $location");
+  //print("test $location");
 
   if(locationType == "events"){
     return Padding(

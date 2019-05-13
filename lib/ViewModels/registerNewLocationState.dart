@@ -177,6 +177,7 @@ abstract class RegisterNewLocationState extends State<RegisterNewLocation>{
       minWidth: 600,
       minHeight: 400,
       quality: 94,
+      rotate: 90,
     );
     print(file.lengthSync());
     print(result.length);

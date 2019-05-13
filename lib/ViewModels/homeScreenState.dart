@@ -98,6 +98,7 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
     nearLocations = new NearLocations();
 
     setupWeatherContext(widget.coreClass.getSelectedLocation());
+    
 
     currentCard = "event";
 
@@ -148,12 +149,12 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
   }
 
   Future setupWeatherContext(Map<String,double> location) async {
-
+    
     try{
       if(httpRequestWeather(location) != "null"){
         var jsonWeather = await httpRequestWeather(location);
         var weather = json.decode(jsonWeather);
-        //print("jsonWeather $weather");
+        print("jsonWeather $weather");
 
     
         switch (weather["currently"]["icon"]){
@@ -245,6 +246,7 @@ abstract class HomeScreenState extends State<HomeScreen> with TickerProviderStat
       var darkSkyUrl="https://api.darksky.net/forecast/97ada79b0fdc34e056d1cdd1f41c6ddf/"
                    "${location['latitude']},${location['longitude']}"
                    "?units=auto";
+                   print(darkSkyUrl);
 
       final res = await http.read(darkSkyUrl);
       return res;
