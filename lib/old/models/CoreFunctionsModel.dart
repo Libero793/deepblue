@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:ui';
 
-import 'package:deepblue/models/setupFile.dart';
+import 'package:deepblue/old/models/setupFile.dart';
 import 'package:flutter/material.dart';
 
 class CoreFunctionsModel{

@@ -1,6 +1,6 @@
 
 import 'dart:async';
-import 'package:deepblue/ViewModels/locatingScreenState.dart';
+import 'package:deepblue/old/ViewModels/locatingScreenState.dart';
 import 'package:flutter/material.dart';
 
 class LocatingScreenView extends LocatingScreenState {

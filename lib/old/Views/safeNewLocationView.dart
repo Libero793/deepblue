@@ -1,4 +1,4 @@
-import 'package:deepblue/ViewModels/safeNewLocationState.dart';
+import 'package:deepblue/old/ViewModels/safeNewLocationState.dart';
 import 'package:flutter/material.dart';
 
 class SafeNewLocationView extends SafeNewLocationState{

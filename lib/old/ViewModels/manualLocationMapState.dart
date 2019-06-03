@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:deepblue/ViewModels/homeScreenState.dart';
-import 'package:deepblue/Views/manualLocationMapView.dart';
-import 'package:deepblue/models/CoreFunctionsModel.dart';
+import 'package:deepblue/old/ViewModels/homeScreenState.dart';
+import 'package:deepblue/old/Views/manualLocationMapView.dart';
+import 'package:deepblue/old/models/CoreFunctionsModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';

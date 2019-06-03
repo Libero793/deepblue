@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:deepblue/ViewModels/homeScreenState.dart';
-import 'package:deepblue/ViewModels/registerNewLocationState.dart';
-import 'package:deepblue/Views/mapScreenView.dart';
-import 'package:deepblue/models/CoreFunctionsModel.dart';
-import 'package:deepblue/models/RegisterNewLocationModel.dart';
-import 'package:deepblue/models/nearLocationsModel.dart';
+import 'package:deepblue/old/ViewModels/homeScreenState.dart';
+import 'package:deepblue/old/ViewModels/registerNewLocationState.dart';
+import 'package:deepblue/old/Views/mapScreenView.dart';
+import 'package:deepblue/old/models/CoreFunctionsModel.dart';
+import 'package:deepblue/old/models/RegisterNewLocationModel.dart';
+import 'package:deepblue/old/models/nearLocationsModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';

@@ -1,6 +1,6 @@
-import 'package:deepblue/ViewModels/registerNewLocationState.dart';
+import 'package:deepblue/old/ViewModels/registerNewLocationState.dart';
 import 'package:flutter/material.dart';
-import 'package:deepblue/models/RegisterNewLocationStyleModel.dart';
+import 'package:deepblue/old/models/RegisterNewLocationStyleModel.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_xlider/flutter_xlider.dart';
   

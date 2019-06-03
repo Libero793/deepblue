@@ -2,12 +2,12 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:deepblue/ViewModels/homeScreenState.dart';
-import 'package:deepblue/ViewModels/locatingScreenState.dart';
-import 'package:deepblue/Views/startScreenView.dart';
-import 'package:deepblue/models/setupFile.dart';
+import 'package:deepblue/old/ViewModels/homeScreenState.dart';
+import 'package:deepblue/old/ViewModels/locatingScreenState.dart';
+import 'package:deepblue/old/Views/startScreenView.dart';
+import 'package:deepblue/old/models/setupFile.dart';
 import 'package:flutter/material.dart';
-import 'package:deepblue/models/CoreFunctionsModel.dart';
+import 'package:deepblue/old/models/CoreFunctionsModel.dart';
 
 class StartScreen extends StatefulWidget {
 

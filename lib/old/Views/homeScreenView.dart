@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:deepblue/ViewModels/homeScreenState.dart';
+import 'package:deepblue/old/ViewModels/homeScreenState.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 

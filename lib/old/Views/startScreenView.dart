@@ -1,8 +1,8 @@
 
-import 'package:deepblue/ViewModels/startScreenState.dart';
+import 'package:deepblue/old/ViewModels/startScreenState.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:deepblue/models/CoreFunctionsModel.dart';
+import 'package:deepblue/old/models/CoreFunctionsModel.dart';
 
 
 class StartScreenView extends StartScreenState {
@@ -59,7 +59,7 @@ class StartScreenView extends StartScreenState {
 
                                         Padding(
                                           padding: EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
-                                          child:  Text("Beta Version 0.3", style: TextStyle(fontSize: 12,color: Colors.white, fontWeight: FontWeight.bold,),),
+                                          child:  Text("Beta Version 0.4b", style: TextStyle(fontSize: 12,color: Colors.white, fontWeight: FontWeight.bold,),),
                                         )
                                        
 

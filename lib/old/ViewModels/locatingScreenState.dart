@@ -1,9 +1,9 @@
 import 'dart:async';
-import 'package:deepblue/ViewModels/homeScreenState.dart';
-import 'package:deepblue/Views/locatingScreenView.dart';
-import 'package:deepblue/ViewModels/manualLocationMapState.dart';
-import 'package:deepblue/models/CoreFunctionsModel.dart';
-import 'package:deepblue/models/setupFile.dart';
+import 'package:deepblue/old/ViewModels/homeScreenState.dart';
+import 'package:deepblue/old/Views/locatingScreenView.dart';
+import 'package:deepblue/old/ViewModels/manualLocationMapState.dart';
+import 'package:deepblue/old/models/CoreFunctionsModel.dart';
+import 'package:deepblue/old/models/setupFile.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart' as gps;
 import 'package:location/location.dart' as locationPackage;

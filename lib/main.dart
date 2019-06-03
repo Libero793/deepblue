@@ -1,7 +1,10 @@
 import 'dart:collection';
 
-import 'package:deepblue/ViewModels/locatingScreenState.dart';
-import 'package:deepblue/ViewModels/startScreenState.dart';
+import 'package:deepblue/old/ViewModels/locatingScreenState.dart';
+import 'package:deepblue/old/ViewModels/startScreenState.dart';
+
+import 'package:deepblue/new/controller/navigationController.dart';
+
 import 'package:flutter/material.dart';
 import 'dart:async';
 
@@ -24,9 +27,9 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         canvasColor: Colors.transparent,
       ),
-      initialRoute: 'locate',
+      initialRoute: 'home',
       routes: {
-        '/':(context) => new StartScreen(),
+        '/':(context) => new Navigation(),
       },
       debugShowCheckedModeBanner: false,
     );

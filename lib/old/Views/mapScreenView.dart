@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:deepblue/ViewModels/mapScreenState.dart';
+import 'package:deepblue/old/ViewModels/mapScreenState.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
 

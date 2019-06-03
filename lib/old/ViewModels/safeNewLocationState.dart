@@ -1,12 +1,12 @@
 import 'dart:async';
-import 'package:deepblue/ViewModels/homeScreenState.dart';
-import 'package:deepblue/models/CoreFunctionsModel.dart';
-import 'package:deepblue/models/RegisterNewLocationModel.dart';
+import 'package:deepblue/old/ViewModels/homeScreenState.dart';
+import 'package:deepblue/old/models/CoreFunctionsModel.dart';
+import 'package:deepblue/old/models/RegisterNewLocationModel.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_udid/flutter_udid.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:deepblue/Views/safeNewLocationView.dart';
+import 'package:deepblue/old/Views/safeNewLocationView.dart';
 
 
 class SafeNewLocation extends StatefulWidget{

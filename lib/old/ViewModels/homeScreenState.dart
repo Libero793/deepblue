@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
-import 'package:deepblue/Views/homeScreenView.dart';
-import 'package:deepblue/ViewModels/mapScreenState.dart';
-import 'package:deepblue/models/CoreFunctionsModel.dart';
-import 'package:deepblue/models/nearLocationsModel.dart';
-import 'package:deepblue/models/setupFile.dart';
+import 'package:deepblue/old/Views/homeScreenView.dart';
+import 'package:deepblue/old/ViewModels/mapScreenState.dart';
+import 'package:deepblue/old/models/CoreFunctionsModel.dart';
+import 'package:deepblue/old/models/nearLocationsModel.dart';
+import 'package:deepblue/old/models/setupFile.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_svg/flutter_svg.dart';

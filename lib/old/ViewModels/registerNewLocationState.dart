@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'package:deepblue/ViewModels/safeNewLocationState.dart';
-import 'package:deepblue/Views/registerNewLocationView.dart';
-import 'package:deepblue/models/CoreFunctionsModel.dart';
-import 'package:deepblue/models/RegisterNewLocationStyleModel.dart';
-import 'package:deepblue/models/RegisterNewLocationModel.dart';
+import 'package:deepblue/old/ViewModels/safeNewLocationState.dart';
+import 'package:deepblue/old/Views/registerNewLocationView.dart';
+import 'package:deepblue/old/models/CoreFunctionsModel.dart';
+import 'package:deepblue/old/models/RegisterNewLocationStyleModel.dart';
+import 'package:deepblue/old/models/RegisterNewLocationModel.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
