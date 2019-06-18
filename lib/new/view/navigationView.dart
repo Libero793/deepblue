@@ -44,7 +44,8 @@ TabItem currentTab = TabItem.search;                                  //Start ta
   Widget _buildOffstageNavigator(TabItem tabItem) {                   //Seiten Screen 
     return Offstage(
       offstage: currentTab != tabItem,
-      child: TabNavigator(
+      child: 
+      TabNavigator(
         navigatorKey: navigatorKeys[tabItem],
         tabItem: tabItem,
       ),

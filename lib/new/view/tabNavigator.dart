@@ -1,11 +1,12 @@
+import 'package:deepblue/new/view/appScreen.dart';
 import 'package:deepblue/new/view/bottomNavigation.dart';
-import 'package:deepblue/new/view/colorDetailPage.dart';
-import 'package:deepblue/new/view/colorListPage.dart';
+
 import 'package:flutter/material.dart';
 
 class TabNavigatorRoutes {
   static const String root = '/';
   static const String detail = '/detail';
+  static const String test = '/test';
 }
 
 class TabNavigator extends StatelessWidget {
@@ -13,31 +14,29 @@ class TabNavigator extends StatelessWidget {
   final GlobalKey<NavigatorState> navigatorKey;
   final TabItem tabItem;
 
-  void _push(BuildContext context, {int materialIndex: 500}) {                      //funktion zum durchführen des Stack calls ? 
-    var routeBuilders = _routeBuilders(context, materialIndex: materialIndex);
+  void _push(BuildContext context) {                      //funktion zum durchführen des Stack calls ? 
+    var routeBuilders = _routeBuilders(context);
 
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => routeBuilders[TabNavigatorRoutes.detail](context),
+        builder: (context) => routeBuilders[TabNavigatorRoutes.test](context),
       ),
     );
   }
 
-  Map<String, WidgetBuilder> _routeBuilders(BuildContext context,                     //wird bei seitenaufruf ausgeführt 
-      {int materialIndex: 500}) {
+  Map<String, WidgetBuilder> _routeBuilders(BuildContext context) {
     return {
+      TabNavigatorRoutes.root: (context) => AppScreen(title:TabHelper.description(tabItem)),
+      /*
+      
       TabNavigatorRoutes.root: (context) => ColorsListPage(                           //root Route
             color: TabHelper.color(tabItem),
             title: TabHelper.description(tabItem),
-            onPush: (materialIndex) =>                                                //was soll bei onPush passieren -> _push wird aufgerufen und TabNavigatorROutesDetial aufgerufen
-                _push(context, materialIndex: materialIndex),
-          ),
-      TabNavigatorRoutes.detail: (context) => ColorDetailPage(                        //Detial Route 
-            color: TabHelper.color(tabItem),
-            title: TabHelper.description(tabItem),
-            materialIndex: materialIndex,
-          ),
+            onPush: () =>                                                //was soll bei onPush passieren -> _push wird aufgerufen und TabNavigatorROutesDetial aufgerufen
+                _push(context),
+          ),*/
+
     };
   }
 
