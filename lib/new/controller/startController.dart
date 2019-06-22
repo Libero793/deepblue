@@ -12,8 +12,19 @@ class StartScreen extends StatefulWidget {
 
 abstract class StartScreenController extends State<StartScreen>{
 
-  FocusNode focusTextWidget = new FocusNode();
-  final textFieldController = TextEditingController();
+  FocusNode emailInputWidget = new FocusNode();
+  final emailInputController = TextEditingController();
+
+  
+  FocusNode passwordInputWidget = new FocusNode();
+  final passwortInputController = TextEditingController();
+
+
+  fixSpacing(GlobalKey spacer){
+     final RenderBox renderBoxRed = spacer.currentContext.findRenderObject();
+     final sizeRed = renderBoxRed.size.height;   
+     return sizeRed;
+  }
 
   
 

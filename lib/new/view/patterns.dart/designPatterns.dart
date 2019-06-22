@@ -69,11 +69,12 @@ class DesignPatterns{
                             child: new TextField(
                               focusNode: focusNode,
                               controller: controller,
+                              autofocus: false,
                               keyboardType: TextInputType.text,
-                              style: TextStyle(fontWeight: FontWeight.normal, color: Colors.black, fontSize: 6.0, ),
+                              style: TextStyle(color: Colors.white, fontSize: 18.0,fontWeight: FontWeight.w300),
                               decoration: new InputDecoration(
                                 hintText: hintText,
-                                hintStyle: TextStyle(color: Colors.grey[400], fontSize: 18.0,fontWeight: FontWeight.w300)
+                                hintStyle: TextStyle(color: Colors.white, fontSize: 18.0,fontWeight: FontWeight.w300)
                               ),
                             ),
                           )
