@@ -1,6 +1,7 @@
+import 'package:deepblue/new/controller/registrationController.dart';
 import 'package:deepblue/new/controller/startController.dart';
 import 'package:deepblue/new/view/appScreen.dart';
-import 'package:deepblue/new/view/patterns.dart/designPatterns.dart';
+import 'package:deepblue/new/view/patterns/designPatterns.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -68,10 +69,12 @@ class StartScreenView extends StartScreenController {
                             end: FractionalOffset.bottomCenter,
                             colors: [
                               Colors.black.withOpacity(0),
-                              Colors.black,
+                              Colors.black.withOpacity(0.6),
+                              Colors.black.withOpacity(0.8),
                             ],
                             stops: [
                                   0.0,
+                                  0.2,
                                   1.0
                                   ])
                              ),
@@ -115,7 +118,7 @@ class StartScreenView extends StartScreenController {
       width: double.infinity,
       height: 110,
       child: SvgPicture.asset("assets/images/Holyhall_Logo.svg"),
-        margin: EdgeInsets.only(top: 100),
+        margin: EdgeInsets.only(top: 50),
     );
   }
 
@@ -185,7 +188,7 @@ class StartScreenView extends StartScreenController {
                                   ),
 
                                   GestureDetector(
-                                    onTap: () { print("Container was tapped"); },
+                                    onTap: () { Navigator.push(context, MaterialPageRoute(builder: (context) => RegistrationScreen("mail")),); },
                                     child: Padding(
                                       padding: EdgeInsets.only(top: 35),
                                       child:RichText(

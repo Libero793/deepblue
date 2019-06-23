@@ -40,6 +40,10 @@ class DesignPatterns{
   }
 
   Widget  inputLineWidget({ThemeData theme, TextEditingController controller, FocusNode focusNode,String hintText, IconData icon}){
+    var obscureText = false;
+    if(hintText == "Password"){
+      obscureText =true;
+    }
     return   Container(
                 
                 decoration: BoxDecoration(
@@ -53,7 +57,7 @@ class DesignPatterns{
                   children: <Widget>[
 
                     Padding(
-                      padding: EdgeInsets.fromLTRB(10, 0, 20, 0),
+                      padding: EdgeInsets.fromLTRB(10, 10, 20, 0),
                       child:Icon(icon,color: Colors.white,size: 30,),
                     ),
                     
@@ -69,7 +73,7 @@ class DesignPatterns{
                             child: new TextField(
                               focusNode: focusNode,
                               controller: controller,
-                              autofocus: false,
+                              obscureText: obscureText,
                               keyboardType: TextInputType.text,
                               style: TextStyle(color: Colors.white, fontSize: 18.0,fontWeight: FontWeight.w300),
                               decoration: new InputDecoration(
@@ -87,6 +91,67 @@ class DesignPatterns{
                 ),
             
             );
+  }
+
+  Widget inputBoxWidget({String inputText, bool obscureText,TextEditingController controller}){
+    return TextFormField(
+              decoration: new InputDecoration(
+                labelStyle: new TextStyle(color: Colors.white),
+                labelText: inputText,
+                border: new OutlineInputBorder(
+                  borderRadius: new BorderRadius.circular(4.0),
+                  borderSide: new BorderSide(
+                  ),
+                ),
+              
+              ),
+              
+              validator: (val) {
+                if(val.length==0) {
+                  return "Email cannot be empty";
+                }else{
+                  return null;
+                }
+              },
+
+              controller: controller,
+              
+              keyboardType: TextInputType.emailAddress,
+              obscureText: obscureText,
+              style: new TextStyle(
+                fontFamily: "Poppins",
+                color: Colors.white,
+                fontSize: 18,
+              ),
+            );
+  }
+
+  Widget bottomButtonWidget(Function callback){
+    return  Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+                  new Expanded(
+                    child: new GestureDetector(
+                      onTap:(){
+                        callback();
+                      },
+                      child: new Container(
+                        color: Colors.white,
+                        height: 60.0,
+                        child: new Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Text("Registrieren",style: TextStyle(color: Colors.black, fontSize: 16.0, fontWeight: FontWeight.bold)),
+                         
+                        ],
+                        ),
+                      )
+                    ) 
+                  )
+                ],
+              );
   }
 
 
