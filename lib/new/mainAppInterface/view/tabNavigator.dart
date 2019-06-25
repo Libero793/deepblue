@@ -1,5 +1,5 @@
-import 'package:deepblue/new/view/appScreen.dart';
-import 'package:deepblue/new/view/bottomNavigation.dart';
+import 'package:deepblue/new/mainAppInterface/view/appScreen.dart';
+import 'package:deepblue/new/mainAppInterface/view/bottomNavigation.dart';
 
 import 'package:flutter/material.dart';
 
@@ -27,7 +27,7 @@ class TabNavigator extends StatelessWidget {
 
   Map<String, WidgetBuilder> _routeBuilders(BuildContext context) {
     return {
-      TabNavigatorRoutes.root: (context) => AppScreen(title:TabHelper.description(tabItem)),
+      TabNavigatorRoutes.root: (context) => AppScreen(),
       /*
       
       TabNavigatorRoutes.root: (context) => ColorsListPage(                           //root Route

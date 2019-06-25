@@ -1,4 +1,4 @@
-import 'package:deepblue/new/view/startView.dart';
+import 'package:deepblue/new/userHandlingInterface/view/startView.dart';
 import 'package:flutter/cupertino.dart';
 
 class StartScreen extends StatefulWidget {

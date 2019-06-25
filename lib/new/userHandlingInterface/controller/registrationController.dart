@@ -1,6 +1,8 @@
-import 'package:deepblue/new/view/registrationView.dart';
-import 'package:deepblue/new/view/startView.dart';
+import 'package:deepblue/new/commonInterface/controller/connectionUtilityController.dart';
+import 'package:deepblue/new/userHandlingInterface/model/userRegistrationModel.dart';
+import 'package:deepblue/new/userHandlingInterface/view/registrationView.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class RegistrationScreen extends StatefulWidget {
 
@@ -36,6 +38,12 @@ abstract class RegistrationScreenController extends State<RegistrationScreen>{
       });
     }else{
       errorText="Valid!";
+      
+      UserRegistrationModel userData = new UserRegistrationModel();
+      userData.mail=emailController.text;
+      userData.password=passwordReviewController.text;
+
+      Navigator.push(context,MaterialPageRoute(builder: (context) => ConnectionUtility(userData)));
     }
     
   }

@@ -1,7 +1,7 @@
 import 'dart:collection';
-import 'package:deepblue/new/controller/startController.dart';
+import 'package:deepblue/new/userHandlingInterface/controller/startController.dart';
 import 'package:deepblue/old/ViewModels/locatingScreenState.dart';
-import 'package:deepblue/new/controller/navigationController.dart';
+import 'package:deepblue/new/mainAppInterface/controller/navigationController.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 

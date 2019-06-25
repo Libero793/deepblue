@@ -1,6 +1,6 @@
-import 'package:deepblue/new/controller/navigationController.dart';
-import 'package:deepblue/new/view/bottomNavigation.dart';
-import 'package:deepblue/new/view/tabNavigator.dart';
+import 'package:deepblue/new/mainAppInterface/controller/navigationController.dart';
+import 'package:deepblue/new/mainAppInterface/view/bottomNavigation.dart';
+import 'package:deepblue/new/mainAppInterface/view/tabNavigator.dart';
 import 'package:flutter/material.dart';
 
 class NavigationView extends NavigationController{

@@ -1,5 +1,5 @@
-import 'package:deepblue/new/controller/registrationController.dart';
-import 'package:deepblue/new/view/patterns/designPatterns.dart';
+import 'package:deepblue/new/userHandlingInterface/controller/registrationController.dart';
+import 'package:deepblue/new/commonInterface/view/patterns/designPatterns.dart';
 import 'package:flutter/material.dart';
 class RegistrationView extends RegistrationScreenController {
 

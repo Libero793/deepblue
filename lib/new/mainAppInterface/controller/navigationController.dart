@@ -1,5 +1,5 @@
 
-import 'package:deepblue/new/view/navigationView.dart';
+import 'package:deepblue/new/mainAppInterface/view/navigationView.dart';
 import 'package:flutter/cupertino.dart';
 
 class Navigation extends StatefulWidget {
